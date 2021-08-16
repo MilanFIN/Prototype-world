@@ -183,7 +183,7 @@ func makeChunk(x, z):
 
 	for i in points:#range(-limit, limit+1, tileSize):
 		for j in points:#range(-limit, limit+1, tileSize):
-			#print(i, ", ", j)
+
 			var X = tileSize / 2
 			var Z = tileSize / 2
 

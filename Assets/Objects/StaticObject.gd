@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 		if (ground != null):
 			transform.origin.y = ground.y
 			set = true
-			print("SET TO: ", ground)
+			#print("SET TO: ", ground)
 			
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

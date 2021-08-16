@@ -13,7 +13,10 @@ func _init(values) -> void:
 
 
 func populate(x, z, chunkSize, resolution, objectNode):
-	randomize()
+	var coordinates = Vector2(x, z)
+	if (coordinates in populations):
+		return
+
 	var tileSize = float(chunkSize) / resolution 
 	var limit = float(chunkSize) / 2 - tileSize/2
 	var points = []
@@ -24,16 +27,22 @@ func populate(x, z, chunkSize, resolution, objectNode):
 	
 	for i in points:
 		for j in points:
-			var val = rand_range(0.0,1.0)
-			if (val > 0.99):
-
+			#
+			if (rand_range(0,1) < 0.01):
 				var newObj = staticobj.instance()
 				newObj.transform.origin = Vector3(x*chunkSize +i, 500, z*chunkSize + j)
-				print(newObj.transform.origin)
+
 				objectNode.add_child(newObj)
 				newObj.initialized = true
 
+				if (not (coordinates in populations)):
+					populations[coordinates] = [newObj]
+				else:
+					populations[coordinates].push_back(newObj)
 
+	if (len(points) == 0):
+		if (not (coordinates in populations)):
+			populations[coordinates] = []
 
 
 

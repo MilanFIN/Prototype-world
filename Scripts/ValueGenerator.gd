@@ -10,6 +10,7 @@ var planeVariance = 3
 var objectDensity = OpenSimplexNoise.new()
 var objectType = OpenSimplexNoise.new()
 
+var objectProbability = 0.01
 
 
 
@@ -32,7 +33,11 @@ func _init() -> void:
 	noise2.period = 2048#256
 	noise2.persistence = 0.5
 	
-	print(noise.seed, ", ", noise2.seed)
+	#print(noise.seed, ", ", noise2.seed)
+
+	objectDensity.seed = noise.seed +2
+	objectDensity.octaves = 1
+	objectDensity.period = 16
 
 
 
@@ -41,6 +46,12 @@ func getY(x, z):
 	var layer2 = (noise2.get_noise_2d(x, z) +1) * planeVariance
 	return layer1*layer2
 
+# figures out if a world coordinate (x,z) should have any type of object in it
+func hasObject(x, z):
+	if ((objectDensity.get_noise_2d(x, z) +1) *0.5 < objectProbability):
+
+		return true
+	return false
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 #	pass
