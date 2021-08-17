@@ -10,13 +10,17 @@ var planeVariance = 3
 var objectDensity = OpenSimplexNoise.new()
 var objectType = OpenSimplexNoise.new()
 
-var objectProbability = 0.01
+var objectProbability = 0.15
 
 
 
 const sandLine = 2.5;
 const grassLine = 9.0;
 const snowLine = 12.0;
+
+#how many chunks can be added/populated per frame
+#used to limit heavy operations
+var calculationLimit = 10
 
 # Called when the node enters the scene tree for the first time.
 func _init() -> void:
@@ -37,7 +41,7 @@ func _init() -> void:
 
 	objectDensity.seed = noise.seed +2
 	objectDensity.octaves = 1
-	objectDensity.period = 16
+	objectDensity.period = 1
 
 
 
@@ -48,6 +52,7 @@ func getY(x, z):
 
 # figures out if a world coordinate (x,z) should have any type of object in it
 func hasObject(x, z):
+
 	if ((objectDensity.get_noise_2d(x, z) +1) *0.5 < objectProbability):
 
 		return true

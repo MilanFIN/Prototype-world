@@ -3,46 +3,145 @@ extends Node
 var staticobj = preload("res://Assets/Objects/StaticObject.tscn")
 
 var valueGenerator
+var objectNode
 #following x,z in chunk coordinates
 var populations = {} #Vector2(x, z): [objects]
 #following in actual world coords
 var orphans = {} #Vector2(x, z) : object
 
-func _init(values) -> void:
+var semaphore
+var mutex
+var threads = []
+#var thread
+var exit_thread = false
+#of structure: [x, z, chunkSize, resolution]
+var threadInputs = []
+var threadOutputs = []
+
+func _init(values, objnode) -> void:
 	valueGenerator = values
+	
+	semaphore = Semaphore.new()
+	mutex = Mutex.new()
+	exit_thread = false
 
+	for i in range(0,1):
+		var thread = Thread.new()
+		thread.start(self, "_objectWorker")
+		threads.push_back(thread)
 
-func populate(x, z, chunkSize, resolution, objectNode):
+	objectNode = objnode
+
+func populate(x, z, chunkSize, resolution):
 	var coordinates = Vector2(x, z)
 	if (coordinates in populations):
 		return
-
-	var tileSize = float(chunkSize) / resolution 
-	var limit = float(chunkSize) / 2 - tileSize/2
-	var points = []
-	var p = -limit
-	while p < limit or abs(limit - p) < 0.0001:
-		points.append(p)
-		p += tileSize
 	
-	for i in points:
-		for j in points:
-			#
-			if (rand_range(0,1) < 0.01):
-				var newObj = staticobj.instance()
-				newObj.transform.origin = Vector3(x*chunkSize +i, 500, z*chunkSize + j)
+	mutex.lock()
+	threadInputs.push_back([x, z, chunkSize, resolution])
+	mutex.unlock()
+	semaphore.post()
 
-				objectNode.add_child(newObj)
-				newObj.initialized = true
 
-				if (not (coordinates in populations)):
-					populations[coordinates] = [newObj]
-				else:
-					populations[coordinates].push_back(newObj)
+func process(delta = 0) -> void:
+	
+	var chunkSize = 25
+	
+	mutex.lock()
+	var calculations = 0
+	while (len(threadOutputs) != 0):
+		var out = threadOutputs.pop_front()
 
-	if (len(points) == 0):
-		if (not (coordinates in populations)):
-			populations[coordinates] = []
+		var coordinates = out[0]
+		var data = out[1]
 
+		for objData in data:
+			var x = objData[0]
+			var z = objData[1]
+			var type = objData[2]
+			var mesh = objData[3]
+
+			var newObj = staticobj.instance()
+			newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
+
+			objectNode.add_child(newObj)
+			newObj.initialized = true
+
+			if (not (coordinates in populations)):
+				populations[coordinates] = [newObj]
+			else:
+				populations[coordinates].push_back(newObj)
+			
+		calculations += 1
+		if (calculations > valueGenerator.calculationLimit):
+			break
+	mutex.unlock()
+
+
+
+#handles entire chunks at a time
+func _objectWorker(userdata):
+	while true:
+		semaphore.wait() # Wait until posted.
+		mutex.lock()
+		var should_exit = exit_thread
+		mutex.unlock()
+		if should_exit:
+			break
+
+		mutex.lock()
+		var inputs = threadInputs.pop_front()
+		mutex.unlock()
+
+		
+		
+		var x = inputs[0]
+		var z = inputs[1]
+		var chunkSize = inputs[2]
+		var resolution = inputs[3]
+		var coordinates = Vector2(x, z)
+		
+			
+		var tileSize = float(chunkSize) / resolution 
+		var limit = float(chunkSize) / 2 - tileSize/2
+		var points = []
+		var p = -limit
+		while p < limit or abs(limit - p) < 0.0001:
+			points.append(p)
+			p += tileSize
+		
+		var output = [coordinates,[]]
+		
+		for i in points:
+			for j in points:
+
+				if (valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)):
+					
+					var newMesh = CubeMesh.new()
+					#
+
+					output[1].push_back([i, j, "Mesh", newMesh])
+
+
+
+			#if (not (coordinates in populations)):
+			#	populations[coordinates] = []
+
+			mutex.lock()
+
+			threadOutputs.push_back(output)
+			mutex.unlock()
+
+# Thread must be disposed (or "joined"), for portability.
+func _exit_tree():
+	# Set exit condition to true.
+	mutex.lock()
+	exit_thread = true # Protect with Mutex.
+	threadInputs = []
+	mutex.unlock()
+	# Wait until it exits.
+	for thread in threads:
+		semaphore.post()
+		thread.wait_to_finish()
 
 

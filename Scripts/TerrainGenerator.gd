@@ -33,7 +33,7 @@ var threadOutputs = []
 
 func _ready():
 
-	objectGenerator = preload("res://Scripts/ObjectGenerator.gd").new(valueGenerator)
+	objectGenerator = preload("res://Scripts/ObjectGenerator.gd").new(valueGenerator, get_node("Objects"))
 
 
 
@@ -243,7 +243,7 @@ func generate(x, z):
 	#make objects for each terrain
 	for i in range(x-drawDistance, x+drawDistance+1):
 		for j in range(z-drawDistance, z+drawDistance+1):
-			objectGenerator.populate(i, j,chunkSize,  resolution, get_node("Objects"))
+			objectGenerator.populate(i, j,chunkSize,  resolution)
 
 
 
@@ -284,7 +284,7 @@ func _process(delta: float) -> void:
 	
 	mutex.lock()
 
-
+	var calculations = 0
 	while (len(threadOutputs) != 0):
 		var out = threadOutputs.pop_front()
 		var coordinates = out[0]
@@ -318,9 +318,13 @@ func _process(delta: float) -> void:
 				node.add_child(instance)
 			chunks[coordinates] = node
 			get_node("MeshMatrix").add_child(node)
+		calculations += 1
+		if (calculations > valueGenerator.calculationLimit):
+			break
 	mutex.unlock()
 
 
+	objectGenerator.process()
 
 # Thread must be disposed (or "joined"), for portability.
 func _exit_tree():

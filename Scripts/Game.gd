@@ -19,5 +19,5 @@ func _process(delta: float) -> void:
 		get_node("WaterMirage").visible = false
 	get_node("Terrain").check(playerPos)
 
-	if (delta == 0.017):
-		print("SLOW!")
+	if (delta >= 0.017):
+		print("SLOW!: ", delta)
