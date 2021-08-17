@@ -18,6 +18,9 @@ var exit_thread = false
 var threadInputs = []
 var threadOutputs = []
 
+var chunkSize
+var resolution
+
 func _init(values, objnode) -> void:
 	valueGenerator = values
 	
@@ -31,6 +34,8 @@ func _init(values, objnode) -> void:
 		threads.push_back(thread)
 
 	objectNode = objnode
+	chunkSize = valueGenerator.chunkSize
+	resolution = valueGenerator.resolution
 
 func populate(x, z, chunkSize, resolution):
 	var coordinates = Vector2(x, z)
@@ -38,14 +43,14 @@ func populate(x, z, chunkSize, resolution):
 		return
 	
 	mutex.lock()
-	threadInputs.push_back([x, z, chunkSize, resolution])
+	threadInputs.push_back([x, z])
 	mutex.unlock()
 	semaphore.post()
 
 
 func process(delta = 0) -> void:
 	
-	var chunkSize = 25
+
 	
 	mutex.lock()
 	var calculations = 0
@@ -97,8 +102,7 @@ func _objectWorker(userdata):
 		
 		var x = inputs[0]
 		var z = inputs[1]
-		var chunkSize = inputs[2]
-		var resolution = inputs[3]
+
 		var coordinates = Vector2(x, z)
 		
 			

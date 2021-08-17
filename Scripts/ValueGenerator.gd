@@ -1,5 +1,15 @@
 extends Node
 
+#size (godot units), of an individual chunk
+const chunkSize = 25
+#resolution (how many tiles per chunk) of a chunk
+const resolution = 5
+
+#how many chunks can be added/populated per frame
+#used to limit heavy operations
+var calculationLimit = 10
+
+
 #terrain related
 var noise = OpenSimplexNoise.new()
 var noise2 = OpenSimplexNoise.new()
@@ -12,15 +22,13 @@ var objectType = OpenSimplexNoise.new()
 
 var objectProbability = 0.15
 
-
+var drawDistance = 6
 
 const sandLine = 2.5;
 const grassLine = 9.0;
 const snowLine = 12.0;
 
-#how many chunks can be added/populated per frame
-#used to limit heavy operations
-var calculationLimit = 10
+
 
 # Called when the node enters the scene tree for the first time.
 func _init() -> void:

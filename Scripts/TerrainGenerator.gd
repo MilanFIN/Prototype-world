@@ -10,10 +10,10 @@ var groundMaterial = ShaderMaterial.new()
 onready var waterShader = preload("res://Shaders/water.shader")
 
 
-var chunkSize = 25
-var resolution = 5#0.2
+var chunkSize
+var resolution
 
-var drawDistance = 6
+var drawDistance
 
 
 var xz = Vector3(0,0,0)
@@ -40,6 +40,10 @@ func _ready():
 	semaphore = Semaphore.new()
 	mutex = Mutex.new()
 	exit_thread = false
+
+	chunkSize = valueGenerator.chunkSize
+	resolution = valueGenerator.resolution
+	drawDistance = valueGenerator.drawDistance
 
 	groundMaterial.shader = groundShader
 	groundMaterial.set_shader_param("sandLine", valueGenerator.sandLine)
