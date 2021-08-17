@@ -68,6 +68,7 @@ func check(playerPosition):
 		generate(chunkPosition.x, chunkPosition.z)
 		
 		remove(chunkPosition.x, chunkPosition.z)
+		objectGenerator.remove(chunkPosition.x, chunkPosition.z)
 		xz = chunkPosition
 	
 
@@ -247,7 +248,7 @@ func generate(x, z):
 	#make objects for each terrain
 	for i in range(x-drawDistance, x+drawDistance+1):
 		for j in range(z-drawDistance, z+drawDistance+1):
-			objectGenerator.populate(i, j,chunkSize,  resolution)
+			objectGenerator.populate(i, j)
 
 
 

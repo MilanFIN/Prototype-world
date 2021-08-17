@@ -28,7 +28,9 @@ const sandLine = 2.5;
 const grassLine = 9.0;
 const snowLine = 12.0;
 
-
+#how many milliseconds objects should be kept in memory after a chunk has been deleted
+#just in case the player goes back there
+var cacheTime = 10*1000
 
 # Called when the node enters the scene tree for the first time.
 func _init() -> void:

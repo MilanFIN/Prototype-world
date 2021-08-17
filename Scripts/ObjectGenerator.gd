@@ -7,7 +7,7 @@ var objectNode
 #following x,z in chunk coordinates
 var populations = {} #Vector2(x, z): [objects]
 #following in actual world coords
-var orphans = {} #Vector2(x, z) : object
+var orphans = {} #Vector2(x, z) : [time, [objects]]
 
 var semaphore
 var mutex
@@ -20,6 +20,8 @@ var threadOutputs = []
 
 var chunkSize
 var resolution
+
+var lastCacheTime = OS.get_ticks_msec()
 
 func _init(values, objnode) -> void:
 	valueGenerator = values
@@ -37,15 +39,53 @@ func _init(values, objnode) -> void:
 	chunkSize = valueGenerator.chunkSize
 	resolution = valueGenerator.resolution
 
-func populate(x, z, chunkSize, resolution):
+func populate(x, z):
 	var coordinates = Vector2(x, z)
 	if (coordinates in populations):
 		return
 	
-	mutex.lock()
-	threadInputs.push_back([x, z])
-	mutex.unlock()
-	semaphore.post()
+
+	if (coordinates in orphans):
+		#should simply add the previously orphaned nodes back in
+		addOrphans(x, z)
+	else:
+		mutex.lock()
+		threadInputs.push_back([x, z])
+		mutex.unlock()
+		semaphore.post()
+
+
+func addOrphans(x, z):
+	var coordinates = Vector2(x, z) 
+	if (coordinates in orphans):
+
+		populations[coordinates] = orphans[coordinates][1]
+		orphans.erase(coordinates)
+		for i in populations[coordinates]:
+			objectNode.add_child(i)
+
+
+func remove(x, z):
+	
+	var keys = populations.keys()
+
+	for i in keys:
+
+		var xDist = abs(i.x - x)
+		var zDist = abs(i.y - z)
+
+		#if (sqrt(xDist*xDist + zDist*zDist) > removalDistance):
+		if (xDist > valueGenerator.drawDistance or zDist > valueGenerator.drawDistance):
+
+			#get_node("MeshMatrix").remove_child(chunks[i])
+			orphans[i] = [OS.get_ticks_msec(), populations[i]]
+			print(orphans[i][1])
+
+			populations.erase(i)
+
+			for j in orphans[i][1]:
+				objectNode.remove_child(j)
+
 
 
 func process(delta = 0) -> void:
@@ -55,6 +95,7 @@ func process(delta = 0) -> void:
 	mutex.lock()
 	var calculations = 0
 	while (len(threadOutputs) != 0):
+
 		var out = threadOutputs.pop_front()
 
 		var coordinates = out[0]
@@ -82,6 +123,21 @@ func process(delta = 0) -> void:
 			break
 	mutex.unlock()
 
+
+
+
+	var currentTime = OS.get_ticks_msec()
+	if (currentTime - lastCacheTime > valueGenerator.cacheTime):
+
+		var keys = orphans.keys()
+		for i in keys:
+			if (orphans[i][0] < currentTime - valueGenerator.cacheTime):
+				for j in orphans[i][1]:
+					j.queue_free()
+				orphans.erase(i)
+		lastCacheTime = currentTime
+		
+		
 
 
 #handles entire chunks at a time
