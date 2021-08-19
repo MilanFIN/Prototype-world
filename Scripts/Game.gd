@@ -9,8 +9,8 @@ extends Node
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
-
-
+	
+	
 func _process(delta: float) -> void:
 	var playerPos = get_node("Player").translation
 	if (playerPos.y < 0):
@@ -19,5 +19,5 @@ func _process(delta: float) -> void:
 		get_node("WaterMirage").visible = false
 	get_node("Terrain").check(playerPos)
 
-	if (delta >= 0.017):
-		print("SLOW!: ", delta)
+	#if (delta >= 0.017):
+	#	print("SLOW!: ", delta)

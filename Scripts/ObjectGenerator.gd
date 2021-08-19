@@ -1,6 +1,7 @@
 extends Node
 
 var staticobj = preload("res://Assets/Objects/StaticObject.tscn")
+var stoneShader = preload("res://Shaders/stone.shader")
 
 var valueGenerator
 var objectNode
@@ -24,6 +25,8 @@ var resolution
 var lastCacheTime = OS.get_ticks_msec()
 
 func _init(values, objnode) -> void:
+	
+
 	valueGenerator = values
 	
 	semaphore = Semaphore.new()
@@ -79,7 +82,7 @@ func remove(x, z):
 
 			#get_node("MeshMatrix").remove_child(chunks[i])
 			orphans[i] = [OS.get_ticks_msec(), populations[i]]
-			print(orphans[i][1])
+
 
 			populations.erase(i)
 
@@ -90,6 +93,7 @@ func remove(x, z):
 
 func process(delta = 0) -> void:
 	
+
 
 	
 	mutex.lock()
@@ -105,19 +109,27 @@ func process(delta = 0) -> void:
 			var x = objData[0]
 			var z = objData[1]
 			var type = objData[2]
-			var mesh = objData[3]
-
-			var newObj = staticobj.instance()
-			newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
-
-			objectNode.add_child(newObj)
-			newObj.initialized = true
+			var mesh = objData[3][0]
+			var material = objData[3][1]
 
 			if (not (coordinates in populations)):
-				populations[coordinates] = [newObj]
-			else:
-				populations[coordinates].push_back(newObj)
-			
+
+				var newObj = staticobj.instance()
+				newObj.get_node("MeshInstance").mesh = mesh
+				newObj.get_node("MeshInstance").set_surface_material(0, material)
+				newObj.get_node("MeshInstance").create_trimesh_collision()
+				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
+
+				objectNode.add_child(newObj)
+				newObj.initialized = true
+
+
+
+				if (not (coordinates in populations)):
+					populations[coordinates] = [newObj]
+				else:
+					populations[coordinates].push_back(newObj)
+				
 		calculations += 1
 		if (calculations > valueGenerator.calculationLimit):
 			break
@@ -137,7 +149,7 @@ func process(delta = 0) -> void:
 				orphans.erase(i)
 		lastCacheTime = currentTime
 		
-		
+
 
 
 #handles entire chunks at a time
@@ -177,10 +189,10 @@ func _objectWorker(userdata):
 
 				if (valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)):
 					
-					var newMesh = CubeMesh.new()
+					var result = makeRock() #CubeMesh.new()
 					#
 
-					output[1].push_back([i, j, "Mesh", newMesh])
+					output[1].push_back([i, j, "Mesh", result])
 
 
 
@@ -191,6 +203,85 @@ func _objectWorker(userdata):
 
 			threadOutputs.push_back(output)
 			mutex.unlock()
+
+
+func makeRock():
+	var st = SurfaceTool.new()
+
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+
+	var innerRadius = valueGenerator.value(1,1,1,3)
+	var outerRadius = valueGenerator.value(1,1,0.5*innerRadius,1.5*innerRadius)
+	var height = valueGenerator.value(1,1,1,3)
+
+	var top = Vector3(0, height, 0)
+	st.add_vertex(top)
+
+	var lowerPoint = Vector3(innerRadius, height/2, 0)
+	var index = 1
+
+
+	for i in range(3):
+
+		#calculating the two points that will be the base of the triangle
+		var first = lowerPoint.rotated(Vector3.UP, deg2rad(120.0*i))
+
+		var second = lowerPoint.rotated(Vector3.UP, deg2rad(120.0*(i+1)))
+
+		#set vertices to make first triangle
+		st.add_vertex(first)
+		st.add_vertex(second)
+		#create topmost triangle
+		st.add_index(0);
+		st.add_index(index+1);
+		st.add_index(index);
+
+		#create 3 triangles under that to make a wider base 
+		#aka finishing a triforce for one side
+		#first must calculate the vertexes that make up the base (in 2d space)
+		var lowFirst = Vector2(first.x, first.z).normalized() * outerRadius
+		var lowSecond = Vector2(second.x, second.z).normalized() * outerRadius
+		var lowCenter = (lowFirst+lowSecond).normalized() * outerRadius
+		
+		#converting to 3d space
+		lowFirst = Vector3(lowFirst.x, -1, lowFirst.y)
+		lowSecond = Vector3(lowSecond.x, -1, lowSecond.y)
+		lowCenter = Vector3(lowCenter.x, -1, lowCenter.y)
+
+		st.add_vertex(lowFirst)
+		st.add_vertex(lowCenter)
+		st.add_vertex(lowSecond)
+
+		#leftmost triangle
+		st.add_index(index);
+		st.add_index(index+3);
+		st.add_index(index+2);
+		
+		#center (inverted)
+		st.add_index(index);
+		st.add_index(index+1);
+		st.add_index(index+3);
+
+		#right triangle
+		st.add_index(index+1);
+		st.add_index(index+4);
+		st.add_index(index+3);
+
+		#increment index, as each side of the "pyramid" has 5 vertices
+		# in addition to the top, which is shared
+		index += 5
+
+
+	st.generate_normals()
+	var mesh = st.commit()
+	
+	var material = ShaderMaterial.new()
+	material.shader = stoneShader
+
+	
+
+	return [mesh, material]#CubeMesh.new()
+
 
 # Thread must be disposed (or "joined"), for portability.
 func _exit_tree():

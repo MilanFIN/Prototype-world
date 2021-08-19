@@ -67,6 +67,13 @@ func hasObject(x, z):
 
 		return true
 	return false
+
+#takes absolute coordinates
+func value(x, z, minimum, maximum):
+	#TODO: replace initial with procedural function
+	var initial = randf()
+	var value = (initial - 0) * (maximum-minimum) + minimum
+	return value
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
 #	pass
