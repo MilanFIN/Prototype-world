@@ -3,6 +3,7 @@ extends Node
 var staticobj = preload("res://Assets/Objects/StaticObject.tscn")
 var stoneShader = preload("res://Shaders/stone.shader")
 var woodShader = preload("res://Shaders/wood.shader")
+var leafShader = preload("res://Shaders/leaf.shader")
 var valueGenerator
 var objectNode
 #following x,z in chunk coordinates
@@ -109,15 +110,22 @@ func process(delta = 0) -> void:
 			var x = objData[0]
 			var z = objData[1]
 			var type = objData[2]
-			var mesh = objData[3][0]
-			var material = objData[3][1]
+			var meshList = objData[3]
+			#var material = objData[3][1]
 
 			if (not (coordinates in populations)):
 
 				var newObj = staticobj.instance()
-				newObj.get_node("MeshInstance").mesh = mesh
-				newObj.get_node("MeshInstance").set_surface_material(0, material)
-				newObj.get_node("MeshInstance").create_trimesh_collision()
+
+				for i in meshList:
+
+					var meshInst = MeshInstance.new()
+					meshInst.mesh = i[0]
+					meshInst.set_surface_material(0, i[1])
+					meshInst.create_trimesh_collision()
+
+					newObj.add_child(meshInst)
+
 				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
 
 				objectNode.add_child(newObj)
@@ -186,20 +194,87 @@ func _objectWorker(userdata):
 		
 		for i in points:
 			for j in points:
+				var objType = valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)
+				if (objType != -1):
 
-				if (valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)):
-
-					var result = makeTree()#makeRock() 
-
+					var result
+					if (objType == 0):
+						result = makeRock()
+					elif (objType == 1):
+						result = makeTree()
+						
 					output[1].push_back([i, j, "Mesh", result])
 
-
-
-
 			mutex.lock()
-
 			threadOutputs.push_back(output)
 			mutex.unlock()
+
+
+#location = vector3
+func makeLeaf(location):
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var radius = 2
+	var top = location
+	top.y += radius
+	
+	var index = 0#1
+	var upperRingVector = Vector3(radius, 0, 0)
+	
+	st.add_vertex(top)
+
+	var upperRing = []
+	for i in range(6):
+		upperRing.push_back(location + upperRingVector.rotated(Vector3.UP, deg2rad(60*i)))
+	for i in range(6):
+		index += 2
+		var first = upperRing[i]
+		var second
+		if (i < 5):
+			second = upperRing[i+1]
+		else:
+			second = upperRing[0]
+		#set vertices to make first triangle
+		st.add_vertex(first)
+		st.add_vertex(second)
+		#create topmost triangle
+		st.add_index(0);
+		st.add_index(index);
+		st.add_index(index-1);
+	
+	var bottom = location
+	bottom.y -= radius
+	st.add_vertex(bottom)
+	index += 1
+	var bottomIndex = index
+
+
+	var lowerRingVector = upperRingVector
+	var lowerRing = []
+	for i in range(6):
+		lowerRing.push_back(location + lowerRingVector.rotated(Vector3.UP, deg2rad(60*i)))
+	for i in range(6):
+		index += 2
+		var first = lowerRing[i]
+		var second
+		if (i < 5):
+			second = lowerRing[i+1]
+		else:
+			second = lowerRing[0]
+		#set vertices to make first triangle
+		st.add_vertex(first)
+		st.add_vertex(second)
+		#create topmost triangle
+		st.add_index(bottomIndex);
+		st.add_index(index-1);
+		st.add_index(index);
+	
+	st.generate_normals()
+	var mesh = st.commit()
+	var leafMaterial = ShaderMaterial.new()
+	leafMaterial.shader = leafShader
+
+	return [mesh, leafMaterial]
 
 func makeTree():
 	var st = SurfaceTool.new()
@@ -236,11 +311,12 @@ func makeTree():
 		st.add_index(0);
 		st.add_index(index-1);
 		st.add_index(index-2);
-		
-	
+
+
 
 
 	var branchCount = valueGenerator.getInt(0,0,1,5)
+	var branchTips = [top]
 	
 	for i in range(branchCount):
 
@@ -251,6 +327,7 @@ func makeTree():
 		var branchRadius = 0.3
 
 		var branchTop = Vector3(end.x, endHeight, end.y)
+		branchTips.append(branchTop)
 		st.add_vertex(branchTop)
 		index += 1
 		var branchBase = []
@@ -275,19 +352,29 @@ func makeTree():
 			st.add_index(branchIndex);
 			st.add_index(index-1);
 			st.add_index(index-2);
-			
-			
 
-	
 
 	st.generate_normals()
-	var mesh = st.commit()
-
+	var trunkMesh = st.commit()
+	var woodMaterial = ShaderMaterial.new()
+	woodMaterial.shader = woodShader
 	
-	var material = ShaderMaterial.new()
-	material.shader = woodShader
+	var leaves = []
+	for i in branchTips:
+		var leaf = makeLeaf(i)
 
-	return [mesh, material]#CubeMesh.new()
+		leaves.append(leaf)
+
+	#print(len([trunkMesh, woodMaterial] + leaves))
+	var result = []
+	result.push_back([trunkMesh, woodMaterial])
+	for i in leaves:
+		result.push_back(i)
+		pass
+		
+
+
+	return result#CubeMesh.new()
 
 
 func makeRock():
@@ -295,7 +382,7 @@ func makeRock():
 
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
-	var innerRadius = valueGenerator.value(1,1,3,8)
+	var innerRadius = valueGenerator.value(1,1,1,3)
 	var outerRadius = valueGenerator.value(1,1,0.5*innerRadius,1.5*innerRadius)
 	var height = outerRadius#valueGenerator.value(1,1,1,3)
 
@@ -384,7 +471,7 @@ func makeRock():
 	var material = ShaderMaterial.new()
 	material.shader = stoneShader
 
-	return [mesh, material]#CubeMesh.new()
+	return [[mesh, material]]#CubeMesh.new()
 
 
 # Thread must be disposed (or "joined"), for portability.

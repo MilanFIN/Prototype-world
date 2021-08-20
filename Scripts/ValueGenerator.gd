@@ -65,8 +65,8 @@ func hasObject(x, z):
 
 	if ((objectDensity.get_noise_2d(x, z) +1) *0.5 < objectProbability):
 
-		return true
-	return false
+		return getInt(x, z, 0, 1)
+	return -1
 
 #takes absolute coordinates
 func value(x, z, minimum, maximum):

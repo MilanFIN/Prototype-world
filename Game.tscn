@@ -14,6 +14,7 @@ shader_param/grassLine = null
 shader_param/snowLine = null
 
 [sub_resource type="CubeMesh" id=2]
+custom_aabb = AABB( 0, 0, 0, 0, 3, 0 )
 
 [sub_resource type="ConvexPolygonShape" id=3]
 points = PoolVector3Array( -1, 1, 0, 1, 1, 0, 0, 1, -1, 0, 1, 1 )
