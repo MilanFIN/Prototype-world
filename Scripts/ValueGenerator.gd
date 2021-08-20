@@ -74,6 +74,12 @@ func value(x, z, minimum, maximum):
 	var initial = randf()
 	var value = (initial - 0) * (maximum-minimum) + minimum
 	return value
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#	pass
+	
+func value2d(x, z, minimum, maximum):
+	var first = value(x, z, minimum, maximum)
+	var second = value(x, z, minimum, maximum)
+	return Vector2(first, second)
+
+#should return a "random" integer including the max limit
+func getInt(x, z, minimum, maximum):
+	return int(value(x, z, minimum, maximum+1))

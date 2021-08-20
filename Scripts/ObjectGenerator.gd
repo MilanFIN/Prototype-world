@@ -2,7 +2,7 @@ extends Node
 
 var staticobj = preload("res://Assets/Objects/StaticObject.tscn")
 var stoneShader = preload("res://Shaders/stone.shader")
-
+var woodShader = preload("res://Shaders/wood.shader")
 var valueGenerator
 var objectNode
 #following x,z in chunk coordinates
@@ -173,7 +173,7 @@ func _objectWorker(userdata):
 
 		var coordinates = Vector2(x, z)
 		
-			
+		
 		var tileSize = float(chunkSize) / resolution 
 		var limit = float(chunkSize) / 2 - tileSize/2
 		var points = []
@@ -188,21 +188,106 @@ func _objectWorker(userdata):
 			for j in points:
 
 				if (valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)):
-					
-					var result = makeRock() #CubeMesh.new()
-					#
+
+					var result = makeTree()#makeRock() 
 
 					output[1].push_back([i, j, "Mesh", result])
 
 
 
-			#if (not (coordinates in populations)):
-			#	populations[coordinates] = []
 
 			mutex.lock()
 
 			threadOutputs.push_back(output)
 			mutex.unlock()
+
+func makeTree():
+	var st = SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var height = valueGenerator.value(0,0,5,10)
+	
+	var topxz = Vector2(0,0)#valueGenerator.value2d(0,0,-1,1)
+	
+	var top = Vector3(topxz.x, height, topxz.y)
+
+	var base = []
+	var radius = valueGenerator.value(0,0,0.5,1)
+	for i in range(3):
+		base.push_back(Vector3(radius, 0, 0).rotated(Vector3.UP, deg2rad(120.0*i)))
+		
+		
+	var index = 0#1
+	st.add_vertex(top)
+	index += 1
+	for i in range(3):
+		index += 2
+		var first = base[i]
+		var second
+		if (i < 2):
+			second = base[i+1]
+		else:
+			second = base[0]
+		
+		#set vertices to make first triangle
+		st.add_vertex(first)
+		st.add_vertex(second)
+		#create topmost triangle
+		st.add_index(0);
+		st.add_index(index-1);
+		st.add_index(index-2);
+		
+	
+
+
+	var branchCount = valueGenerator.getInt(0,0,1,5)
+	
+	for i in range(branchCount):
+
+		var branchIndex = index
+		var start = valueGenerator.value(0,0,height*0.25, height*0.9)
+		var end = valueGenerator.value2d(0,0,-3,3)
+		var endHeight = valueGenerator.value(0,0,start, height+2)
+		var branchRadius = 0.3
+
+		var branchTop = Vector3(end.x, endHeight, end.y)
+		st.add_vertex(branchTop)
+		index += 1
+		var branchBase = []
+		for j in range(3):
+			branchBase.push_back(Vector3(branchRadius, start, 0).rotated(Vector3.UP, deg2rad(120.0*j)))
+
+
+
+		for j in range(3):
+			index += 2
+			var first = branchBase[j]
+			var second
+			if (j < 2):
+				second = branchBase[j+1]
+			else:
+				second = branchBase[0]
+
+		
+			st.add_vertex(first)
+			st.add_vertex(second)
+			
+			st.add_index(branchIndex);
+			st.add_index(index-1);
+			st.add_index(index-2);
+			
+			
+
+	
+
+	st.generate_normals()
+	var mesh = st.commit()
+
+	
+	var material = ShaderMaterial.new()
+	material.shader = woodShader
+
+	return [mesh, material]#CubeMesh.new()
 
 
 func makeRock():
@@ -210,23 +295,39 @@ func makeRock():
 
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
-	var innerRadius = valueGenerator.value(1,1,1,3)
+	var innerRadius = valueGenerator.value(1,1,3,8)
 	var outerRadius = valueGenerator.value(1,1,0.5*innerRadius,1.5*innerRadius)
-	var height = valueGenerator.value(1,1,1,3)
+	var height = outerRadius#valueGenerator.value(1,1,1,3)
 
-	var top = Vector3(0, height, 0)
+	var topxz = valueGenerator.value2d(1,1,-1,1)
+	var top = Vector3(topxz.x, height, topxz.y)
 	st.add_vertex(top)
 
-	var lowerPoint = Vector3(innerRadius, height/2, 0)
+	var lowerPoint = Vector3(innerRadius, height/1.5, 0)
 	var index = 1
+
+	#generate the 3 points that make up the first 3 triangels under the top
+
+	#calculating the two points that will be the base of the triangle
+	var points = []
+	for i in range(3):
+		
+		var point = lowerPoint.rotated(Vector3.UP, deg2rad(120.0*i))
+		var pointOffset = valueGenerator.value2d(1,1,0.5, 1.5)
+		point.x *= pointOffset.x
+		point.z *= pointOffset.y
+		points.push_back(point)
+
 
 
 	for i in range(3):
 
-		#calculating the two points that will be the base of the triangle
-		var first = lowerPoint.rotated(Vector3.UP, deg2rad(120.0*i))
-
-		var second = lowerPoint.rotated(Vector3.UP, deg2rad(120.0*(i+1)))
+		var first = points[i]
+		var second
+		if (i < 2):
+			second = points[i+1]
+		else:
+			second = points[0]
 
 		#set vertices to make first triangle
 		st.add_vertex(first)
@@ -242,11 +343,16 @@ func makeRock():
 		var lowFirst = Vector2(first.x, first.z).normalized() * outerRadius
 		var lowSecond = Vector2(second.x, second.z).normalized() * outerRadius
 		var lowCenter = (lowFirst+lowSecond).normalized() * outerRadius
+
+
 		
 		#converting to 3d space
 		lowFirst = Vector3(lowFirst.x, -1, lowFirst.y)
 		lowSecond = Vector3(lowSecond.x, -1, lowSecond.y)
 		lowCenter = Vector3(lowCenter.x, -1, lowCenter.y)
+		var centerOffset = valueGenerator.value2d(1,1,0.5, 1.5)
+		lowCenter.x *= centerOffset.x
+		lowCenter.z *= centerOffset.y
 
 		st.add_vertex(lowFirst)
 		st.add_vertex(lowCenter)
@@ -277,8 +383,6 @@ func makeRock():
 	
 	var material = ShaderMaterial.new()
 	material.shader = stoneShader
-
-	
 
 	return [mesh, material]#CubeMesh.new()
 
