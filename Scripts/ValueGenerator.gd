@@ -20,7 +20,7 @@ var planeVariance = 3
 var objectDensity = OpenSimplexNoise.new()
 var objectType = OpenSimplexNoise.new()
 
-var objectProbability = 0.15
+var objectProbability = 0.3#0.15
 
 var drawDistance = 6
 
@@ -30,12 +30,17 @@ const snowLine = 12.0;
 
 #how many milliseconds objects should be kept in memory after a chunk has been deleted
 #just in case the player goes back there
-var cacheTime = 10*1000
+var cacheTime = 180*1000
 
+var SEED = 1
 # Called when the node enters the scene tree for the first time.
 func _init() -> void:
 	randomize()
-	noise.seed = randi()
+	
+	SEED = randi()
+
+	
+	noise.seed = SEED
 	noise.octaves = 8 #4
 	noise.lacunarity = 2.0
 	noise.period = 256#64.0
@@ -69,17 +74,30 @@ func hasObject(x, z):
 	return -1
 
 #takes absolute coordinates
-func value(x, z, minimum, maximum):
+func value(x, z, minimum, maximum, optional=1):
 	#TODO: replace initial with procedural function
-	var initial = randf()
+	#var initial = randf()
+	
+	x = int(1000*x)
+	z = int(1000*z)
+	optional = int(1000*optional)
+	var initial = (561307 * x + 593291 * z + optional*625087) ^ SEED #
+	initial = abs(initial)
+	initial = float("0."+str(initial))
+
+	#print(res)
+	#initial = res
+
 	var value = (initial - 0) * (maximum-minimum) + minimum
+
+
 	return value
 	
-func value2d(x, z, minimum, maximum):
-	var first = value(x, z, minimum, maximum)
-	var second = value(x, z, minimum, maximum)
+func value2d(x, z, minimum, maximum, optional = 1):
+	var first = value(x, z, minimum, maximum, optional)
+	var second = value(x, z, minimum, maximum, optional << 2)
 	return Vector2(first, second)
 
 #should return a "random" integer including the max limit
-func getInt(x, z, minimum, maximum):
-	return int(value(x, z, minimum, maximum+1))
+func getInt(x, z, minimum, maximum, optional = 1):
+	return int(value(x, z, minimum, maximum+1, optional))

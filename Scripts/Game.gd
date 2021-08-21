@@ -1,5 +1,13 @@
 extends Node
 
+"""
+#TODO !!!!!
+#change maketree to use x,z 
+#also change all random calls to use xz and
+#the optional parameter when needed (loops)
+!!!!!
+"""
+
 
 # Declare member variables here. Examples:
 # var a: int = 2

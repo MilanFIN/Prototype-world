@@ -26,7 +26,7 @@ var resolution
 var lastCacheTime = OS.get_ticks_msec()
 
 func _init(values, objnode) -> void:
-	
+
 
 	valueGenerator = values
 	
@@ -94,6 +94,7 @@ func remove(x, z):
 
 func process(delta = 0) -> void:
 	
+
 
 
 	
@@ -199,9 +200,9 @@ func _objectWorker(userdata):
 
 					var result
 					if (objType == 0):
-						result = makeRock()
+						result = makeRock(i, j)
 					elif (objType == 1):
-						result = makeTree()
+						result = makeTree(i, j)
 						
 					output[1].push_back([i, j, "Mesh", result])
 
@@ -214,7 +215,7 @@ func _objectWorker(userdata):
 func makeLeaf(location):
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var radius = 2
+	var radius = valueGenerator.value(location.x, location.z, 1, 3)
 	var top = location
 	top.y += radius
 	
@@ -276,18 +277,19 @@ func makeLeaf(location):
 
 	return [mesh, leafMaterial]
 
-func makeTree():
+func makeTree(x, z):
+
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var height = valueGenerator.value(0,0,5,10)
+	var height = valueGenerator.value(x, z,5,20, 1)
 	
 	var topxz = Vector2(0,0)#valueGenerator.value2d(0,0,-1,1)
 	
 	var top = Vector3(topxz.x, height, topxz.y)
 
 	var base = []
-	var radius = valueGenerator.value(0,0,0.5,1)
+	var radius = valueGenerator.value(x, z,0.5,1, 2)
 	for i in range(3):
 		base.push_back(Vector3(radius, 0, 0).rotated(Vector3.UP, deg2rad(120.0*i)))
 		
@@ -315,15 +317,15 @@ func makeTree():
 
 
 
-	var branchCount = valueGenerator.getInt(0,0,1,5)
+	var branchCount = valueGenerator.getInt(x, z,1,5, 5)
 	var branchTips = [top]
 	
 	for i in range(branchCount):
 
 		var branchIndex = index
-		var start = valueGenerator.value(0,0,height*0.25, height*0.9)
-		var end = valueGenerator.value2d(0,0,-3,3)
-		var endHeight = valueGenerator.value(0,0,start, height+2)
+		var start = valueGenerator.value(x, z,height*0.25, height*0.9, i+2)
+		var end = valueGenerator.value2d(x, z,-3,3, i+4)
+		var endHeight = valueGenerator.value(x, z,start, height+2, i+6)
 		var branchRadius = 0.3
 
 		var branchTop = Vector3(end.x, endHeight, end.y)
@@ -377,18 +379,20 @@ func makeTree():
 	return result#CubeMesh.new()
 
 
-func makeRock():
+func makeRock(x, z):
+
 	var st = SurfaceTool.new()
 
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
-	var innerRadius = valueGenerator.value(1,1,1,3)
-	var outerRadius = valueGenerator.value(1,1,0.5*innerRadius,1.5*innerRadius)
+	var innerRadius = valueGenerator.value(x, z,1,3)
+	var outerRadius = valueGenerator.value(x, z,0.5*innerRadius,1.5*innerRadius)
 	var height = outerRadius#valueGenerator.value(1,1,1,3)
 
-	var topxz = valueGenerator.value2d(1,1,-1,1)
+	var topxz = valueGenerator.value2d(x, z,-1,1)
 	var top = Vector3(topxz.x, height, topxz.y)
 	st.add_vertex(top)
+
 
 	var lowerPoint = Vector3(innerRadius, height/1.5, 0)
 	var index = 1
@@ -400,7 +404,7 @@ func makeRock():
 	for i in range(3):
 		
 		var point = lowerPoint.rotated(Vector3.UP, deg2rad(120.0*i))
-		var pointOffset = valueGenerator.value2d(1,1,0.5, 1.5)
+		var pointOffset = valueGenerator.value2d(x, z,0.5, 1.5, i)
 		point.x *= pointOffset.x
 		point.z *= pointOffset.y
 		points.push_back(point)
@@ -437,7 +441,7 @@ func makeRock():
 		lowFirst = Vector3(lowFirst.x, -1, lowFirst.y)
 		lowSecond = Vector3(lowSecond.x, -1, lowSecond.y)
 		lowCenter = Vector3(lowCenter.x, -1, lowCenter.y)
-		var centerOffset = valueGenerator.value2d(1,1,0.5, 1.5)
+		var centerOffset = valueGenerator.value2d(x, z,0.5, 1.5, i)
 		lowCenter.x *= centerOffset.x
 		lowCenter.z *= centerOffset.y
 
