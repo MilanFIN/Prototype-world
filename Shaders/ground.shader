@@ -5,6 +5,7 @@ uniform float sandLine;// = 2.5;
 uniform float grassLine;// = 9.0;
 uniform float snowLine;// = 12.0;
 
+
 void vertex() {
 
 
@@ -33,6 +34,28 @@ void vertex() {
 		COLOR = snow;
 	}
 
+
+	vec3 normal = NORMAL;
+	vec3 up = vec3(0., 1., 0.);
+	
+	float angle = acos(dot(normal, up)) * 180./3.14;
+
+
+	if (pos < sandLine) {
+		COLOR = sand;
+	} 
+	else if (angle > 35.) {
+		COLOR = stone;
+	}
+	else {
+		COLOR = grass;
+	}
+
+	/*
+	COLOR.r = NORMAL.r;
+	COLOR.g = NORMAL.g;
+	COLOR.b = NORMAL.b;
+	*/
 	
 }
 
@@ -49,4 +72,5 @@ void fragment() {
 	METALLIC = 0.1;
 	ROUGHNESS = 0.8;
 	
+
 }

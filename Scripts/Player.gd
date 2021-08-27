@@ -2,7 +2,7 @@ extends KinematicBody
 
 
 var velocity = Vector3(0,0,0)
-const moveSpeed = 10
+const moveSpeed = 20
 const gravity = 9.8
 var mouseDelta = Vector2()
 const sensitivity = 10

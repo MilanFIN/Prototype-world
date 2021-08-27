@@ -13,8 +13,8 @@ var calculationLimit = 10
 #terrain related
 var noise = OpenSimplexNoise.new()
 var noise2 = OpenSimplexNoise.new()
-var terrainVariance = 10
-var planeVariance = 3
+var terrainVariance = 70
+var planeVariance = 0.5
 
 #object related
 var objectDensity = OpenSimplexNoise.new()
@@ -41,15 +41,15 @@ func _init() -> void:
 
 	
 	noise.seed = SEED
-	noise.octaves = 8 #4
+	noise.octaves = 3 #4
 	noise.lacunarity = 2.0
-	noise.period = 256#64.0
+	noise.period = 96#64.0
 	noise.persistence = 0.5#0.5
 
 	noise2.seed = noise.seed +1
-	noise2.octaves = 4
+	noise2.octaves = 1
 	noise2.lacunarity = 2.0
-	noise2.period = 2048#256
+	noise2.period = 256#2048
 	noise2.persistence = 0.5
 	
 	#print(noise.seed, ", ", noise2.seed)
@@ -63,7 +63,7 @@ func _init() -> void:
 func getY(x, z):
 	var layer1 = noise.get_noise_2d(x, z) *terrainVariance
 	var layer2 = (noise2.get_noise_2d(x, z) +1) * planeVariance
-	return layer1*layer2
+	return layer2 * layer1
 
 # figures out if a world coordinate (x,z) should have any type of object in it
 func hasObject(x, z):
