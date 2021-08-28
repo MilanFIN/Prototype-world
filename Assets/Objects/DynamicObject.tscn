@@ -10,10 +10,10 @@ height = 2.0
 [sub_resource type="CubeMesh" id=3]
 size = Vector3( 0.2, 2, 0.2 )
 
-[sub_resource type="CubeMesh" id=5]
+[sub_resource type="CubeMesh" id=4]
 size = Vector3( 0.2, 2, 0.2 )
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CubeMesh" id=5]
 size = Vector3( 1, 1, 1 )
 
 [node name="DynamicObject" type="KinematicBody"]
@@ -47,10 +47,11 @@ bone_name = "shin"
 
 [node name="Shin" type="MeshInstance" parent="Hip/Knee"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
-mesh = SubResource( 5 )
+mesh = SubResource( 4 )
 material/0 = null
 
 [node name="Foot" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
-mesh = SubResource( 4 )
+visible = false
+mesh = SubResource( 5 )
 material/0 = null

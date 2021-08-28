@@ -5,12 +5,19 @@ var velocity = Vector3.ZERO
 var gravity = 9.81
 
 var currentFootPoint
+var lastFootPoint
+var nextFootPoint
+#time that moving the foot should take in seconds
+const STEPTIME = 1.0
+const STEPHEIGHT = 0.5
+var stepElapsed = 0.0
 
 var length0 = 2
 var length1 = 2
 
 func _ready() -> void:
 	currentFootPoint = get_node("FootRay").get_collision_point()# -global_transform.origin
+	nextFootPoint = null
 
 
 func align_with_y(xform, new_y):
@@ -50,6 +57,30 @@ func setJoints():
 	get_node("Hip").rotation_degrees.x = -jointAngle0 - 90
 	get_node("Hip/Knee").rotation_degrees.x = -jointAngle1
 
+func moveFootPoint(delta):
+	if (nextFootPoint != null):
+		if (stepElapsed < STEPTIME):
+
+			stepElapsed += delta
+			
+			var stepVector = nextFootPoint - lastFootPoint
+			
+			var nextContribution = stepElapsed / STEPTIME
+
+			
+			currentFootPoint = nextContribution*stepVector + lastFootPoint
+			
+
+			var yChange = abs(nextFootPoint.y - lastFootPoint.y)
+			
+			
+			currentFootPoint.y += sin(PI*nextContribution)*yChange*STEPHEIGHT
+			
+			
+			
+		else:
+			currentFootPoint = nextFootPoint
+
 func _physics_process(delta):
 
 	
@@ -79,11 +110,20 @@ func _physics_process(delta):
 
 
 		if (footPoint != null):
-			if (abs(currentFootPoint.length() - footPoint.length()) > 8):
-				currentFootPoint = footPoint
+			var xDist = abs(currentFootPoint.x - footPoint.x)
+			var zDist = abs(currentFootPoint.z - footPoint.z)
+			
+			var dist = sqrt(xDist*xDist + zDist*zDist)
+			if (dist > 5):
+				lastFootPoint = currentFootPoint
+				nextFootPoint = footPoint
+				stepElapsed = 0.0
 				#get_node("Foot").rotation_degrees.x = angle - 90
 
 		
 			get_node("Foot").global_transform.origin = currentFootPoint #+ global_transform.origin
 
 	setJoints()
+
+
+	moveFootPoint(delta)
