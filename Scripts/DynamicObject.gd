@@ -53,9 +53,32 @@ func setJoints():
 		# So they work in Unity reference frame
 		jointAngle0 = arctan - angle0;
 		jointAngle1 = 180 - angle1;
+		
+	var angle0 = -jointAngle0 - 90
+	var angle1 = -jointAngle1
 
-	get_node("Hip").rotation_degrees.x = -jointAngle0 - 90
-	get_node("Hip/Knee").rotation_degrees.x = -jointAngle1
+	get_node("Hip").rotation_degrees.x = angle0
+	get_node("Hip/Knee").rotation_degrees.x = angle1
+
+	if (angle1 < 0):
+		angle1 *= -1
+	
+		var kneePoint = get_node("Hip/Knee").global_transform.origin
+		kneePoint = Vector2(kneePoint.z, kneePoint.y)
+		var kneeVector = kneePoint - jointPos0
+		var targetVector = target - jointPos0
+
+		var misAngle = rad2deg(targetVector.angle_to(kneeVector))
+
+		
+		angle0 += 2*misAngle
+		
+
+
+
+	get_node("Hip").rotation_degrees.x = angle0
+	get_node("Hip/Knee").rotation_degrees.x = angle1
+	
 
 func moveFootPoint(delta):
 	if (nextFootPoint != null):
