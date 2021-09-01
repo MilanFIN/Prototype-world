@@ -8,17 +8,24 @@ var currentFootPoint
 var lastFootPoint
 var nextFootPoint
 #time that moving the foot should take in seconds
-const STEPTIME = 1.0
+const STEPTIME = 0.4
 const STEPHEIGHT = 0.5
+const MOVESPEED = 200
 var stepElapsed = 0.0
 
 var length0 = 2
 var length1 = 2
 
+const STEPLENGTH = 1.5
+
+var eyeMover = OpenSimplexNoise.new()
+
 func _ready() -> void:
 	currentFootPoint = get_node("FootRay").get_collision_point()# -global_transform.origin
 	nextFootPoint = null
 
+	eyeMover.period = 1024
+	eyeMover.octaves = 1
 
 func align_with_y(xform, new_y):
 	xform.basis.y = new_y
@@ -31,7 +38,7 @@ func setJoints():
 	var jointAngle0;
 	var jointAngle1;
 	
-	var jointPos0 = get_node("Hip").global_transform.origin
+	var jointPos0 = get_node("Body/Hip").global_transform.origin
 	var target = Vector2(currentFootPoint.z, currentFootPoint.y)
 	jointPos0 = Vector2(jointPos0.z, jointPos0.y)
 	var length2 = (target-jointPos0).length();
@@ -57,13 +64,13 @@ func setJoints():
 	var angle0 = -jointAngle0 - 90
 	var angle1 = -jointAngle1
 
-	get_node("Hip").rotation_degrees.x = angle0
-	get_node("Hip/Knee").rotation_degrees.x = angle1
+	get_node("Body/Hip").rotation_degrees.x = angle0
+	get_node("Body/Hip/Knee").rotation_degrees.x = angle1
 
 	if (angle1 < 0):
 		angle1 *= -1
 	
-		var kneePoint = get_node("Hip/Knee").global_transform.origin
+		var kneePoint = get_node("Body/Hip/Knee").global_transform.origin
 		kneePoint = Vector2(kneePoint.z, kneePoint.y)
 		var kneeVector = kneePoint - jointPos0
 		var targetVector = target - jointPos0
@@ -76,8 +83,8 @@ func setJoints():
 
 
 
-	get_node("Hip").rotation_degrees.x = angle0
-	get_node("Hip/Knee").rotation_degrees.x = angle1
+	get_node("Body/Hip").rotation_degrees.x = angle0
+	get_node("Body/Hip/Knee").rotation_degrees.x = angle1
 	
 
 func moveFootPoint(delta):
@@ -99,6 +106,10 @@ func moveFootPoint(delta):
 			
 			currentFootPoint.y += sin(PI*nextContribution)*yChange*STEPHEIGHT
 			
+			get_node("Body").translation.y = sin(PI*nextContribution)*yChange*STEPHEIGHT * 2
+			
+
+			
 			
 			
 		else:
@@ -108,7 +119,7 @@ func _physics_process(delta):
 
 	
 	velocity.x = 0
-	velocity.z = -100*delta
+	velocity.z = -MOVESPEED*delta
 
 	if (is_on_floor()):
 		velocity.y = 0
@@ -125,28 +136,33 @@ func _physics_process(delta):
 		#global_transform = global_transform.interpolate_with(corrected, 0.2)
 
 
-		var angle = rad2deg(Vector2(-groundNormal.z, groundNormal.y).angle()) 
+		#var angle = rad2deg(Vector2(-groundNormal.z, groundNormal.y).angle()) 
 
-		get_node("Hip").rotation_degrees.x = angle - 90
+		#get_node("Body/Hip").rotation_degrees.x = angle - 90
 
 		var  footPoint = get_node("FootRay").get_collision_point() #-global_transform.origin# translation - 
 
 
 		if (footPoint != null):
-			var xDist = abs(currentFootPoint.x - footPoint.x)
-			var zDist = abs(currentFootPoint.z - footPoint.z)
+			var xDist = abs(currentFootPoint.x - global_transform.origin.x) #footPoint.x
+			var zDist = abs(currentFootPoint.z - global_transform.origin.z)
 			
 			var dist = sqrt(xDist*xDist + zDist*zDist)
-			if (dist > 5):
+			if (dist > STEPLENGTH):
 				lastFootPoint = currentFootPoint
 				nextFootPoint = footPoint
 				stepElapsed = 0.0
 				#get_node("Foot").rotation_degrees.x = angle - 90
 
 		
-			get_node("Foot").global_transform.origin = currentFootPoint #+ global_transform.origin
-
-	setJoints()
-
+			get_node("Body/Foot").global_transform.origin = currentFootPoint #+ global_transform.origin
 
 	moveFootPoint(delta)
+	setJoints()
+	
+	
+	var time = OS.get_ticks_msec()
+	var eyeAngle = eyeMover.get_noise_1d(time) * 30
+	var eyeAngle2 = eyeMover.get_noise_1d(time+1001) * 20
+	get_node("Body/Eye/Pupiljoint").rotation_degrees.y = eyeAngle
+	get_node("Body/Eye/Pupiljoint").rotation_degrees.x = eyeAngle2
