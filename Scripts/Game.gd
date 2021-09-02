@@ -2,23 +2,9 @@ extends Node
 
 """
 TODO:
-	Raycast kropasta alaspäin. ota sijainti talteen, ja aseta jalka sijaintiin
-	Kun raycastin uusi sijainti on tarpeeksi kaukana edellisestä, niin 
-	ota uusi sijainti targetiksi, ja siirrä jalka siihen kaaressa 
-	
-	(pitäis tehdä jotenkin sinifunktiolla korkeus suhteessa: 
-		skaalaa sijaintia
-		alku -> 0 vastaava arvo
-		loppu -> PI vastaava arvo
-		väli -> "0-PI" välillä
-	sin saa arvon 0->1->0 välillä 0->pi/2->pi
-	)
-	
-	lopuksi joku inverse kinematics laskuri saa selvittää kulmat, jotta päästään
-	tavoitteeseen
+2 kättä, molempiin mahtuu talteen item
 
-	aluksi esim pallo, jolla on yksi jalka
-	jalka pomppii alla samalla kun pallo liikkuu ympäriinsä
+interpolate_with kun muuttaa velocityn x ja z komponentteja
 	
 """
 

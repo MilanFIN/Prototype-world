@@ -19,34 +19,34 @@ shader = ExtResource( 2 )
 radial_segments = 6
 rings = 3
 
-[sub_resource type="SphereMesh" id=12]
+[sub_resource type="SphereMesh" id=5]
 radius = 0.4
 height = 0.8
 radial_segments = 6
 rings = 3
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=6]
 albedo_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="CubeMesh" id=5]
+[sub_resource type="CubeMesh" id=7]
 size = Vector3( 0.5, 2, 0.5 )
 
-[sub_resource type="ShaderMaterial" id=6]
+[sub_resource type="ShaderMaterial" id=8]
 shader = ExtResource( 2 )
-
-[sub_resource type="ShaderMaterial" id=7]
-shader = ExtResource( 2 )
-
-[sub_resource type="CubeMesh" id=8]
-size = Vector3( 0.5, 2, 0.5 )
 
 [sub_resource type="ShaderMaterial" id=9]
 shader = ExtResource( 2 )
 
-[sub_resource type="ShaderMaterial" id=10]
+[sub_resource type="CubeMesh" id=10]
+size = Vector3( 0.5, 2, 0.5 )
+
+[sub_resource type="ShaderMaterial" id=11]
 shader = ExtResource( 2 )
 
-[sub_resource type="CubeMesh" id=11]
+[sub_resource type="ShaderMaterial" id=12]
+shader = ExtResource( 2 )
+
+[sub_resource type="CubeMesh" id=13]
 size = Vector3( 1, 1, 1 )
 
 [node name="DynamicObject" type="KinematicBody"]
@@ -74,8 +74,8 @@ material/0 = null
 
 [node name="Pupil" type="MeshInstance" parent="Body/Eye/Pupiljoint"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.75 )
-mesh = SubResource( 12 )
-material/0 = SubResource( 13 )
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
 
 [node name="Hip" type="BoneAttachment" parent="Body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
@@ -83,13 +83,13 @@ bone_name = "Test"
 
 [node name="Thigh" type="MeshInstance" parent="Body/Hip"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -1, 0 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+mesh = SubResource( 7 )
+material/0 = SubResource( 8 )
 
 [node name="Thigh2" type="MeshInstance" parent="Body/Hip"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -1, 0 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 7 )
+mesh = SubResource( 7 )
+material/0 = SubResource( 9 )
 
 [node name="Knee" type="BoneAttachment" parent="Body/Hip"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0 )
@@ -97,15 +97,15 @@ bone_name = "shin"
 
 [node name="Shin" type="MeshInstance" parent="Body/Hip/Knee"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, -1, 0 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 9 )
+mesh = SubResource( 10 )
+material/0 = SubResource( 11 )
 
 [node name="Shin2" type="MeshInstance" parent="Body/Hip/Knee"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, -1, 0 )
-mesh = SubResource( 8 )
-material/0 = SubResource( 10 )
+mesh = SubResource( 10 )
+material/0 = SubResource( 12 )
 
 [node name="Foot" type="MeshInstance" parent="Body"]
 visible = false
-mesh = SubResource( 11 )
+mesh = SubResource( 13 )
 material/0 = null
