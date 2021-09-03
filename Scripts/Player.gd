@@ -1,6 +1,16 @@
 extends KinematicBody
 
 
+
+#NEW
+#shamelessly adapted from (was MIT licensed)
+#https://github.com/GarbajYT/godot_updated_fps_controller
+var snap
+var gravityVec = Vector3()
+const GROUNDACCEL = 10
+const AIRACCEL = 3
+onready var accel = GROUNDACCEL
+const jumpPower = 10
 var velocity = Vector3(0,0,0)
 const moveSpeed = 20
 const gravity = 9.8
@@ -9,14 +19,6 @@ const sensitivity = 10
 var camera = Node
 const minLookAngle = -90
 const maxLookAngle = 90
-
-var jumping = false
-
-var snapDirection = Vector3.DOWN
-var snapLength = 1.0
-var snapVector = snapDirection * snapLength
-
-var maxFloorAngle = deg2rad(45)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -30,17 +32,10 @@ func _input(event):
 
 func _physics_process(delta: float) -> void:
 
-	if (get_node("FootRay").get_collider() != null):
-		jumping = false
-	else:
-		jumping = true
-
 
 	#CHARACTER MOVEMENT
 	var input = Vector3(0,0,0)
 
-	velocity.x = 0
-	velocity.z = 0
 	var jump = false
 
 	if Input.is_action_pressed("forward"):
@@ -52,8 +47,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("right"):
 		input.x += 1
 	if Input.is_action_pressed("jump"):
-		if (jumping == false):
-			jump = true
+		jump = true
 
 
 
@@ -61,9 +55,25 @@ func _physics_process(delta: float) -> void:
 	var right = global_transform.basis.x
 
 	var relativeDir = (forward * input.y + right * input.x)
+
+	if is_on_floor():
+		snap = -get_floor_normal()
+		accel = GROUNDACCEL
+		gravityVec = Vector3.ZERO
+	else:
+		snap = Vector3.DOWN
+		accel = AIRACCEL
+		gravityVec += Vector3.DOWN * gravity * delta
 	
+	if (jump and is_on_floor()):
+		snap = Vector3.ZERO
+		gravityVec = Vector3.UP * jumpPower
 
-
+	velocity = velocity.linear_interpolate(relativeDir * moveSpeed, accel * delta)
+	var movement = velocity + gravityVec
+	
+	move_and_slide_with_snap(movement, snap, Vector3.UP)
+	"""
 	#UNCOMMENT FOR GRAVITY
 	velocity.y -= gravity * delta
 	velocity.x = relativeDir.x * moveSpeed
@@ -75,7 +85,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity.y = move_and_slide_with_snap(velocity, snapVector, Vector3.UP, true, 4, maxFloorAngle).y
 
-
+	"""
 	#MOUSE MOVEMENT
 	#vertical rotates camera
 	camera.rotation_degrees.x -= mouseDelta.y * sensitivity * delta

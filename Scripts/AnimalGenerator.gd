@@ -7,7 +7,7 @@ var animals = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 
-	for i in range(100):
+	for i in range(1):
 		var x = randi()%51+1 - 25
 		var z = randi()%51+1 - 25
 		var newAnim = blob.instance()
