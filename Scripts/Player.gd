@@ -10,7 +10,7 @@ var gravityVec = Vector3()
 const GROUNDACCEL = 10
 const AIRACCEL = 3
 onready var accel = GROUNDACCEL
-const jumpPower = 10
+const jumpPower = 7
 var velocity = Vector3(0,0,0)
 const moveSpeed = 20
 const gravity = 9.8
@@ -20,20 +20,23 @@ var camera = Node
 const minLookAngle = -90
 const maxLookAngle = 90
 
-# Called when the node enters the scene tree for the first time.
+
+
+# initializing mouse to be captured
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
 	camera = get_node("Camera")
-	pass # Replace with function body.
 
+
+# recording mouse movements
 func _input(event):
 	if event is InputEventMouseMotion:
 		mouseDelta = event.relative
 
+
 func _physics_process(delta: float) -> void:
 
-
-	#CHARACTER MOVEMENT
+	#movement
 	var input = Vector3(0,0,0)
 
 	var jump = false
@@ -73,19 +76,8 @@ func _physics_process(delta: float) -> void:
 	var movement = velocity + gravityVec
 	
 	move_and_slide_with_snap(movement, snap, Vector3.UP)
-	"""
-	#UNCOMMENT FOR GRAVITY
-	velocity.y -= gravity * delta
-	velocity.x = relativeDir.x * moveSpeed
-	velocity.z = relativeDir.z * moveSpeed
-	#velocity = move_and_slide(velocity, Vector3.UP, true);
-	if (jump == true):
-		velocity.y += 1
-		velocity.y = move_and_slide(velocity, Vector3.UP, true).y;
-	else:
-		velocity.y = move_and_slide_with_snap(velocity, snapVector, Vector3.UP, true, 4, maxFloorAngle).y
 
-	"""
+
 	#MOUSE MOVEMENT
 	#vertical rotates camera
 	camera.rotation_degrees.x -= mouseDelta.y * sensitivity * delta

@@ -11,14 +11,19 @@ var populations = {} #Vector2(x, z): [objects]
 #following in actual world coords
 var orphans = {} #Vector2(x, z) : [time, [objects]]
 
+#protecting thread inputs&outputs
 var semaphore
 var mutex
 var threads = []
-#var thread
+
+
 var exit_thread = false
 #of structure: [x, z, chunkSize, resolution]
 var threadInputs = []
+#of structure: (Vector2(x, z),  Objects)
+# x, z is chunk coordinates (NOT world)
 var threadOutputs = []
+
 
 var chunkSize
 var resolution

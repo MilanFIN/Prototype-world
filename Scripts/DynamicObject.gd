@@ -24,7 +24,14 @@ var eyeMover = OpenSimplexNoise.new()
 var waypoints = []
 var waypointIndex = 0
 
+#set to true, when the actual height of the object has been set
+var set = false
+var initialized = false
+
 func _ready() -> void:
+
+
+
 
 	currentFootPoint = get_node("FootRay").get_collision_point()# -global_transform.origin
 	nextFootPoint = null
@@ -120,6 +127,15 @@ func moveFootPoint(delta):
 			currentFootPoint = nextFootPoint
 
 func _physics_process(delta):
+
+	if (not initialized):
+		return
+	if (not set):
+		pass
+		var ground = get_node("SetRay").get_collision_point()
+		if (ground != null):
+			transform.origin.y = ground.y
+			set = true
 
 
 	var newVelocity = velocity

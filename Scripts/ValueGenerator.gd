@@ -60,23 +60,26 @@ func _init() -> void:
 
 
 
+#returns height of a point on the map
 func getY(x, z):
 	var layer1 = noise.get_noise_2d(x, z) *terrainVariance
 	var layer2 = (noise2.get_noise_2d(x, z) +1) * planeVariance
 	return layer2 * layer1
 
 # figures out if a world coordinate (x,z) should have any type of object in it
+# return: -1 for no object, 0-x for obj type
+# note: static only, increase getint parameter when more items are added
 func hasObject(x, z):
-
 	if ((objectDensity.get_noise_2d(x, z) +1) *0.5 < objectProbability):
-
 		return getInt(x, z, 0, 1)
 	return -1
 
-#takes absolute coordinates
+# parameters: (x, z) world coordinates
+# min & max = value range
+# optional: modifier to get multiple results for same coordinates
+# returns a value between min & max based on x&z&optional & seed
+# return values are float
 func value(x, z, minimum, maximum, optional=1):
-	#TODO: replace initial with procedural function
-	#var initial = randf()
 	
 	x = int(1000*x)
 	z = int(1000*z)
@@ -84,20 +87,20 @@ func value(x, z, minimum, maximum, optional=1):
 	var initial = (561307 * x + 593291 * z + optional*625087) ^ SEED #
 	initial = abs(initial)
 	initial = float("0."+str(initial))
-
-	#print(res)
-	#initial = res
-
 	var value = (initial - 0) * (maximum-minimum) + minimum
 
-
 	return value
-	
+
+
+# parameters: same as value()
+# return: 2 values, similar to value, but they are different
+# return values are float
 func value2d(x, z, minimum, maximum, optional = 1):
 	var first = value(x, z, minimum, maximum, optional)
 	var second = value(x, z, minimum, maximum, optional << 2)
 	return Vector2(first, second)
 
-#should return a "random" integer including the max limit
+# parameters: same as value()
+# returns a pseudorandom integer between range min&max
 func getInt(x, z, minimum, maximum, optional = 1):
 	return int(value(x, z, minimum, maximum+1, optional))

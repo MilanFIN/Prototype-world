@@ -9,16 +9,20 @@ var initialized = false
 func _ready() -> void:
 	pass # Replace with function body.
 
+
+#atm only figures out where ground is and initializes the height to be ground
+#level
 func _process(delta: float) -> void:
 	if (not initialized):
 		return
 	if (not set):
+		pass
 		var ground = get_node("SetRay").get_collision_point()
 		if (ground != null):
 			transform.origin.y = ground.y
 			set = true
-			#print("SET TO: ", ground)
-			
+
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
