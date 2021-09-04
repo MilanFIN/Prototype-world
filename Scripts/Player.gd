@@ -21,6 +21,9 @@ const minLookAngle = -90
 const maxLookAngle = 90
 
 
+onready var rightMeleeAnim = $RightMeleeAnim
+onready var rightHitbox = $Camera/RightHandHitbox
+
 
 # initializing mouse to be captured
 func _ready() -> void:
@@ -33,8 +36,18 @@ func _input(event):
 	if event is InputEventMouseMotion:
 		mouseDelta = event.relative
 
+func melee():
+	if (Input.is_action_just_pressed("AttackRight")):
+		if not (rightMeleeAnim.is_playing()):
+			rightMeleeAnim.play("RightAttack")
+			rightMeleeAnim.queue("RightReturn")
+			for body in rightHitbox.get_overlapping_bodies():
+				#if body.is_in_group("Enemy")
+				print(body.name)
 
 func _physics_process(delta: float) -> void:
+
+	melee()
 
 	#movement
 	var input = Vector3(0,0,0)
