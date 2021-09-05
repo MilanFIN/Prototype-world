@@ -28,11 +28,10 @@ var waypointIndex = 0
 var set = false
 var initialized = false
 
+var hp = 10
+var dead = false
+
 func _ready() -> void:
-
-
-
-
 	currentFootPoint = get_node("FootRay").get_collision_point()# -global_transform.origin
 	nextFootPoint = null
 
@@ -44,7 +43,16 @@ func _ready() -> void:
 		var z = global_transform.origin.z + randi()%21+1 - 10
 		waypoints.push_back(Vector2(x, z))
 
-	
+
+func damage(amount):
+	hp -= amount
+	if (hp <= 0):
+		#die
+		dead = true
+		visible = false
+		get_node("CollisionShape").disabled = true
+
+
 func setJoints():
 	var jointAngle0;
 	var jointAngle1;
@@ -127,6 +135,9 @@ func moveFootPoint(delta):
 			currentFootPoint = nextFootPoint
 
 func _physics_process(delta):
+
+	if (dead):
+		return
 
 	if (not initialized):
 		return

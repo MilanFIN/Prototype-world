@@ -128,7 +128,15 @@ func process(delta = 0) -> void:
 					var meshInst = MeshInstance.new()
 					meshInst.mesh = i[0]
 					meshInst.set_surface_material(0, i[1])
-					meshInst.create_trimesh_collision()
+					#old broken shite, should avoid
+					#meshInst.create_trimesh_collision()
+					#FIX is HERE, creating separate collisionpolys for each
+					#mesh and adding them to the root spatial node of staticobj
+					var collisionShape = i[0].create_trimesh_shape()
+					var collisionPoly = CollisionShape.new()
+					collisionPoly.shape = collisionShape
+					newObj.add_child(collisionPoly)
+
 
 					newObj.add_child(meshInst)
 

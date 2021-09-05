@@ -10,13 +10,13 @@ var gravityVec = Vector3()
 const GROUNDACCEL = 10
 const AIRACCEL = 3
 onready var accel = GROUNDACCEL
-const jumpPower = 7
+const jumpPower = 10 # 7
 var velocity = Vector3(0,0,0)
 const moveSpeed = 20
 const gravity = 9.8
 var mouseDelta = Vector2()
 const sensitivity = 10
-var camera = Node
+
 const minLookAngle = -90
 const maxLookAngle = 90
 
@@ -24,6 +24,10 @@ const maxLookAngle = 90
 onready var rightMeleeAnim = $RightMeleeAnim
 onready var rightHitbox = $Camera/RightHandHitbox
 
+onready var camera = $Camera
+onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
+
+var damage = 4
 
 # initializing mouse to be captured
 func _ready() -> void:
@@ -42,8 +46,11 @@ func melee():
 			rightMeleeAnim.play("RightAttack")
 			rightMeleeAnim.queue("RightReturn")
 			for body in rightHitbox.get_overlapping_bodies():
-				#if body.is_in_group("Enemy")
-				print(body.name)
+				if body.is_in_group("Enemy") or body.is_in_group("Resource"):
+					body.damage(damage)
+
+func _process(delta: float) -> void:
+	handCamera.global_transform = camera.global_transform
 
 func _physics_process(delta: float) -> void:
 
