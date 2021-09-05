@@ -25,7 +25,7 @@ func check(pos, force=false):
 			if (abs(animPos.x - pos.x) > DRAWDISTANCE or abs(animPos.z - pos.z) > DRAWDISTANCE):
 				animal.queue_free()
 				animals.remove(i)
-			if (animal.dead):
+			if (animal.remove):
 				animal.queue_free()
 				animals.remove(i)
 

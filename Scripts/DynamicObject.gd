@@ -30,6 +30,7 @@ var initialized = false
 
 var hp = 10
 var dead = false
+var remove = false
 
 func _ready() -> void:
 	currentFootPoint = get_node("FootRay").get_collision_point()# -global_transform.origin
@@ -49,8 +50,10 @@ func damage(amount):
 	if (hp <= 0):
 		#die
 		dead = true
-		visible = false
-		get_node("CollisionShape").disabled = true
+		get_node("Body").visible = false
+		get_node("DeathParticles").emitting = true
+	else:
+		get_node("HitParticles").emitting = true
 
 
 func setJoints():
@@ -124,7 +127,7 @@ func moveFootPoint(delta):
 			currentFootPoint = nextContribution*stepVector + lastFootPoint
 			
 			var yChange = abs(nextFootPoint.y - lastFootPoint.y)
-			yChange = clamp(yChange, -10, 10)
+			yChange = clamp(yChange, -1, 1)
 			
 			currentFootPoint.y += sin(PI*nextContribution)*yChange*STEPHEIGHT
 			
@@ -137,6 +140,8 @@ func moveFootPoint(delta):
 func _physics_process(delta):
 
 	if (dead):
+		if (get_node("DeathParticles").emitting == false):
+			remove = true
 		return
 
 	if (not initialized):

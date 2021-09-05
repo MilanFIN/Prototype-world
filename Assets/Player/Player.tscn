@@ -66,10 +66,11 @@ mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
 [node name="RightHandHitbox" type="Area" parent="Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -2.5 )
 gravity = 0.0
 
 [node name="CollisionShape" type="CollisionShape" parent="Camera/RightHandHitbox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, 0, 0, 0 )
 shape = SubResource( 4 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="Camera"]
@@ -82,6 +83,8 @@ __meta__ = {
 [node name="Viewport" type="Viewport" parent="Camera/ViewportContainer"]
 size = Vector2( 1024, 600 )
 transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
 
 [node name="HandCamera" type="Camera" parent="Camera/ViewportContainer/Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
