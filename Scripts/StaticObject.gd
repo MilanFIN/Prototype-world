@@ -1,5 +1,8 @@
 extends StaticBody
 
+onready var material = preload("res://Materials/BloodSplatter.tres")
+onready var particle = preload("res://Assets/Particles/StaticObjParticles.tscn")
+
 #set to true, when the actual height of the object has been set
 var set = false
 var initialized = false
@@ -14,6 +17,8 @@ var respawnDelay = 5000
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	var particleInst = particle.instance()
+	add_child(particleInst)
 	pass # Replace with function body.
 
 
@@ -31,7 +36,8 @@ func _process(delta: float) -> void:
 			for i in (get_children()):
 				if i is CollisionShape:
 					i.disabled = false
-
+				if i is MeshInstance:
+					i.visible = false
 		else:
 			return
 		
@@ -51,13 +57,18 @@ func damage(amount):
 	print(hp)
 	if (hp <= 0):
 		dead = true
-		visible = false
+		#visible = false
 		deathTime = OS.get_ticks_msec()
+		get_node("StaticObjParticles").emitting = true
+		material.albedo_color = Color(0.3, 0.3, 0.3)
+		get_node("StaticObjParticles").material_override = material
+
 
 		for i in (get_children()):
 			if i is CollisionShape:
 				i.disabled = true
-
+			if i is MeshInstance:
+				i.visible = false
 
 
 

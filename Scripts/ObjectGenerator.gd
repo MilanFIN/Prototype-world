@@ -1,9 +1,14 @@
 extends Node
 
 var staticobj = preload("res://Assets/Objects/StaticObject.tscn")
+#shaders
 var stoneShader = preload("res://Shaders/stone.shader")
 var woodShader = preload("res://Shaders/wood.shader")
 var leafShader = preload("res://Shaders/leaf.shader")
+#particle shaders
+
+
+
 var valueGenerator
 var objectNode
 #following x,z in chunk coordinates

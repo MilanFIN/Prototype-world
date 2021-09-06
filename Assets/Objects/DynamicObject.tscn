@@ -50,11 +50,11 @@ shader = ExtResource( 2 )
 [sub_resource type="CubeMesh" id=13]
 size = Vector3( 1, 1, 1 )
 
-[sub_resource type="QuadMesh" id=15]
+[sub_resource type="QuadMesh" id=14]
 material = ExtResource( 3 )
 size = Vector2( 0.25, 0.25 )
 
-[sub_resource type="QuadMesh" id=17]
+[sub_resource type="QuadMesh" id=15]
 material = ExtResource( 3 )
 size = Vector2( 0.25, 0.25 )
 
@@ -130,7 +130,7 @@ emitting = false
 amount = 30
 one_shot = true
 explosiveness = 0.75
-mesh = SubResource( 15 )
+mesh = SubResource( 14 )
 direction = Vector3( 0, 0, 0 )
 spread = 180.0
 gravity = Vector3( 0, -5, 0 )
@@ -144,7 +144,7 @@ emitting = false
 amount = 10
 lifetime = 0.3
 one_shot = true
-mesh = SubResource( 17 )
+mesh = SubResource( 15 )
 direction = Vector3( 0, 0, 0 )
 spread = 180.0
 gravity = Vector3( 0, -5, 0 )
