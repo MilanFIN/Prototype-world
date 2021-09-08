@@ -1,22 +1,21 @@
 shader_type spatial;
 
+uniform vec4 color = vec4(0.2, 0.2, 0.2, 1.0);
 
 void vertex() {
 
 
 	
 
-	vec4 stone = vec4(0.2, 0.2, 0.2, 1.0);
 
-	COLOR = stone;
+
+	COLOR = color;
 	
 }
 
 
 void fragment() {
-	//NORMALMAP = texture(normalmap, tex_position).xyz;
 
-	//ALBEDO = vec3(0.0, 0.2, 0.0);
 	ALBEDO.r = COLOR.r;
 	ALBEDO.g = COLOR.g;
 	ALBEDO.b = COLOR.b;

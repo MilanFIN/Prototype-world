@@ -1,10 +1,10 @@
 shader_type spatial;
 
-
+uniform vec4 color = vec4(0.4, 0.22, 0.05, 1.0);
 void vertex() {
 
 	// vec4(0.5, 0.27, 0.08, 1.0);
-	vec4 color = vec4(0.4, 0.22, 0.05, 1.0);
+
 
 	COLOR = color;
 	

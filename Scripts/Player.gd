@@ -29,6 +29,8 @@ onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
 var damage = 4
 
+var initialized = false
+
 # initializing mouse to be captured
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
@@ -54,7 +56,18 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 
+	#wait until scene rendered
+	if (not initialized):
+		if (get_node("GroundRay").get_collider() == null):
+
+			return
+		else:
+			translation = get_node("GroundRay").get_collision_point()
+			translation.y += 5
+			initialized = true
 	melee()
+
+
 
 	#movement
 	var input = Vector3(0,0,0)
@@ -91,6 +104,8 @@ func _physics_process(delta: float) -> void:
 	if (jump and is_on_floor()):
 		snap = Vector3.ZERO
 		gravityVec = Vector3.UP * jumpPower
+	
+
 
 	velocity = velocity.linear_interpolate(relativeDir * moveSpeed, accel * delta)
 	var movement = velocity + gravityVec

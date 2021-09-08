@@ -2,11 +2,14 @@ extends Node
 
 var staticobj = preload("res://Assets/Objects/StaticObject.tscn")
 #shaders
-var stoneShader = preload("res://Shaders/stone.shader")
-var woodShader = preload("res://Shaders/wood.shader")
-var leafShader = preload("res://Shaders/leaf.shader")
-#particle shaders
+var stoneShader# = preload("res://Shaders/stone.shader")
+var woodShader# = preload("res://Shaders/wood.shader")
+var leafShader# = preload("res://Shaders/leaf.shader")
+var woodMaterial
+var leafMaterial
+var stoneMaterial
 
+var initialized = false
 
 
 var valueGenerator
@@ -38,6 +41,22 @@ var lastCacheTime = OS.get_ticks_msec()
 func _init(values, objnode) -> void:
 
 
+	stoneShader = load("res://Shaders/stone.shader")
+	woodShader = load("res://Shaders/wood.shader")
+	leafShader = load("res://Shaders/leaf.shader")
+	
+	woodMaterial = ShaderMaterial.new()
+	woodMaterial.shader = woodShader
+	
+	leafMaterial = ShaderMaterial.new()
+	leafMaterial.shader = leafShader
+
+	stoneMaterial = ShaderMaterial.new()
+	stoneMaterial.shader = stoneShader
+
+	initialized = true
+	
+	
 	valueGenerator = values
 	
 	semaphore = Semaphore.new()
@@ -128,11 +147,16 @@ func process(delta = 0) -> void:
 
 				var newObj = staticobj.instance()
 
+
 				for i in meshList:
 
 					var meshInst = MeshInstance.new()
 					meshInst.mesh = i[0]
 					meshInst.set_surface_material(0, i[1])
+					#var a = i[1].get_shader_param("color")
+					#if (a == null):
+						#print(i)
+
 					#old broken shite, should avoid
 					#meshInst.create_trimesh_collision()
 					#FIX is HERE, creating separate collisionpolys for each
@@ -145,6 +169,7 @@ func process(delta = 0) -> void:
 
 					newObj.add_child(meshInst)
 
+				newObj.setType(type)
 				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
 
 				objectNode.add_child(newObj)
@@ -219,10 +244,12 @@ func _objectWorker(userdata):
 					var result
 					if (objType == 0):
 						result = makeRock(i, j)
+
+						output[1].push_back([i, j, "rock", result])
 					elif (objType == 1):
 						result = makeTree(i, j)
 						
-					output[1].push_back([i, j, "Mesh", result])
+						output[1].push_back([i, j, "tree", result])
 
 			mutex.lock()
 			threadOutputs.push_back(output)
@@ -290,8 +317,7 @@ func makeLeaf(location):
 	
 	st.generate_normals()
 	var mesh = st.commit()
-	var leafMaterial = ShaderMaterial.new()
-	leafMaterial.shader = leafShader
+
 
 	return [mesh, leafMaterial]
 
@@ -376,8 +402,9 @@ func makeTree(x, z):
 
 	st.generate_normals()
 	var trunkMesh = st.commit()
-	var woodMaterial = ShaderMaterial.new()
-	woodMaterial.shader = woodShader
+
+	
+
 	
 	var leaves = []
 	for i in branchTips:
@@ -490,10 +517,9 @@ func makeRock(x, z):
 	st.generate_normals()
 	var mesh = st.commit()
 	
-	var material = ShaderMaterial.new()
-	material.shader = stoneShader
 
-	return [[mesh, material]]#CubeMesh.new()
+
+	return [[mesh, stoneMaterial]]#CubeMesh.new()
 
 
 # Thread must be disposed (or "joined"), for portability.

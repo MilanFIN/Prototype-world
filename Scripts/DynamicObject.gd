@@ -148,9 +148,9 @@ func _physics_process(delta):
 		return
 	if (not set):
 		pass
-		var ground = get_node("SetRay").get_collision_point()
-		if (ground != null):
-			transform.origin.y = ground.y
+		var collider = get_node("SetRay").get_collider()
+		if (collider != null):
+			transform.origin.y = get_node("SetRay").get_collision_point.y + 5
 			set = true
 
 

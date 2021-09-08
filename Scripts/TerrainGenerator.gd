@@ -224,6 +224,8 @@ func makeChunk(x, z):
 	
 	var waterMeshes = makeWater(x, z)
 	
+	#OS.delay_msec(100)
+	
 	return [mesh, waterMeshes]
 
 

@@ -123,6 +123,7 @@ mesh = SubResource( 13 )
 material/0 = null
 
 [node name="SetRay" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6, 0 )
 cast_to = Vector3( 0, -1000, 0 )
 
 [node name="DeathParticles" type="CPUParticles" parent="."]
