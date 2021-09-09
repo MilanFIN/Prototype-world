@@ -69,7 +69,7 @@ void fragment() {
 	ALBEDO.b = COLOR.b;
 
 	
-	METALLIC = 0.1;
+	METALLIC = 0.0;
 	ROUGHNESS = 0.8;
 	
 

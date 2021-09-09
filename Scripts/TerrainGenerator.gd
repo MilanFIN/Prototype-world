@@ -33,6 +33,8 @@ var threadOutputs = []
 
 func _ready():
 
+
+	
 	objectGenerator = preload("res://Scripts/ObjectGenerator.gd").new(valueGenerator, get_node("Objects"))
 
 
@@ -52,12 +54,15 @@ func _ready():
 	waterNoise.width = 64
 	waterNoise.noise = OpenSimplexNoise.new()
 
-	for i in range(0,1):
+
+	
+	for i in range(0,7):
 		var thread = Thread.new()
 		thread.start(self, "_terrainWorker")
 		threads.push_back(thread)
-
+	
 	generate(0,0)
+	
 
 func check(playerPosition):
 
@@ -88,7 +93,7 @@ func remove(x, z):
 
 
 
-func makeWater(x, z):
+func makeWater(x, z, emptyMesh):
 	var flip = [false, true]
 	var waterMeshes = []
 	for f in flip:
@@ -109,15 +114,16 @@ func makeWater(x, z):
 		
 		surfaceTool.generate_normals()
 		
-		var arrayPlane = surfaceTool.commit()
+		#var arrayPlane = surfaceTool.commit()
 		
+		#old
 		#var dataTool = MeshDataTool.new()
 		#var error = dataTool.create_from_surface(arrayPlane, 0)
 		
 		
 
 
-		var mesh = surfaceTool.commit()
+		var mesh = surfaceTool.commit(emptyMesh)
 		
 		waterMeshes.push_back(mesh)
 
@@ -127,7 +133,7 @@ func makeWater(x, z):
 	
 
 
-func makeChunk(x, z):
+func makeChunk(x, z, emptyMesh1, emptyMesh2):
 
 	
 	"""
@@ -175,6 +181,7 @@ func makeChunk(x, z):
 	var st = SurfaceTool.new()
 
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	st.add_smooth_group(true)
 
 	var tileSize = float(chunkSize) / resolution 
 
@@ -219,10 +226,10 @@ func makeChunk(x, z):
 	st.generate_normals()
 
 
-	var mesh = st.commit()
+	var mesh = st.commit(emptyMesh1)
 
 	
-	var waterMeshes = makeWater(x, z)
+	var waterMeshes = makeWater(x, z, emptyMesh2)
 	
 	#OS.delay_msec(100)
 	
@@ -242,10 +249,11 @@ func generate(x, z):
 		for j in range(z-drawDistance, z+drawDistance+1):
 			#if (sqrt(i*i + j*j) <= removalDistance):
 			if (not (Vector2(i, j) in chunks) and not (Vector2(i, j) in threadInputs)):
-				threadInputs.push_back(Vector2(i, j))
+				threadInputs.push_back([Vector2(i, j), Mesh.new(), Mesh.new()])
 				semaphore.post()
 	
 	mutex.unlock()
+	
 	
 	#make objects for each terrain
 	for i in range(x-drawDistance, x+drawDistance+1):
@@ -271,15 +279,19 @@ func _terrainWorker(userdata):
 			break
 
 		mutex.lock()
-		var coordinates = threadInputs.pop_front()
+		var out = threadInputs.pop_front()
 		mutex.unlock()
+		
+		var coordinates = out[0]
+		var mesh1 = out[1]
+		var mesh2 = out[2]
 		
 		#prevent any issues with an empty list
 		#(shouldn't happen, but just in case)
 		if (coordinates == null):
 			continue
 
-		var chunk = makeChunk(coordinates.x, coordinates.y)
+		var chunk = makeChunk(coordinates.x, coordinates.y, mesh1, mesh2)
 
 		#push outputs
 		mutex.lock()
@@ -289,11 +301,13 @@ func _terrainWorker(userdata):
 
 func _process(delta: float) -> void:
 	
+	
 	mutex.lock()
-
 	var calculations = 0
 	while (len(threadOutputs) != 0):
+
 		var out = threadOutputs.pop_front()
+
 		var coordinates = out[0]
 		var chunk = out[1]
 		#do ground mesh ->meshinstance conversion
@@ -328,13 +342,16 @@ func _process(delta: float) -> void:
 		calculations += 1
 		if (calculations > valueGenerator.calculationLimit):
 			break
-	mutex.unlock()
 
+	mutex.unlock()
 
 	objectGenerator.process()
 
+	
+
 # Thread must be disposed (or "joined"), for portability.
 func _exit_tree():
+
 	# Set exit condition to true.
 	mutex.lock()
 	exit_thread = true # Protect with Mutex.

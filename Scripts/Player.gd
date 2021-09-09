@@ -56,6 +56,18 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 
+
+
+	#MOUSE MOVEMENT
+	#vertical rotates camera
+	camera.rotation_degrees.x -= mouseDelta.y * sensitivity * delta
+	camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, minLookAngle, maxLookAngle)
+	#horizontal rotates entire player
+	rotation_degrees.y -= mouseDelta.x * sensitivity * delta
+	mouseDelta = Vector2()
+
+
+
 	#wait until scene rendered
 	if (not initialized):
 		if (get_node("GroundRay").get_collider() == null):
@@ -112,11 +124,3 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide_with_snap(movement, snap, Vector3.UP)
 
-
-	#MOUSE MOVEMENT
-	#vertical rotates camera
-	camera.rotation_degrees.x -= mouseDelta.y * sensitivity * delta
-	camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, minLookAngle, maxLookAngle)
-	#horizontal rotates entire player
-	rotation_degrees.y -= mouseDelta.x * sensitivity * delta
-	mouseDelta = Vector2()

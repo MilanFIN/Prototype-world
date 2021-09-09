@@ -2,7 +2,7 @@ extends Node
 
 """
 TODO:
-2 kättä, molempiin mahtuu talteen item
+androidilla kaatuu koko homma jos palauttaa staticobj outputtina
 
 
 """

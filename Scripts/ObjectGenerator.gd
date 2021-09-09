@@ -73,6 +73,7 @@ func _init(values, objnode) -> void:
 	resolution = valueGenerator.resolution
 
 func populate(x, z):
+	
 	var coordinates = Vector2(x, z)
 	if (coordinates in populations):
 		return
@@ -122,19 +123,18 @@ func remove(x, z):
 
 
 func process(delta = 0) -> void:
-	
 
-
-
-	
 	mutex.lock()
 	var calculations = 0
 	while (len(threadOutputs) != 0):
 
-		var out = threadOutputs.pop_front()
+		var out = threadOutputs.pop_back()
+
 
 		var coordinates = out[0]
+
 		var data = out[1]
+
 
 		for objData in data:
 			var x = objData[0]
@@ -218,7 +218,7 @@ func _objectWorker(userdata):
 		var inputs = threadInputs.pop_front()
 		mutex.unlock()
 
-		
+
 		
 		var x = inputs[0]
 		var z = inputs[1]
@@ -236,6 +236,8 @@ func _objectWorker(userdata):
 		
 		var output = [coordinates,[]]
 		
+		var res = []
+		
 		for i in points:
 			for j in points:
 				var objType = valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)
@@ -245,15 +247,19 @@ func _objectWorker(userdata):
 					if (objType == 0):
 						result = makeRock(i, j)
 
-						output[1].push_back([i, j, "rock", result])
+						res.push_back([i, j, "rock", result])
 					elif (objType == 1):
 						result = makeTree(i, j)
 						
-						output[1].push_back([i, j, "tree", result])
+						res.push_back([i, j, "tree", result])
 
-			mutex.lock()
-			threadOutputs.push_back(output)
-			mutex.unlock()
+		#TODO: FIGURE OUT WHY THIS BREAKS???
+		#if (len(res) != 0):
+		#	output = [coordinates,res]
+
+		mutex.lock()
+		threadOutputs.push_back(output)
+		mutex.unlock()
 
 
 #location = vector3
