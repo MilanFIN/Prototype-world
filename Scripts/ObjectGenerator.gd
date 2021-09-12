@@ -1,6 +1,7 @@
 extends Node
 
-var staticobj = preload("res://Assets/Objects/StaticObject.tscn")
+var staticobj 
+
 #shaders
 var stoneShader# = preload("res://Shaders/stone.shader")
 var woodShader# = preload("res://Shaders/wood.shader")
@@ -40,7 +41,8 @@ var lastCacheTime = OS.get_ticks_msec()
 
 func _init(values, objnode) -> void:
 
-
+	staticobj = load("res://Assets/Objects/StaticObject.tscn")
+	
 	stoneShader = load("res://Shaders/stone.shader")
 	woodShader = load("res://Shaders/wood.shader")
 	leafShader = load("res://Shaders/leaf.shader")
@@ -136,6 +138,7 @@ func process(delta = 0) -> void:
 		var data = out[1]
 
 
+
 		for objData in data:
 			var x = objData[0]
 			var z = objData[1]
@@ -143,19 +146,28 @@ func process(delta = 0) -> void:
 			var meshList = objData[3]
 			#var material = objData[3][1]
 
+
+
 			if (not (coordinates in populations)):
 
 				var newObj = staticobj.instance()
+
+
+
+
+
+				newObj.setType(type)
+				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
+
+				objectNode.add_child(newObj)
 
 
 				for i in meshList:
 
 					var meshInst = MeshInstance.new()
 					meshInst.mesh = i[0]
+
 					meshInst.set_surface_material(0, i[1])
-					#var a = i[1].get_shader_param("color")
-					#if (a == null):
-						#print(i)
 
 					#old broken shite, should avoid
 					#meshInst.create_trimesh_collision()
@@ -166,13 +178,8 @@ func process(delta = 0) -> void:
 					collisionPoly.shape = collisionShape
 					newObj.add_child(collisionPoly)
 
-
 					newObj.add_child(meshInst)
 
-				newObj.setType(type)
-				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
-
-				objectNode.add_child(newObj)
 				newObj.initialized = true
 
 
@@ -249,13 +256,13 @@ func _objectWorker(userdata):
 
 						res.push_back([i, j, "rock", result])
 					elif (objType == 1):
-						result = makeTree(i, j)
+						result = makeTree(i, j)#makeTree(i, j)
 						
 						res.push_back([i, j, "tree", result])
 
 		#TODO: FIGURE OUT WHY THIS BREAKS???
-		#if (len(res) != 0):
-		#	output = [coordinates,res]
+		if (len(res) != 0):
+			output = [coordinates,res]
 
 		mutex.lock()
 		threadOutputs.push_back(output)
@@ -522,7 +529,7 @@ func makeRock(x, z):
 
 	st.generate_normals()
 	var mesh = st.commit()
-	
+	#var mesh = Mesh.new()#null
 
 
 	return [[mesh, stoneMaterial]]#CubeMesh.new()
