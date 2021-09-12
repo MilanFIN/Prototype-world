@@ -15,6 +15,7 @@ var velocity = Vector3(0,0,0)
 const moveSpeed = 20
 const gravity = 9.8
 var mouseDelta = Vector2()
+var moveVector = Vector2()
 const sensitivity = 10
 
 const minLookAngle = -90
@@ -38,9 +39,11 @@ func _ready() -> void:
 
 
 # recording mouse movements
-func _input(event):
-	if event is InputEventMouseMotion:
-		mouseDelta = event.relative
+func setMouseDelta(mD):
+	mouseDelta = mD
+
+func setMoveVector(mV):
+	moveVector = mV
 
 func melee():
 	if (Input.is_action_just_pressed("AttackRight")):
@@ -56,14 +59,12 @@ func _process(delta: float) -> void:
 
 func _physics_process(delta: float) -> void:
 
-
-
 	#MOUSE MOVEMENT
 	#vertical rotates camera
-	camera.rotation_degrees.x -= mouseDelta.y * sensitivity * delta
+	camera.rotation_degrees.x -= mouseDelta.y * delta
 	camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, minLookAngle, maxLookAngle)
 	#horizontal rotates entire player
-	rotation_degrees.y -= mouseDelta.x * sensitivity * delta
+	rotation_degrees.y -= mouseDelta.x * delta
 	mouseDelta = Vector2()
 
 
@@ -82,18 +83,22 @@ func _physics_process(delta: float) -> void:
 
 
 	#movement
-	var input = Vector3(0,0,0)
+	var input = Vector2.ZERO
 
+	if (moveVector != Vector2.ZERO):
+		input = moveVector
+	else:
+		if Input.is_action_pressed("forward"):
+			input.y -= 1
+		if Input.is_action_pressed("back"):
+			input.y += 1
+		if Input.is_action_pressed("left"):
+			input.x -= 1
+		if Input.is_action_pressed("right"):
+			input.x += 1
+	
+	
 	var jump = false
-
-	if Input.is_action_pressed("forward"):
-		input.y -= 1
-	if Input.is_action_pressed("back"):
-		input.y += 1
-	if Input.is_action_pressed("left"):
-		input.x -= 1
-	if Input.is_action_pressed("right"):
-		input.x += 1
 	if Input.is_action_pressed("jump"):
 		jump = true
 
@@ -123,4 +128,6 @@ func _physics_process(delta: float) -> void:
 	var movement = velocity + gravityVec
 	
 	move_and_slide_with_snap(movement, snap, Vector3.UP)
+	
+	moveVector = Vector2.ZERO
 
