@@ -34,7 +34,7 @@ var initialized = false
 
 # initializing mouse to be captured
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
+
 	camera = get_node("Camera")
 
 
