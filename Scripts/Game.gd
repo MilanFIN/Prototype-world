@@ -53,12 +53,15 @@ func _input(event: InputEvent) -> void:
 			if (event.index == stickTouchIndex):
 				stickPressed = false
 				stick.position = base.position
-	if (stickPressed and event is InputEventScreenDrag):
-		if (event.index == stickTouchIndex):
+	if (event is InputEventScreenDrag):
+		if (stickPressed and event.index == stickTouchIndex):
 			var stickPos = event.position
 			stickPos.x = clamp(stickPos.x ,base.position.x - maxStickDelta, base.position.x + maxStickDelta)
 			stickPos.y = clamp(stickPos.y ,base.position.y - maxStickDelta, base.position.y + maxStickDelta)
 			stick.position = stickPos
+		else:
+			var mouseDelta = event.relative * touchSensitivity
+			player.setMouseDelta(mouseDelta)
 
 
 	if event is InputEventMouseMotion:
