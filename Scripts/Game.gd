@@ -15,15 +15,15 @@ onready var stick = $Hud/Stick
 var stickMoving = false
 const maxStickDelta = 100
 
-var mouseSensitivity = 10
-var touchSensitivity = 50
+var mouseSensitivity = 0.3
+var touchSensitivity = 3
 
 var stickTouchIndex = 0
 var stickPressed = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
 	pass
 
 func _process(delta: float) -> void:

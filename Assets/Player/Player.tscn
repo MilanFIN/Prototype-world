@@ -18,7 +18,7 @@ albedo_color = Color( 0.572549, 0.34902, 0.215686, 1 )
 [sub_resource type="Animation" id=6]
 length = 0.1
 tracks/0/type = "value"
-tracks/0/path = NodePath("Camera/RightHand:rotation_degrees")
+tracks/0/path = NodePath("Body/RightHand:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -34,7 +34,7 @@ tracks/0/keys = {
 length = 0.1
 step = 0.02
 tracks/0/type = "value"
-tracks/0/path = NodePath("Camera/RightHand:rotation_degrees")
+tracks/0/path = NodePath("Body/RightHand:rotation_degrees")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -59,45 +59,21 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-cull_mask = 1048573
-near = 0.01
+[node name="RightHand" type="Spatial" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0.85, -1, 0.2 )
 
-[node name="RightHand" type="Spatial" parent="Camera"]
-transform = Transform( 1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0.85, -1.2, -1 )
-
-[node name="Fist" type="MeshInstance" parent="Camera/RightHand"]
+[node name="Fist" type="MeshInstance" parent="Body/RightHand"]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.5, 0, 0, -0.5 )
-layers = 2
 mesh = SubResource( 3 )
 material/0 = SubResource( 4 )
 
-[node name="RightHandHitbox" type="Area" parent="Camera"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -2.5 )
+[node name="RightHandHitbox" type="Area" parent="Body"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -2.5, -0.5 )
 gravity = 0.0
 
-[node name="CollisionShape" type="CollisionShape" parent="Camera/RightHandHitbox"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1.5, 0, 0, 0 )
+[node name="CollisionShape" type="CollisionShape" parent="Body/RightHandHitbox"]
+transform = Transform( 2, 0, 0, 0, 10, 0, 0, 0, 1.5, 0, 0, 0 )
 shape = SubResource( 5 )
-
-[node name="ViewportContainer" type="ViewportContainer" parent="Camera"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Viewport" type="Viewport" parent="Camera/ViewportContainer"]
-size = Vector2( 1280, 720 )
-transparent_bg = true
-handle_input_locally = false
-render_target_update_mode = 3
-
-[node name="HandCamera" type="Camera" parent="Camera/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
-cull_mask = 2
-near = 0.01
 
 [node name="GroundRay" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0 )
@@ -107,3 +83,34 @@ cast_to = Vector3( 0, -1000, 0 )
 [node name="RightMeleeAnim" type="AnimationPlayer" parent="."]
 anims/RightAttack = SubResource( 6 )
 anims/RightReturn = SubResource( 7 )
+
+[node name="CameraJoint" type="BoneAttachment" parent="."]
+
+[node name="Camera" type="Camera" parent="CameraJoint"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
+cull_mask = 1048573
+near = 0.01
+
+[node name="ViewportContainer" type="ViewportContainer" parent="CameraJoint/Camera"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="CameraJoint/Camera/ViewportContainer"]
+size = Vector2( 1280, 720 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 0
+
+[node name="HandCamera" type="Camera" parent="CameraJoint/Camera/ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+visible = false
+cull_mask = 2
+near = 0.01
+
+[node name="WallChecker" type="RayCast" parent="CameraJoint"]
+enabled = true
+cast_to = Vector3( 0, 0, 10 )

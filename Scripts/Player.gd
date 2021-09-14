@@ -18,15 +18,22 @@ var mouseDelta = Vector2()
 var moveVector = Vector2()
 const sensitivity = 10
 
-const minLookAngle = -90
-const maxLookAngle = 90
+
+const minLookAngle = -90.0
+const maxLookAngle = 90.0
 
 
 onready var rightMeleeAnim = $RightMeleeAnim
-onready var rightHitbox = $Camera/RightHandHitbox
+onready var rightHitbox = $Body/RightHandHitbox
 
-onready var camera = $Camera
-onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
+onready var camera = $CameraJoint/Camera
+onready var cameraJoint = $CameraJoint
+onready var cameraWallChecker = $CameraJoint/WallChecker
+
+
+onready var body = $Body
+
+#onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
 var damage = 4
 
@@ -34,8 +41,7 @@ var initialized = false
 
 # initializing mouse to be captured
 func _ready() -> void:
-
-	camera = get_node("Camera")
+	pass
 
 
 # recording mouse movements
@@ -46,7 +52,7 @@ func setMoveVector(mV):
 	moveVector = mV
 
 func melee():
-	if (Input.is_action_just_pressed("AttackRight")):
+	if (Input.is_action_just_pressed("Attack")):
 		if not (rightMeleeAnim.is_playing()):
 			rightMeleeAnim.play("RightAttack")
 			rightMeleeAnim.queue("RightReturn")
@@ -55,17 +61,34 @@ func melee():
 					body.damage(damage)
 
 func _process(delta: float) -> void:
-	handCamera.global_transform = camera.global_transform
+	#handCamera.global_transform = camera.global_transform
+	pass
 
 func _physics_process(delta: float) -> void:
 
+	
 	#MOUSE MOVEMENT
 	#vertical rotates camera
-	camera.rotation_degrees.x -= mouseDelta.y * delta
-	camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, minLookAngle, maxLookAngle)
+	#camera.rotation_degrees.x -= mouseDelta.y * delta
+	#camera.rotation_degrees.x = clamp(camera.rotation_degrees.x, minLookAngle, maxLookAngle)
 	#horizontal rotates entire player
-	rotation_degrees.y -= mouseDelta.x * delta
-	mouseDelta = Vector2()
+	#rotation_degrees.y -= mouseDelta.x * delta
+	#mouseDelta = Vector2()
+
+	#vertical rotation
+	if (mouseDelta != Vector2.ZERO):
+		var newAngle = cameraJoint.rotation_degrees.x - mouseDelta.y #* delta
+		cameraJoint.rotation_degrees.x = clamp(newAngle, minLookAngle, maxLookAngle)
+		#horizontal rotation
+		cameraJoint.rotation_degrees.y -= mouseDelta.x #* delta
+		
+		var cameraOffset = cameraWallChecker.cast_to.z
+		if (cameraWallChecker.get_collider() != null):
+			cameraOffset = (cameraWallChecker.get_collision_point() - global_transform.origin).length()
+
+		camera.translation.z = cameraOffset
+
+	mouseDelta = Vector2.ZERO
 
 
 
@@ -104,10 +127,22 @@ func _physics_process(delta: float) -> void:
 
 
 
-	var forward = global_transform.basis.z
-	var right = global_transform.basis.x
+	var forward = camera.global_transform.basis.z
+	var right = camera.global_transform.basis.x
 
 	var relativeDir = (forward * input.y + right * input.x)
+	
+	#body.rotation_degrees = 0
+	if (input != Vector2.ZERO):
+		var angle = -rad2deg(Vector2(relativeDir.z, relativeDir.x).angle_to(Vector2.UP))
+		angle = int(angle) % 360
+		angle = lerp_angle(angle, rotation_degrees.y, delta*2)
+		body.rotation_degrees.y = angle
+	#body.rotation_degrees.x = angle
+	#print(Vector2(relativeDir.z, relativeDir.x), Vector2.UP)
+	
+
+		
 
 	if is_on_floor():
 		snap = -get_floor_normal()
