@@ -41,7 +41,7 @@ var initialized = false
 
 # initializing mouse to be captured
 func _ready() -> void:
-	pass
+	camera.translation.z = cameraWallChecker.cast_to.z
 
 
 # recording mouse movements
