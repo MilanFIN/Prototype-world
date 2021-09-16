@@ -25,6 +25,10 @@ const maxLookAngle = 88.0
 #deg/s
 const turnRate = 480
 
+const zoomStep = 1.0
+const minZoom = 3
+const maxZoom = 20
+
 onready var rightMeleeAnim = $RightMeleeAnim
 onready var rightHitbox = $Body/RightHandHitbox
 
@@ -66,10 +70,22 @@ func _process(delta: float) -> void:
 	#handCamera.global_transform = camera.global_transform
 	pass
 
+func zoomIn(amount = zoomStep):
+	var zoom = cameraWallChecker.cast_to.z
+	zoom -= amount
+	zoom = clamp(zoom, minZoom, maxZoom)
+	cameraWallChecker.cast_to.z = zoom
+	cameraWallChecker.cast_to.z = zoom
+
+func zoomOut(amount = zoomStep):
+	var zoom = cameraWallChecker.cast_to.z
+	zoom += amount
+	zoom = clamp(zoom, minZoom, maxZoom)
+	cameraWallChecker.cast_to.z = zoom
 
 func _physics_process(delta: float) -> void:
 
-	
+
 	#MOUSE MOVEMENT
 	#vertical rotates camera
 	#camera.rotation_degrees.x -= mouseDelta.y * delta
@@ -78,18 +94,19 @@ func _physics_process(delta: float) -> void:
 	#rotation_degrees.y -= mouseDelta.x * delta
 	#mouseDelta = Vector2()
 
+
 	#vertical rotation
 	if (mouseDelta != Vector2.ZERO):
 		var newAngle = cameraJoint.rotation_degrees.x - mouseDelta.y #* delta
 		cameraJoint.rotation_degrees.x = clamp(newAngle, minLookAngle, maxLookAngle)
 		#horizontal rotation
 		cameraJoint.rotation_degrees.y -= mouseDelta.x #* delta
-		
-		var cameraOffset = cameraWallChecker.cast_to.z
-		if (cameraWallChecker.get_collider() != null):
-			cameraOffset = (cameraWallChecker.get_collision_point() - global_transform.origin).length()
+	
+	var cameraOffset = cameraWallChecker.cast_to.z
+	if (cameraWallChecker.get_collider() != null):
+		cameraOffset = (cameraWallChecker.get_collision_point() - global_transform.origin).length() + 0.5
 
-		camera.translation.z = cameraOffset
+	camera.translation.z = cameraOffset
 
 	mouseDelta = Vector2.ZERO
 
