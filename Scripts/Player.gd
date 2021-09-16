@@ -19,9 +19,11 @@ var moveVector = Vector2()
 const sensitivity = 10
 
 
-const minLookAngle = -90.0
-const maxLookAngle = 90.0
+const minLookAngle = -88.0
+const maxLookAngle = 88.0
 
+#deg/s
+const turnRate = 480
 
 onready var rightMeleeAnim = $RightMeleeAnim
 onready var rightHitbox = $Body/RightHandHitbox
@@ -63,6 +65,7 @@ func melee():
 func _process(delta: float) -> void:
 	#handCamera.global_transform = camera.global_transform
 	pass
+
 
 func _physics_process(delta: float) -> void:
 
@@ -127,8 +130,9 @@ func _physics_process(delta: float) -> void:
 
 
 
-	var forward = camera.global_transform.basis.z
+	#var forward = camera.global_transform.basis.z
 	var right = camera.global_transform.basis.x
+	var forward = right.rotated(Vector3.UP, deg2rad(-90))
 
 	var relativeDir = (forward * input.y + right * input.x)
 	
@@ -136,8 +140,16 @@ func _physics_process(delta: float) -> void:
 	if (input != Vector2.ZERO):
 		var angle = -rad2deg(Vector2(relativeDir.z, relativeDir.x).angle_to(Vector2.UP))
 		angle = int(angle) % 360
-		angle = lerp_angle(angle, rotation_degrees.y, delta*2)
-		body.rotation_degrees.y = angle
+		var rotation = int(body.rotation_degrees.y) % 360
+		var angleDiff = rotation - angle
+
+
+
+		angleDiff = clamp(angleDiff, -delta*turnRate, delta*turnRate)
+		
+
+		body.rotation_degrees.y -= angleDiff
+
 	#body.rotation_degrees.x = angle
 	#print(Vector2(relativeDir.z, relativeDir.x), Vector2.UP)
 	
