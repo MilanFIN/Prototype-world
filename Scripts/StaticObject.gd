@@ -32,11 +32,10 @@ func setType(t):
 	for i in (get_children()):
 		if i is MeshInstance:
 
-			var particleInst = particle.instance()
-
-			particleInst.translation = i.mesh.get_aabb().position 
-			add_child(particleInst)
-
+			#var particleInst = particle.instance()
+			#particleInst.translation = i.mesh.get_aabb().position 
+			#add_child(particleInst)
+			pass
 
 #atm only figures out where ground is and initializes the height to be ground
 #level
@@ -87,7 +86,7 @@ func damage(amount):
 			color = Color(0.3, 0.3, 0.3)
 
 
-		material.albedo_color = color
+		#material.albedo_color = color
 
 
 		for i in (get_children()):
@@ -97,7 +96,7 @@ func damage(amount):
 				i.visible = false
 			if i is CPUParticles:
 
-				i.material_override = material
+				#i.material_override = material
 
 				i.emitting = true
 

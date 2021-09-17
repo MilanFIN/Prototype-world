@@ -3,6 +3,7 @@
 [ext_resource path="res://Scripts/DynamicObject.gd" type="Script" id=1]
 [ext_resource path="res://Shaders/orangething.shader" type="Shader" id=2]
 [ext_resource path="res://Materials/BloodSplatter.tres" type="Material" id=3]
+[ext_resource path="res://Assets/Particles/StaticObjParticles.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
 height = 2.0
@@ -51,10 +52,6 @@ shader = ExtResource( 2 )
 size = Vector3( 1, 1, 1 )
 
 [sub_resource type="QuadMesh" id=14]
-material = ExtResource( 3 )
-size = Vector2( 0.25, 0.25 )
-
-[sub_resource type="QuadMesh" id=15]
 material = ExtResource( 3 )
 size = Vector2( 0.25, 0.25 )
 
@@ -126,29 +123,17 @@ material/0 = null
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6, 0 )
 cast_to = Vector3( 0, -1000, 0 )
 
-[node name="DeathParticles" type="CPUParticles" parent="."]
-emitting = false
-amount = 30
-one_shot = true
-explosiveness = 0.75
-mesh = SubResource( 14 )
-direction = Vector3( 0, 0, 0 )
-spread = 180.0
-gravity = Vector3( 0, -5, 0 )
-initial_velocity = 5.0
-linear_accel = -6.0
-linear_accel_random = 0.3
-anim_speed = 1.0
-
 [node name="HitParticles" type="CPUParticles" parent="."]
 emitting = false
 amount = 10
 lifetime = 0.3
 one_shot = true
-mesh = SubResource( 15 )
+mesh = SubResource( 14 )
 direction = Vector3( 0, 0, 0 )
 spread = 180.0
 gravity = Vector3( 0, -5, 0 )
 initial_velocity = 10.0
 linear_accel = -5.0
 linear_accel_random = 0.3
+
+[node name="DeathParticles" parent="." instance=ExtResource( 4 )]

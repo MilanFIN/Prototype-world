@@ -87,9 +87,9 @@ func _input(event: InputEvent) -> void:
 			var newDistance = (firstLocation - secondLocation).length()
 				
 			if (distance - newDistance < 0):
-				player.zoomIn(0.2)
+				player.zoomIn(0.01 * abs(distance-newDistance))
 			elif (distance - newDistance > 0):
-				player.zoomOut(0.2)
+				player.zoomOut(0.01 * abs(distance-newDistance))
 		else:
 			var mouseDelta = event.relative * touchSensitivity
 			player.setMouseDelta(mouseDelta)

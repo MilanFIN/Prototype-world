@@ -140,6 +140,7 @@ func process(delta = 0) -> void:
 
 
 		for objData in data:
+			continue
 			var x = objData[0]
 			var z = objData[1]
 			var type = objData[2]
@@ -156,7 +157,7 @@ func process(delta = 0) -> void:
 
 
 
-				newObj.setType(type)
+
 				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
 
 				objectNode.add_child(newObj)
@@ -182,7 +183,7 @@ func process(delta = 0) -> void:
 
 				newObj.initialized = true
 
-
+				#newObj.setType(type)
 
 				if (not (coordinates in populations)):
 					populations[coordinates] = [newObj]

@@ -32,6 +32,9 @@ var hp = 10
 var dead = false
 var remove = false
 
+
+
+
 func _ready() -> void:
 	currentFootPoint = get_node("FootRay").get_collision_point()# -global_transform.origin
 	nextFootPoint = null
@@ -45,15 +48,20 @@ func _ready() -> void:
 		waypoints.push_back(Vector2(x, z))
 
 
+
 func damage(amount):
 	hp -= amount
 	if (hp <= 0):
 		#die
 		dead = true
 		get_node("Body").visible = false
-		get_node("DeathParticles").emitting = true
+		#get_node("DeathParticles").material_override = material
+		#get_node("DeathParticles").emitting = true
 	else:
-		get_node("HitParticles").emitting = true
+		pass
+		#get_node("HitParticles").material_override = material
+		#get_node("HitParticles").emitting = true
+
 
 
 func setJoints():
