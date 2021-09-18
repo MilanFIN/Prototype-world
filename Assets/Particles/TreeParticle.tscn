@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_color = Color( 0.192157, 0.678431, 0, 1 )
+
+[sub_resource type="QuadMesh" id=2]
+material = SubResource( 1 )
+size = Vector2( 0.5, 0.5 )
+
+[node name="TreeParticle" type="CPUParticles"]
+emitting = false
+lifetime = 0.8
+one_shot = true
+explosiveness = 0.8
+randomness = 0.3
+mesh = SubResource( 2 )
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, -5, 0 )
+initial_velocity = 7.0
+color = Color( 0, 0, 0, 1 )

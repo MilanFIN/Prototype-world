@@ -1,7 +1,8 @@
 extends StaticBody
 
-var material = preload("res://Materials/BloodSplatter.tres")
-var particle = preload("res://Assets/Particles/StaticObjParticles.tscn")
+#var material = 
+var particle = load("res://Assets/Particles/TreeParticle.tscn")
+# preload("res://Assets/Particles/TreeParticle.tscn")
 
 #set to true, when the actual height of the object has been set
 var set = false
@@ -24,18 +25,42 @@ func _ready() -> void:
 	pass
 
 
-
-
 func setType(t):
+
 	type = t
 
+	if (type == "tree"):
+		particle = load("res://Assets/Particles/TreeParticle.tscn")
+
+
+	"""
 	for i in (get_children()):
 		if i is MeshInstance:
-
-			#var particleInst = particle.instance()
-			#particleInst.translation = i.mesh.get_aabb().position 
-			#add_child(particleInst)
+			var particleInst = particle.instance()
+			particleInst.translation = i.mesh.get_aabb().position 
+			add_child(particleInst)
 			pass
+	"""
+
+func addMesh(mesh, material):
+	var meshInst = MeshInstance.new()
+	meshInst.mesh = mesh
+
+	meshInst.set_surface_material(0, material)
+
+	#old broken shite, should avoid
+	#meshInst.create_trimesh_collision()
+	#FIX is HERE, creating separate collisionpolys for each
+	#mesh and adding them to the root spatial node of staticobj
+	var collisionShape = mesh.create_trimesh_shape()
+	var collisionPoly = CollisionShape.new()
+	collisionPoly.shape = collisionShape
+	add_child(collisionPoly)
+	add_child(meshInst)
+
+	var particleInst = particle.instance()
+	particleInst.translation = mesh.get_aabb().position 
+	add_child(particleInst)
 
 #atm only figures out where ground is and initializes the height to be ground
 #level
@@ -75,18 +100,6 @@ func damage(amount):
 		dead = true
 		#visible = false
 		deathTime = OS.get_ticks_msec()
-		#get_node("StaticObjParticles").emitting = true
-		
-
-		#must set material
-		var color = Color(0.0, 0.0, 0.0)
-		if (type == "tree"):
-			color = Color(0.0, 0.8, 0.0)
-		elif (type == "rock"):
-			color = Color(0.3, 0.3, 0.3)
-
-
-		#material.albedo_color = color
 
 
 		for i in (get_children()):
@@ -95,9 +108,6 @@ func damage(amount):
 			if i is MeshInstance:
 				i.visible = false
 			if i is CPUParticles:
-
-				#i.material_override = material
-
 				i.emitting = true
 
 

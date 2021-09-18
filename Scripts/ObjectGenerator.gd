@@ -1,6 +1,6 @@
 extends Node
 
-var staticobj 
+var tree = preload("res://Assets/Objects/Tree.tscn") 
 
 #shaders
 var stoneShader# = preload("res://Shaders/stone.shader")
@@ -41,7 +41,7 @@ var lastCacheTime = OS.get_ticks_msec()
 
 func _init(values, objnode) -> void:
 
-	staticobj = load("res://Assets/Objects/StaticObject.tscn")
+	#staticobj = load("res://Assets/Objects/StaticObject.tscn")
 	
 	stoneShader = load("res://Shaders/stone.shader")
 	woodShader = load("res://Shaders/wood.shader")
@@ -140,7 +140,7 @@ func process(delta = 0) -> void:
 
 
 		for objData in data:
-			continue
+
 			var x = objData[0]
 			var z = objData[1]
 			var type = objData[2]
@@ -151,7 +151,8 @@ func process(delta = 0) -> void:
 
 			if (not (coordinates in populations)):
 
-				var newObj = staticobj.instance()
+
+				var newObj = tree.instance()
 
 
 
@@ -164,7 +165,7 @@ func process(delta = 0) -> void:
 
 
 				for i in meshList:
-
+					"""
 					var meshInst = MeshInstance.new()
 					meshInst.mesh = i[0]
 
@@ -180,10 +181,12 @@ func process(delta = 0) -> void:
 					newObj.add_child(collisionPoly)
 
 					newObj.add_child(meshInst)
+					"""
+					newObj.addMesh(i[0], i[1])
 
 				newObj.initialized = true
 
-				#newObj.setType(type)
+				newObj.setType(type)
 
 				if (not (coordinates in populations)):
 					populations[coordinates] = [newObj]

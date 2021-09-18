@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Scripts/StaticObject.gd" type="Script" id=1]
+
+[node name="Tree" type="StaticBody" groups=[
+"Resource",
+]]
+script = ExtResource( 1 )
+
+[node name="SetRay" type="RayCast" parent="."]
+cast_to = Vector3( 0, -1000, 0 )
