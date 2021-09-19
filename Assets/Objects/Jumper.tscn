@@ -1,9 +1,7 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://Scripts/DynamicObject.gd" type="Script" id=1]
-[ext_resource path="res://Shaders/orangething.shader" type="Shader" id=2]
-[ext_resource path="res://Materials/BloodSplatter.tres" type="Material" id=3]
-[ext_resource path="res://Assets/Particles/StaticObjParticles.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Shaders/orangething.shader" type="Shader" id=1]
+[ext_resource path="res://Scripts/DynamicObject.gd" type="Script" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 height = 2.0
@@ -15,7 +13,7 @@ radial_segments = 6
 rings = 3
 
 [sub_resource type="ShaderMaterial" id=3]
-shader = ExtResource( 2 )
+shader = ExtResource( 1 )
 
 [sub_resource type="SphereMesh" id=4]
 radial_segments = 6
@@ -34,32 +32,40 @@ albedo_color = Color( 0, 0, 0, 1 )
 size = Vector3( 0.5, 2, 0.5 )
 
 [sub_resource type="ShaderMaterial" id=8]
-shader = ExtResource( 2 )
+shader = ExtResource( 1 )
 
 [sub_resource type="ShaderMaterial" id=9]
-shader = ExtResource( 2 )
+shader = ExtResource( 1 )
 
 [sub_resource type="CubeMesh" id=10]
 size = Vector3( 0.5, 2, 0.5 )
 
 [sub_resource type="ShaderMaterial" id=11]
-shader = ExtResource( 2 )
+shader = ExtResource( 1 )
 
 [sub_resource type="ShaderMaterial" id=12]
-shader = ExtResource( 2 )
+shader = ExtResource( 1 )
 
 [sub_resource type="CubeMesh" id=13]
 size = Vector3( 1, 1, 1 )
 
-[sub_resource type="QuadMesh" id=14]
-material = ExtResource( 3 )
-size = Vector2( 0.25, 0.25 )
+[sub_resource type="SpatialMaterial" id=14]
+flags_unshaded = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_color = Color( 1, 0, 0, 1 )
+
+[sub_resource type="QuadMesh" id=15]
+material = SubResource( 14 )
+size = Vector2( 0.5, 0.5 )
 
 [node name="DynamicObject" type="KinematicBody" groups=[
 "Enemy",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
-script = ExtResource( 1 )
+script = ExtResource( 3 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -2, 0 )
@@ -123,17 +129,26 @@ material/0 = null
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -6, 0 )
 cast_to = Vector3( 0, -1000, 0 )
 
-[node name="HitParticles" type="CPUParticles" parent="."]
+[node name="DeathParticles" type="CPUParticles" parent="."]
 emitting = false
-amount = 10
-lifetime = 0.3
+amount = 30
 one_shot = true
-mesh = SubResource( 14 )
+explosiveness = 0.8
+randomness = 0.3
+mesh = SubResource( 15 )
 direction = Vector3( 0, 0, 0 )
 spread = 180.0
 gravity = Vector3( 0, -5, 0 )
-initial_velocity = 10.0
-linear_accel = -5.0
-linear_accel_random = 0.3
+initial_velocity = 4.0
 
-[node name="DeathParticles" parent="." instance=ExtResource( 4 )]
+[node name="HitParticles" type="CPUParticles" parent="."]
+emitting = false
+amount = 10
+one_shot = true
+explosiveness = 0.8
+randomness = 0.3
+mesh = SubResource( 15 )
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, -5, 0 )
+initial_velocity = 4.0

@@ -32,7 +32,8 @@ var hp = 10
 var dead = false
 var remove = false
 
-
+onready var deathParticles = $DeathParticles
+onready var hitParticles = $HitParticles
 
 
 func _ready() -> void:
@@ -55,12 +56,10 @@ func damage(amount):
 		#die
 		dead = true
 		get_node("Body").visible = false
-		#get_node("DeathParticles").material_override = material
-		#get_node("DeathParticles").emitting = true
+		deathParticles.emitting = true
 	else:
-		pass
-		#get_node("HitParticles").material_override = material
-		#get_node("HitParticles").emitting = true
+		hitParticles.emitting = true
+
 
 
 
@@ -148,7 +147,7 @@ func moveFootPoint(delta):
 func _physics_process(delta):
 
 	if (dead):
-		if (get_node("DeathParticles").emitting == false):
+		if (deathParticles.emitting == false):
 			remove = true
 		return
 

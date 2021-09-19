@@ -42,20 +42,9 @@ var lastCacheTime = OS.get_ticks_msec()
 func _init(values, objnode) -> void:
 
 	#staticobj = load("res://Assets/Objects/StaticObject.tscn")
-	
-	stoneShader = load("res://Shaders/stone.shader")
-	woodShader = load("res://Shaders/wood.shader")
-	leafShader = load("res://Shaders/leaf.shader")
-	
-	woodMaterial = ShaderMaterial.new()
-	woodMaterial.shader = woodShader
-	
-	leafMaterial = ShaderMaterial.new()
-	leafMaterial.shader = leafShader
+	"""
 
-	stoneMaterial = ShaderMaterial.new()
-	stoneMaterial.shader = stoneShader
-
+	"""
 	initialized = true
 	
 	
@@ -162,7 +151,7 @@ func process(delta = 0) -> void:
 				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
 
 				objectNode.add_child(newObj)
-
+				newObj.setType(type)
 
 				for i in meshList:
 					"""
@@ -186,7 +175,7 @@ func process(delta = 0) -> void:
 
 				newObj.initialized = true
 
-				newObj.setType(type)
+
 
 				if (not (coordinates in populations)):
 					populations[coordinates] = [newObj]
@@ -336,7 +325,7 @@ func makeLeaf(location):
 	var mesh = st.commit()
 
 
-	return [mesh, leafMaterial]
+	return [mesh, "leaf"]
 
 func makeTree(x, z):
 
@@ -431,7 +420,7 @@ func makeTree(x, z):
 
 	#print(len([trunkMesh, woodMaterial] + leaves))
 	var result = []
-	result.push_back([trunkMesh, woodMaterial])
+	result.push_back([trunkMesh, "wood"])
 	for i in leaves:
 		result.push_back(i)
 		pass
@@ -536,7 +525,7 @@ func makeRock(x, z):
 	#var mesh = Mesh.new()#null
 
 
-	return [[mesh, stoneMaterial]]#CubeMesh.new()
+	return [[mesh, "rock"]]#CubeMesh.new()
 
 
 # Thread must be disposed (or "joined"), for portability.

@@ -2,8 +2,9 @@ extends Node
 
 """
 TODO:
-androidilla kaatuu koko homma jos palauttaa staticobj outputtina
-
+#generatorit ei enää saa palauttaa materiaaleja, vaan mesh ja materialTYPE 
+(wood, leaf)
+materiaali sijoitetaan sit kun kutsutaan addmesh(mesh, matType)
 
 """
 

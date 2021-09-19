@@ -6,15 +6,15 @@ params_billboard_mode = 3
 particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
-albedo_color = Color( 0.192157, 0.678431, 0, 1 )
+albedo_color = Color( 0.454902, 0.454902, 0.454902, 1 )
 
 [sub_resource type="QuadMesh" id=2]
 material = SubResource( 1 )
 size = Vector2( 0.5, 0.5 )
 
-[node name="TreeParticle" type="CPUParticles"]
+[node name="StoneParticles" type="CPUParticles"]
 emitting = false
-amount = 10
+amount = 15
 lifetime = 0.8
 one_shot = true
 explosiveness = 0.8

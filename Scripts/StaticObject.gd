@@ -1,7 +1,11 @@
 extends StaticBody
 
 #var material = 
-var particle = load("res://Assets/Particles/TreeParticle.tscn")
+var particleDict  = {
+	"tree": load("res://Assets/Particles/TreeParticle.tscn"),
+	"rock": load("res://Assets/Particles/StoneParticles.tscn")
+	}
+var particle
 # preload("res://Assets/Particles/TreeParticle.tscn")
 
 #set to true, when the actual height of the object has been set
@@ -11,40 +15,55 @@ var initialized = false
 var fullHp = 10
 var hp = fullHp
 var dead = false
-var parent = null
 
 var deathTime
 var respawnDelay = 5000
 
 var type = ""
 
+var stoneShader# = preload("res://Shaders/stone.shader")
+var woodShader# = preload("res://Shaders/wood.shader")
+var leafShader# = preload("res://Shaders/leaf.shader")
+
+var matDict
+var hitParticle
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
+	
+	stoneShader = load("res://Shaders/stone.shader")
+	woodShader = load("res://Shaders/wood.shader")
+	leafShader = load("res://Shaders/leaf.shader")
+
+	matDict = {
+		"wood": woodShader,
+		"leaf": leafShader,
+		"rock": stoneShader
+	}
+
 
 
 func setType(t):
 
 	type = t
 
-	if (type == "tree"):
-		particle = load("res://Assets/Particles/TreeParticle.tscn")
+
+	particle = particleDict[type]
+
+	hitParticle = particle.instance()
+	hitParticle.translation = Vector3(0, 2, 0)
+	add_child(hitParticle)
 
 
-	"""
-	for i in (get_children()):
-		if i is MeshInstance:
-			var particleInst = particle.instance()
-			particleInst.translation = i.mesh.get_aabb().position 
-			add_child(particleInst)
-			pass
-	"""
-
-func addMesh(mesh, material):
+func addMesh(mesh, matName):
 	var meshInst = MeshInstance.new()
 	meshInst.mesh = mesh
+	
+	var material = ShaderMaterial.new()
+	material.shader = matDict[matName]
+	
 
 	meshInst.set_surface_material(0, material)
 
@@ -91,7 +110,7 @@ func _process(delta: float) -> void:
 		if (ground != null):
 			transform.origin.y = ground.y
 			set = true
-	parent = get_parent()
+
 
 func damage(amount):
 	hp -= amount
@@ -109,7 +128,10 @@ func damage(amount):
 				i.visible = false
 			if i is CPUParticles:
 				i.emitting = true
+	else:
+		
 
+		hitParticle.emitting = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
