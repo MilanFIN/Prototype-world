@@ -1,12 +1,20 @@
 extends StaticBody
 
-#var material = 
+export var drop = ""
+export var particleType = ""
+
+
+
+"""
 var particleDict  = {
 	"tree": load("res://Assets/Particles/TreeParticle.tscn"),
 	"rock": load("res://Assets/Particles/StoneParticles.tscn")
 	}
+"""
 var particle
-# preload("res://Assets/Particles/TreeParticle.tscn")
+
+
+
 
 #set to true, when the actual height of the object has been set
 var set = false
@@ -25,7 +33,7 @@ var stoneShader# = preload("res://Shaders/stone.shader")
 var woodShader# = preload("res://Shaders/wood.shader")
 var leafShader# = preload("res://Shaders/leaf.shader")
 
-var matDict
+var shaderDict
 var hitParticle
 
 
@@ -37,7 +45,7 @@ func _ready() -> void:
 	woodShader = load("res://Shaders/wood.shader")
 	leafShader = load("res://Shaders/leaf.shader")
 
-	matDict = {
+	shaderDict = {
 		"wood": woodShader,
 		"leaf": leafShader,
 		"rock": stoneShader
@@ -50,7 +58,8 @@ func setType(t):
 	type = t
 
 
-	particle = particleDict[type]
+	particle = load("res://Assets/Particles/"+particleType+".tscn")
+	#particleDict[type]
 
 	hitParticle = particle.instance()
 	hitParticle.translation = Vector3(0, 2, 0)
@@ -62,7 +71,7 @@ func addMesh(mesh, matName):
 	meshInst.mesh = mesh
 	
 	var material = ShaderMaterial.new()
-	material.shader = matDict[matName]
+	material.shader = shaderDict[matName]
 	
 
 	meshInst.set_surface_material(0, material)
@@ -128,6 +137,12 @@ func damage(amount):
 				i.visible = false
 			if i is CPUParticles:
 				i.emitting = true
+		
+		if (drop != ""):
+			var dropRes = load("res://Assets/Pickups/"+drop+".tscn")
+			var dropInst = dropRes.instance()
+			get_parent().add_child(dropInst)
+			dropInst.global_transform.origin = global_transform.origin
 	else:
 		
 

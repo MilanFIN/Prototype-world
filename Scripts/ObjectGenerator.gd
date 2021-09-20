@@ -1,6 +1,8 @@
 extends Node
 
 var tree = preload("res://Assets/Objects/Tree.tscn") 
+var rock = preload("res://Assets/Objects/Rock.tscn") 
+
 
 #shaders
 var stoneShader# = preload("res://Shaders/stone.shader")
@@ -140,12 +142,12 @@ func process(delta = 0) -> void:
 
 			if (not (coordinates in populations)):
 
-
-				var newObj = tree.instance()
-
-
-
-
+				
+				var newObj
+				if (type == "tree"):
+					newObj = tree.instance()
+				elif (type == "rock"):
+					newObj = rock.instance()
 
 
 				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)

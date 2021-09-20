@@ -2,11 +2,12 @@
 
 [ext_resource path="res://Scripts/StaticObject.gd" type="Script" id=1]
 
-[node name="Tree" type="StaticBody" groups=[
+[node name="Rock" type="StaticBody" groups=[
 "Resource",
 ]]
 script = ExtResource( 1 )
-particleType = "TreeParticle"
+drop = "Stone"
+particleType = "StoneParticle"
 
 [node name="SetRay" type="RayCast" parent="."]
 cast_to = Vector3( 0, -1000, 0 )
