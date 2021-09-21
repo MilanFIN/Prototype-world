@@ -6,6 +6,7 @@
 "Resource",
 ]]
 script = ExtResource( 1 )
+drop = "Logs"
 particleType = "TreeParticle"
 
 [node name="SetRay" type="RayCast" parent="."]

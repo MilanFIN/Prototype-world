@@ -65,6 +65,8 @@ func melee():
 			for body in rightHitbox.get_overlapping_bodies():
 				if body.is_in_group("Enemy") or body.is_in_group("Resource"):
 					body.damage(damage)
+				elif (body.is_in_group("Pickup")):
+					body.pickup()
 
 func _process(delta: float) -> void:
 	#handCamera.global_transform = camera.global_transform
