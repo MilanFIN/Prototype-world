@@ -39,6 +39,8 @@ onready var cameraWallChecker = $CameraJoint/WallChecker
 
 onready var body = $Body
 
+onready var animator = $Animator
+
 #onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
 var damage = 4
@@ -59,14 +61,14 @@ func setMoveVector(mV):
 
 func melee():
 	if (Input.is_action_just_pressed("Attack")):
-		if not (rightMeleeAnim.is_playing()):
-			rightMeleeAnim.play("RightAttack")
-			rightMeleeAnim.queue("RightReturn")
-			for body in rightHitbox.get_overlapping_bodies():
-				if body.is_in_group("Enemy") or body.is_in_group("Resource"):
-					body.damage(damage)
-				elif (body.is_in_group("Pickup")):
-					body.pickup()
+		#if not (rightMeleeAnim.is_playing()):
+		#	rightMeleeAnim.play("RightAttack")
+		#	rightMeleeAnim.queue("RightReturn")
+		for body in rightHitbox.get_overlapping_bodies():
+			if body.is_in_group("Enemy") or body.is_in_group("Resource"):
+				body.damage(damage)
+			elif (body.is_in_group("Pickup")):
+				body.pickup()
 
 func _process(delta: float) -> void:
 	#handCamera.global_transform = camera.global_transform
@@ -157,19 +159,22 @@ func _physics_process(delta: float) -> void:
 	
 	#body.rotation_degrees = 0
 	if (input != Vector2.ZERO):
+		
 		var angle = -rad2deg(Vector2(relativeDir.z, relativeDir.x).angle_to(Vector2.UP))
 		angle = int(angle) % 360
+		"""
 		var rotation = int(body.rotation_degrees.y) % 360
 		var angleDiff = rotation - angle
-
-
-
 		angleDiff = clamp(angleDiff, -delta*turnRate, delta*turnRate)
-		
-
 		body.rotation_degrees.y -= angleDiff
+		"""
+		body.rotation_degrees.y = angle
+		animator.play("Run")
+	
+	else:
+		animator.play("Stand")
 
-	#body.rotation_degrees.x = angle
+
 	#print(Vector2(relativeDir.z, relativeDir.x), Vector2.UP)
 	
 
