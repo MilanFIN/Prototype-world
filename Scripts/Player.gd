@@ -40,6 +40,7 @@ onready var cameraWallChecker = $CameraJoint/WallChecker
 onready var body = $Body
 
 onready var animator = $Animator
+onready var animationTree = $AnimationTree
 
 #onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
@@ -61,6 +62,9 @@ func setMoveVector(mV):
 
 func melee():
 	if (Input.is_action_just_pressed("Attack")):
+		#animator.play("RightHit")
+		animationTree.set("parameters/RightAttack/active", true)
+		print(animator.current_animation)
 		#if not (rightMeleeAnim.is_playing()):
 		#	rightMeleeAnim.play("RightAttack")
 		#	rightMeleeAnim.queue("RightReturn")
@@ -169,10 +173,12 @@ func _physics_process(delta: float) -> void:
 		body.rotation_degrees.y -= angleDiff
 		"""
 		body.rotation_degrees.y = angle
-		animator.play("Run")
+		animationTree.set("parameters/Moving/blend_amount", 1)
+		#
 	
 	else:
-		animator.play("Stand")
+		#animator.play("Stand")
+		animationTree.set("parameters/Moving/blend_amount", 0)
 
 
 	#print(Vector2(relativeDir.z, relativeDir.x), Vector2.UP)
