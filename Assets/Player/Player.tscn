@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 
@@ -26,7 +26,23 @@ size = Vector3( 0.5, 0.5, 1.2 )
 size = Vector3( 1, 1, 0.8 )
 
 [sub_resource type="Animation" id=9]
-resource_name = "RightHit"
+resource_name = "LeftHit"
+length = 0.3
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body/LeftShoulder:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 30, -55, -35 ), Vector3( 70, -45, -45 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=10]
 length = 0.3
 step = 0.05
 tracks/0/type = "value"
@@ -42,7 +58,7 @@ tracks/0/keys = {
 "values": [ Vector3( 4.32571e-06, 0, 0 ), Vector3( 30, 54.7356, 35.2644 ), Vector3( 68.9094, 44.007, 45.993 ), Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=11]
 length = 0.5
 loop = true
 step = 0.25
@@ -95,7 +111,7 @@ tracks/3/keys = {
 "values": [ Vector3( 30, 0, 0 ), Vector3( -30, 0, 0 ), Vector3( 30, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=12]
 length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body/RightShoulder:rotation_degrees")
@@ -146,35 +162,45 @@ tracks/3/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="AnimationNodeBlend2" id=12]
+[sub_resource type="AnimationNodeOneShot" id=19]
+filters = [ "Body/LeftShoulder:rotation_degrees" ]
 
-[sub_resource type="AnimationNodeOneShot" id=13]
+[sub_resource type="AnimationNodeAnimation" id=20]
+animation = "LeftHit"
+
+[sub_resource type="AnimationNodeBlend2" id=13]
+
+[sub_resource type="AnimationNodeOneShot" id=14]
 filter_enabled = true
 filters = [ "Body/RightShoulder:rotation_degrees" ]
 
-[sub_resource type="AnimationNodeAnimation" id=14]
+[sub_resource type="AnimationNodeAnimation" id=15]
 animation = "RightHit"
 
-[sub_resource type="AnimationNodeAnimation" id=15]
+[sub_resource type="AnimationNodeAnimation" id=16]
 animation = "Run"
 
-[sub_resource type="AnimationNodeAnimation" id=16]
+[sub_resource type="AnimationNodeAnimation" id=17]
 animation = "Stand"
 
-[sub_resource type="AnimationNodeBlendTree" id=17]
-graph_offset = Vector2( -380.676, 121.5 )
-nodes/Moving/node = SubResource( 12 )
+[sub_resource type="AnimationNodeBlendTree" id=18]
+graph_offset = Vector2( -98.4291, 154.25 )
+nodes/LeftAttack/node = SubResource( 19 )
+nodes/LeftAttack/position = Vector2( 660, 300 )
+nodes/LeftHit/node = SubResource( 20 )
+nodes/LeftHit/position = Vector2( 394.523, 460 )
+nodes/Moving/node = SubResource( 13 )
 nodes/Moving/position = Vector2( 60, 100 )
-nodes/RightAttack/node = SubResource( 13 )
+nodes/RightAttack/node = SubResource( 14 )
 nodes/RightAttack/position = Vector2( 340, 180 )
-nodes/RightHit/node = SubResource( 14 )
+nodes/RightHit/node = SubResource( 15 )
 nodes/RightHit/position = Vector2( 60, 300 )
-nodes/Run/node = SubResource( 15 )
+nodes/Run/node = SubResource( 16 )
 nodes/Run/position = Vector2( -220, 220 )
-nodes/Stand/node = SubResource( 16 )
+nodes/Stand/node = SubResource( 17 )
 nodes/Stand/position = Vector2( -220, 100 )
-nodes/output/position = Vector2( 560, 180 )
-node_connections = [ "output", 0, "RightAttack", "Moving", 0, "Stand", "Moving", 1, "Run", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit" ]
+nodes/output/position = Vector2( 920, 300 )
+node_connections = [ "output", 0, "LeftAttack", "Moving", 0, "Stand", "Moving", 1, "Run", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit" ]
 
 [node name="Player" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
@@ -274,13 +300,15 @@ enabled = true
 cast_to = Vector3( 0, 0, 10 )
 
 [node name="Animator" type="AnimationPlayer" parent="."]
-anims/RightHit = SubResource( 9 )
-anims/Run = SubResource( 10 )
-anims/Stand = SubResource( 11 )
+anims/LeftHit = SubResource( 9 )
+anims/RightHit = SubResource( 10 )
+anims/Run = SubResource( 11 )
+anims/Stand = SubResource( 12 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 17 )
+tree_root = SubResource( 18 )
 anim_player = NodePath("../Animator")
 active = true
+parameters/LeftAttack/active = false
 parameters/Moving/blend_amount = 0.0
 parameters/RightAttack/active = false

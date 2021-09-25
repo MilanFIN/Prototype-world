@@ -73,6 +73,8 @@ func melee():
 				body.damage(damage)
 			elif (body.is_in_group("Pickup")):
 				body.pickup()
+	if (Input.is_action_just_pressed("SecondaryAttack")):
+		animationTree.set("parameters/LeftAttack/active", true)
 
 func _process(delta: float) -> void:
 	#handCamera.global_transform = camera.global_transform
