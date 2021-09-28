@@ -162,45 +162,45 @@ tracks/3/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="AnimationNodeOneShot" id=19]
+[sub_resource type="AnimationNodeOneShot" id=13]
 filters = [ "Body/LeftShoulder:rotation_degrees" ]
 
-[sub_resource type="AnimationNodeAnimation" id=20]
+[sub_resource type="AnimationNodeAnimation" id=14]
 animation = "LeftHit"
 
-[sub_resource type="AnimationNodeBlend2" id=13]
+[sub_resource type="AnimationNodeBlend2" id=15]
 
-[sub_resource type="AnimationNodeOneShot" id=14]
+[sub_resource type="AnimationNodeOneShot" id=16]
 filter_enabled = true
 filters = [ "Body/RightShoulder:rotation_degrees" ]
 
-[sub_resource type="AnimationNodeAnimation" id=15]
+[sub_resource type="AnimationNodeAnimation" id=17]
 animation = "RightHit"
 
-[sub_resource type="AnimationNodeAnimation" id=16]
+[sub_resource type="AnimationNodeAnimation" id=18]
 animation = "Run"
 
-[sub_resource type="AnimationNodeAnimation" id=17]
+[sub_resource type="AnimationNodeAnimation" id=19]
 animation = "Stand"
 
-[sub_resource type="AnimationNodeBlendTree" id=18]
-graph_offset = Vector2( -98.4291, 154.25 )
-nodes/LeftAttack/node = SubResource( 19 )
+[sub_resource type="AnimationNodeBlendTree" id=20]
+graph_offset = Vector2( -510.09, 58.25 )
+nodes/LeftAttack/node = SubResource( 13 )
 nodes/LeftAttack/position = Vector2( 660, 300 )
-nodes/LeftHit/node = SubResource( 20 )
+nodes/LeftHit/node = SubResource( 14 )
 nodes/LeftHit/position = Vector2( 394.523, 460 )
-nodes/Moving/node = SubResource( 13 )
+nodes/Moving/node = SubResource( 15 )
 nodes/Moving/position = Vector2( 60, 100 )
-nodes/RightAttack/node = SubResource( 14 )
+nodes/RightAttack/node = SubResource( 16 )
 nodes/RightAttack/position = Vector2( 340, 180 )
-nodes/RightHit/node = SubResource( 15 )
+nodes/RightHit/node = SubResource( 17 )
 nodes/RightHit/position = Vector2( 60, 300 )
-nodes/Run/node = SubResource( 16 )
+nodes/Run/node = SubResource( 18 )
 nodes/Run/position = Vector2( -220, 220 )
-nodes/Stand/node = SubResource( 17 )
+nodes/Stand/node = SubResource( 19 )
 nodes/Stand/position = Vector2( -220, 100 )
 nodes/output/position = Vector2( 920, 300 )
-node_connections = [ "output", 0, "LeftAttack", "Moving", 0, "Stand", "Moving", 1, "Run", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit" ]
+node_connections = [ "output", 0, "LeftAttack", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "Moving", 0, "Stand", "Moving", 1, "Run" ]
 
 [node name="Player" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
@@ -306,7 +306,7 @@ anims/Run = SubResource( 11 )
 anims/Stand = SubResource( 12 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 18 )
+tree_root = SubResource( 20 )
 anim_player = NodePath("../Animator")
 active = true
 parameters/LeftAttack/active = false

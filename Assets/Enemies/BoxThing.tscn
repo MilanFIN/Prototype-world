@@ -1,0 +1,232 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Particles/BloodParticle.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 1.25
+height = 1.5
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 1.25, 1.25, 2 )
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 0.5, 1, 0.5 )
+
+[sub_resource type="CubeMesh" id=4]
+size = Vector3( 0.5, 1, 0.5 )
+
+[sub_resource type="CubeMesh" id=5]
+size = Vector3( 0.5, 1, 0.5 )
+
+[sub_resource type="CubeMesh" id=6]
+size = Vector3( 0.5, 1, 0.5 )
+
+[sub_resource type="CubeMesh" id=7]
+size = Vector3( 0.5, 0.5, 0.5 )
+
+[sub_resource type="Animation" id=8]
+resource_name = "Run"
+length = 1.2
+loop = true
+step = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body/LeftHip:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1, 0, 1.5 ), Vector3( -1, 0, 1 ), Vector3( -1, 0, 0.5 ), Vector3( -1, 0, 1 ), Vector3( -1, 0, 1.5 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body/RightHip:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0, 0.5 ), Vector3( 1, 0, 1 ), Vector3( 1, 0, 1.5 ), Vector3( 1, 0, 1 ), Vector3( 1, 0, 0.5 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Body/RightShoulder:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0, -1 ), Vector3( 1, 0, -1.5 ), Vector3( 1, 0, -1 ), Vector3( 1, 0, -0.5 ), Vector3( 1, 0, -1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Body/LeftShoulder:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1, 0, -1 ), Vector3( -1, 0, -0.5 ), Vector3( -1, 0, -1 ), Vector3( -1, 0, -1.5 ), Vector3( -1, 0, -1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body/LeftShoulder:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1, 0, -1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Body/RightShoulder:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0, -1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Body/LeftHip:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1, 0, 1 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Body/RightHip:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 0, 1 ) ]
+}
+
+[sub_resource type="AnimationNodeBlend2" id=10]
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "Run"
+
+[sub_resource type="AnimationNodeAnimation" id=12]
+animation = "Stand"
+
+[sub_resource type="AnimationNodeBlendTree" id=13]
+graph_offset = Vector2( 0, 30 )
+nodes/Moving/node = SubResource( 10 )
+nodes/Moving/position = Vector2( 460, 60 )
+nodes/Run/node = SubResource( 11 )
+nodes/Run/position = Vector2( 200, 180 )
+nodes/Stand/node = SubResource( 12 )
+nodes/Stand/position = Vector2( 200, 60 )
+nodes/output/position = Vector2( 720, 100 )
+node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "Run" ]
+
+[sub_resource type="BoxShape" id=14]
+extents = Vector3( 10, 10, 10 )
+
+[node name="BoxThing" type="KinematicBody" groups=[
+"Enemy",
+]]
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
+
+[node name="Body" type="MeshInstance" parent="."]
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="LeftShoulder" type="BoneAttachment" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1 )
+
+[node name="Leg" type="MeshInstance" parent="Body/LeftShoulder"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="RightShoulder" type="BoneAttachment" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1 )
+
+[node name="Leg" type="MeshInstance" parent="Body/RightShoulder"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="LeftHip" type="BoneAttachment" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
+
+[node name="Leg" type="MeshInstance" parent="Body/LeftHip"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+mesh = SubResource( 5 )
+material/0 = null
+
+[node name="RightHip" type="BoneAttachment" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1 )
+
+[node name="Leg" type="MeshInstance" parent="Body/RightHip"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="Neck" type="BoneAttachment" parent="Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+
+[node name="Head" type="MeshInstance" parent="Body/Neck"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25 )
+mesh = SubResource( 7 )
+material/0 = null
+
+[node name="SetRay" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, -1000, 0 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Run = SubResource( 8 )
+anims/Stand = SubResource( 9 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 13 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/Moving/blend_amount = 0.0
+
+[node name="DetectionArea" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
+shape = SubResource( 14 )
+
+[node name="CPUParticles" type="CPUParticles" parent="."]
+
+[node name="HitParticles" parent="." instance=ExtResource( 2 )]
+initial_velocity = 3.0
+
+[connection signal="body_entered" from="DetectionArea" to="." method="_on_DetectionArea_body_entered"]
+[connection signal="body_exited" from="DetectionArea" to="." method="_on_DetectionArea_body_exited"]

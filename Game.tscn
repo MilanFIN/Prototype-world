@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Terrain/Terrain.tscn" type="PackedScene" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://Assets/Terrain/Animals.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Hud/joy.png" type="Texture" id=5]
 [ext_resource path="res://Hud/base.png" type="Texture" id=6]
-[ext_resource path="res://Assets/Pickups/Stone.tscn" type="PackedScene" id=7]
 
 [node name="Game" type="Node"]
 script = ExtResource( 3 )
@@ -35,6 +34,3 @@ texture = ExtResource( 5 )
 position = Vector2( 1075, 525 )
 normal = ExtResource( 5 )
 action = "Attack"
-
-[node name="Stone" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 47.0457, 0 )

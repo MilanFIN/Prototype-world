@@ -69,7 +69,11 @@ func melee():
 		#	rightMeleeAnim.play("RightAttack")
 		#	rightMeleeAnim.queue("RightReturn")
 		for body in rightHitbox.get_overlapping_bodies():
-			if body.is_in_group("Enemy") or body.is_in_group("Resource"):
+			if body.is_in_group("Enemy"):
+				var right = camera.global_transform.basis.x
+				var forward = right.rotated(Vector3.UP, deg2rad(90))
+				body.damage(damage, forward)
+			elif body.is_in_group("Resource"):
 				body.damage(damage)
 			elif (body.is_in_group("Pickup")):
 				body.pickup()
@@ -175,7 +179,8 @@ func _physics_process(delta: float) -> void:
 		body.rotation_degrees.y -= angleDiff
 		"""
 		body.rotation_degrees.y = angle
-		animationTree.set("parameters/Moving/blend_amount", 1)
+
+		animationTree.set("parameters/Moving/blend_amount", input.length())
 		#
 	
 	else:

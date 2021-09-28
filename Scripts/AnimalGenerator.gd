@@ -1,6 +1,6 @@
 extends Node
 
-var blob = preload("res://Assets/Objects/Jumper.tscn")
+var blob = preload("res://Assets/Enemies/BoxThing.tscn")
 var animals = []
 
 var lastUpdateTime
