@@ -3,6 +3,7 @@ extends KinematicBody
 
 var velocity = Vector3.ZERO
 var gravity = 9.8
+export var item = "Item"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,3 +25,4 @@ func _physics_process(delta: float) -> void:
 
 func pickup():
 	queue_free()
+	return "Item"

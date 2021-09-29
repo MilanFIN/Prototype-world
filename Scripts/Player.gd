@@ -42,6 +42,8 @@ onready var body = $Body
 onready var animator = $Animator
 onready var animationTree = $AnimationTree
 
+onready var inventory = $Body/LeftShoulder/LeftArm/Inventory
+
 #onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
 var damage = 4
@@ -76,9 +78,12 @@ func melee():
 			elif body.is_in_group("Resource"):
 				body.damage(damage)
 			elif (body.is_in_group("Pickup")):
-				body.pickup()
+				var item = body.pickup()
+				inventory.setItem(item)
+
 	if (Input.is_action_just_pressed("SecondaryAttack")):
 		animationTree.set("parameters/LeftAttack/active", true)
+		inventory.cyclePlace()
 
 func _process(delta: float) -> void:
 	#handCamera.global_transform = camera.global_transform
