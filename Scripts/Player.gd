@@ -113,6 +113,8 @@ func _physics_process(delta: float) -> void:
 	#rotation_degrees.y -= mouseDelta.x * delta
 	#mouseDelta = Vector2()
 
+	inventory.setDirection(camera.global_transform.basis.x.rotated(Vector3.UP, deg2rad(90))
+							, translation)
 
 	#vertical rotation
 	if (mouseDelta != Vector2.ZERO):
