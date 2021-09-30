@@ -1,6 +1,6 @@
 extends Spatial
 
-var valueGenerator = preload("res://Scripts/ValueGenerator.gd").new()
+
 var objectGenerator
 
 
@@ -9,6 +9,7 @@ var groundMaterial = ShaderMaterial.new()
 
 onready var waterShader = preload("res://Shaders/water.shader")
 
+var valueGenerator
 
 var chunkSize
 var resolution
@@ -33,9 +34,9 @@ var threadOutputs = []
 
 func _ready():
 
-
+	valueGenerator = Global.valueGenerator
 	
-	objectGenerator = preload("res://Scripts/ObjectGenerator.gd").new(valueGenerator, get_node("Objects"))
+	objectGenerator = preload("res://Scripts/ObjectGenerator.gd").new(get_node("Objects"))
 
 
 

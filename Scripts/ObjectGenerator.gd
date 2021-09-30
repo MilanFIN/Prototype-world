@@ -41,7 +41,7 @@ var resolution
 
 var lastCacheTime = OS.get_ticks_msec()
 
-func _init(values, objnode) -> void:
+func _init( objnode) -> void:
 
 	#staticobj = load("res://Assets/Objects/StaticObject.tscn")
 	"""
@@ -50,7 +50,7 @@ func _init(values, objnode) -> void:
 	initialized = true
 	
 	
-	valueGenerator = values
+	valueGenerator = Global.valueGenerator
 	
 	semaphore = Semaphore.new()
 	mutex = Mutex.new()
