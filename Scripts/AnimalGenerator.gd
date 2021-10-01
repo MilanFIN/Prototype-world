@@ -17,6 +17,10 @@ func _ready() -> void:
 
 
 func check(pos, force=false):
+	
+	return
+	#todo remove above
+	
 	if (OS.get_ticks_msec() > lastUpdateTime + UPDATEINTERVAL):
 		lastUpdateTime = OS.get_ticks_msec()
 		for i in range(len(animals)-1, -1, -1):
