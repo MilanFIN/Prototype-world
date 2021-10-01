@@ -68,7 +68,8 @@ func melee():
 		if (inventory.placeMode):
 			var item = inventory.placeItem()
 
-			add_child(item)
+			get_parent().get_node("Blocks").add_child(item)
+			item.place()
 		else:
 			for body in rightHitbox.get_overlapping_bodies():
 				if body.is_in_group("Enemy"):

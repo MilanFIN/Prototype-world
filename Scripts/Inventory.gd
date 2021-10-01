@@ -23,7 +23,7 @@ func placeItem():
 	var placedBlock = block
 	block = null
 	placeMode = false
-
+	placedBlock.place()
 	return placedBlock
 
 func cyclePlace():

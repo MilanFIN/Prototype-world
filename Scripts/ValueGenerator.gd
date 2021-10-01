@@ -66,6 +66,7 @@ func getY(x, z):
 	var layer2 = (noise2.get_noise_2d(x, z) +1) * planeVariance
 	return layer2 * layer1
 
+
 # figures out if a world coordinate (x,z) should have any type of object in it
 # return: -1 for no object, 0-x for obj type
 # note: static only, increase getint parameter when more items are added
