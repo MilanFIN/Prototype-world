@@ -31,7 +31,7 @@ var secondLocation = Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
+	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
 	pass
 
 func _process(delta: float) -> void:

@@ -12,12 +12,18 @@ onready var itemHolder = $ItemHolder
 func _ready() -> void:
 	pass # Replace with function body.
 
+#load a new item
 func setItem(i):
 	item = load("res://Assets/Items/"+ i+".tscn").instance()
 	print(item)
 	itemHolder.add_child(item)
 
-
+func placeItem():
+	blockPreview.remove_child(block)
+	var placedBlock = block
+	block = null
+	placeMode = false
+	return placedBlock
 
 func cyclePlace():
 	if (item != null):

@@ -36,4 +36,9 @@ position = Vector2( 1075, 525 )
 normal = ExtResource( 5 )
 action = "Attack"
 
+[node name="Place" type="TouchScreenButton" parent="Hud"]
+position = Vector2( 1075, 430 )
+normal = ExtResource( 5 )
+action = "SecondaryAttack"
+
 [node name="Block" parent="." instance=ExtResource( 7 )]

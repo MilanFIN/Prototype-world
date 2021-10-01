@@ -64,22 +64,22 @@ func setMoveVector(mV):
 
 func melee():
 	if (Input.is_action_just_pressed("Attack")):
-		#animator.play("RightHit")
 		animationTree.set("parameters/RightAttack/active", true)
-		print(animator.current_animation)
-		#if not (rightMeleeAnim.is_playing()):
-		#	rightMeleeAnim.play("RightAttack")
-		#	rightMeleeAnim.queue("RightReturn")
-		for body in rightHitbox.get_overlapping_bodies():
-			if body.is_in_group("Enemy"):
-				var right = camera.global_transform.basis.x
-				var forward = right.rotated(Vector3.UP, deg2rad(90))
-				body.damage(damage, forward)
-			elif body.is_in_group("Resource"):
-				body.damage(damage)
-			elif (body.is_in_group("Pickup")):
-				var item = body.pickup()
-				inventory.setItem(item)
+		if (inventory.placeMode):
+			var item = inventory.placeItem()
+			print(item)
+			add_child(item)
+		else:
+			for body in rightHitbox.get_overlapping_bodies():
+				if body.is_in_group("Enemy"):
+					var right = camera.global_transform.basis.x
+					var forward = right.rotated(Vector3.UP, deg2rad(90))
+					body.damage(damage, forward)
+				elif body.is_in_group("Resource"):
+					body.damage(damage)
+				elif (body.is_in_group("Pickup")):
+					var item = body.pickup()
+					inventory.setItem(item)
 
 	if (Input.is_action_just_pressed("SecondaryAttack")):
 		animationTree.set("parameters/LeftAttack/active", true)
