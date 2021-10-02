@@ -62,7 +62,11 @@ func setLocation():
 						var dir = absDiffVector.max_axis()
 
 
-						
+						#90 snapped angle that should be added to collider rotation
+						#for the desired goal rotation
+						var rotDiff = round((rotation_degrees.y-collider.rotation_degrees.y) / 90.0) *90
+
+
 						if (dir == 0): #AXIS_X
 							var offset = 2
 							if ( diffVector.x < 0):
@@ -71,8 +75,8 @@ func setLocation():
 							newPos.y = Global.valueGenerator.getY(newPos.x, newPos.z)#collider.global_transform.origin.y
 							
 							global_transform.origin = newPos#newPos
-							rotation = collider.rotation
 
+							rotation_degrees.y = collider.rotation_degrees.y + rotDiff
 						elif (dir == 2): #AXIS_Z
 							var offset = 2
 							if ( diffVector.z < 0):
@@ -81,7 +85,8 @@ func setLocation():
 							newPos.y = Global.valueGenerator.getY(newPos.x, newPos.z)#collider.global_transform.origin.ya
 							
 							global_transform.origin = newPos#newPos
-							rotation = collider.rotation
+
+							rotation_degrees.y = collider.rotation_degrees.y + rotDiff
 
 						#else:
 						#	global_transform.origin = collider.global_transform.origin
