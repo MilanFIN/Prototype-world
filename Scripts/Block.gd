@@ -9,7 +9,7 @@ var direction = Vector2.ZERO
 var snap = false
 
 onready var leftRay = $LeftRay
-
+onready var rays = $Rays
 
 onready var collisionShape = $CollisionShape
 onready var core = $Core
@@ -33,12 +33,14 @@ func preview(dir, loc):
 
 func setLocation():
 
-	var breakSnap = false
+	#needed, as raycasts don't update until next physics call
+	#otherwise snap will just end up re-enabled
+	var brokeSnap = false
 
 	if (snap):
-		if ((location - global_transform.origin).length() > 3):
+		if ((location - global_transform.origin).length() > 2.1):
 			snap = false
-			breakSnap = true
+			brokeSnap = true
 
 
 	if (not snap):
@@ -47,43 +49,45 @@ func setLocation():
 		var angle = direction.angle()
 		rotation.y = angle + deg2rad(-90)
 		
-		if (not breakSnap):
-			if (leftRay.get_collider() != null):
-				if (leftRay.get_collider().is_in_group("Block")):
-					var collider = leftRay.get_collider()
-					var colPos = collider.to_local(collider.global_transform.origin)
-					var locPos = collider.to_local(global_transform.origin)
-					var diffVector = locPos - colPos
-					var absDiffVector = diffVector.abs()
-					var dir = absDiffVector.max_axis()
-					#print(dir, absDiffVector)
-					#var colPos = to_local(leftRay.get_collider().global_transform.origin)
+		if (not brokeSnap):
+			
+			for ray in rays.get_children():
+				if (ray.get_collider() != null):
+					if (ray.get_collider().is_in_group("Block")):
+						var collider = ray.get_collider()
+						var colPos = collider.to_local(collider.global_transform.origin)
+						var locPos = collider.to_local(global_transform.origin)
+						var diffVector = locPos - colPos
+						var absDiffVector = diffVector.abs()
+						var dir = absDiffVector.max_axis()
 
-					
-					if (dir == 0): #AXIS_X
-						var offset = 2
-						if ( diffVector.x < 0):
-							offset *= -1
-						var newPos = collider.core.to_global(collider.core.translation + Vector3(offset,0, 0))
-						newPos.y = collider.global_transform.origin.y
+
 						
-						global_transform.origin = newPos#newPos
-						rotation = collider.rotation
+						if (dir == 0): #AXIS_X
+							var offset = 2
+							if ( diffVector.x < 0):
+								offset *= -1
+							var newPos = collider.core.to_global(collider.core.translation + Vector3(offset,0, 0))
+							newPos.y = Global.valueGenerator.getY(newPos.x, newPos.z)#collider.global_transform.origin.y
+							
+							global_transform.origin = newPos#newPos
+							rotation = collider.rotation
 
-					elif (dir == 2): #AXIS_Z
-						var offset = 2
-						if ( diffVector.z < 0):
-							offset *= -1
-						var newPos = collider.core.to_global(collider.core.translation + Vector3(0, 0, offset))
-						newPos.y = collider.global_transform.origin.y
+						elif (dir == 2): #AXIS_Z
+							var offset = 2
+							if ( diffVector.z < 0):
+								offset *= -1
+							var newPos = collider.core.to_global(collider.core.translation + Vector3(0, 0, offset))
+							newPos.y = Global.valueGenerator.getY(newPos.x, newPos.z)#collider.global_transform.origin.ya
+							
+							global_transform.origin = newPos#newPos
+							rotation = collider.rotation
+
+						#else:
+						#	global_transform.origin = collider.global_transform.origin
 						
-						global_transform.origin = newPos#newPos
-						rotation = collider.rotation
-
-					#else:
-					#	global_transform.origin = collider.global_transform.origin
-					
-					snap = true
+						snap = true
+						break
 		
 
 func place():

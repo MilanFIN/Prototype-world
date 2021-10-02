@@ -28,27 +28,29 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 0 )
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="LeftRay" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-enabled = true
-cast_to = Vector3( -3, 0, 0 )
-
-[node name="RightRay" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-enabled = true
-cast_to = Vector3( 2, 0, 0 )
-
-[node name="ForwardRay" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-enabled = true
-cast_to = Vector3( 0, 0, -2 )
-
-[node name="BackRay" type="RayCast" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-enabled = true
-cast_to = Vector3( 0, 0, 2 )
-
 [node name="Core" type="RayCast" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, 0 )
+
+[node name="Rays" type="Spatial" parent="."]
+
+[node name="LeftRay" type="RayCast" parent="Rays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+enabled = true
+cast_to = Vector3( -2, 0, 0 )
+
+[node name="RightRay" type="RayCast" parent="Rays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+enabled = true
+cast_to = Vector3( 2, 0, 0 )
+
+[node name="ForwardRay" type="RayCast" parent="Rays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, -2 )
+
+[node name="BackRay" type="RayCast" parent="Rays"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, 2 )
