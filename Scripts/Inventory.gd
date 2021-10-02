@@ -19,12 +19,15 @@ func setItem(i):
 	itemHolder.add_child(item)
 
 func placeItem():
-	blockPreview.remove_child(block)
-	var placedBlock = block
-	block = null
-	placeMode = false
-	placedBlock.place()
-	return placedBlock
+	
+	if (block.place()):
+		blockPreview.remove_child(block)
+		var placedBlock = block
+		block = null
+		placeMode = false
+		return placedBlock
+	else:
+		return null
 
 func cyclePlace():
 	if (item != null):

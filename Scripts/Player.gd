@@ -67,9 +67,11 @@ func melee():
 		animationTree.set("parameters/RightAttack/active", true)
 		if (inventory.placeMode):
 			var item = inventory.placeItem()
-
-			get_parent().get_node("Blocks").add_child(item)
-			item.place()
+			if (item != null):
+				get_parent().get_node("Blocks").add_child(item)
+			else:
+				pass
+			
 		else:
 			for body in rightHitbox.get_overlapping_bodies():
 				if body.is_in_group("Enemy"):

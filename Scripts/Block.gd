@@ -14,6 +14,8 @@ onready var rays = $Rays
 onready var collisionShape = $CollisionShape
 onready var core = $Core
 
+onready var placementBox = $PlacementBox
+
 var placed = false
 
 # Called when the node enters the scene tree for the first time.
@@ -49,8 +51,14 @@ func setLocation():
 		var angle = direction.angle()
 		rotation.y = angle + deg2rad(-90)
 		
-		if (not brokeSnap):
-			
+		var blockSnapping = false
+		
+		for body in placementBox.get_overlapping_bodies():
+			if (body.is_in_group("Block")):
+				if (body != self):
+					blockSnapping = true
+		
+		if (not brokeSnap and not blockSnapping):
 			for ray in rays.get_children():
 				if (ray.get_collider() != null):
 					if (ray.get_collider().is_in_group("Block")):
@@ -96,7 +104,13 @@ func setLocation():
 		
 
 func place():
+	for body in placementBox.get_overlapping_bodies():
+		if (body.is_in_group("Block")):
+			if (body != self):
+				return false
+
 	placed = true
+	return true
 
 func _physics_process(delta: float) -> void:
 	pass
