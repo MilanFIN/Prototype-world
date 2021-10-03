@@ -1,5 +1,7 @@
 extends StaticBody
 
+export var width = 2
+export var depth = 2
 
 var lastPos = Vector3.ZERO
 
@@ -23,6 +25,11 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
+func getOffset(directionAxis):
+	if (directionAxis == 0): #AXIS_X
+		return width/2
+	else: #AXIS_Z
+		return depth/2
 
 func preview(dir, loc):
 	dir.y = 0
@@ -74,9 +81,17 @@ func setLocation():
 						#for the desired goal rotation
 						var rotDiff = round((rotation_degrees.y-collider.rotation_degrees.y) / 90.0) *90
 
+						var offset = collider.getOffset(dir)
+						rotation_degrees.y = collider.rotation_degrees.y + rotDiff
+						
+						if (rotation_degrees.y == 0 or rotation_degrees.y == 180):
+							offset += width /2
+						else:
+							offset += depth /2
 
 						if (dir == 0): #AXIS_X
-							var offset = 2
+							
+
 							if ( diffVector.x < 0):
 								offset *= -1
 							var newPos = collider.core.to_global(collider.core.translation + Vector3(offset,0, 0))
@@ -84,9 +99,9 @@ func setLocation():
 							
 							global_transform.origin = newPos#newPos
 
-							rotation_degrees.y = collider.rotation_degrees.y + rotDiff
+
 						elif (dir == 2): #AXIS_Z
-							var offset = 2
+
 							if ( diffVector.z < 0):
 								offset *= -1
 							var newPos = collider.core.to_global(collider.core.translation + Vector3(0, 0, offset))
@@ -94,7 +109,7 @@ func setLocation():
 							
 							global_transform.origin = newPos#newPos
 
-							rotation_degrees.y = collider.rotation_degrees.y + rotDiff
+
 
 						#else:
 						#	global_transform.origin = collider.global_transform.origin
