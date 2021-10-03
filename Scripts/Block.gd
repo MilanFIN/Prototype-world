@@ -9,8 +9,9 @@ var location = Vector3.ZERO
 var direction = Vector2.ZERO
 
 var snap = false
+var snapBreakDistance = 0
+const SNAPMARGIN = 0.1
 
-onready var leftRay = $LeftRay
 onready var rays = $Rays
 
 onready var collisionShape = $CollisionShape
@@ -27,6 +28,7 @@ func _ready() -> void:
 
 func getOffset(directionAxis):
 	if (directionAxis == 0): #AXIS_X
+
 		return width/2
 	else: #AXIS_Z
 		return depth/2
@@ -47,9 +49,9 @@ func setLocation():
 	var brokeSnap = false
 
 	if (snap):
-		if ((location - global_transform.origin).length() > 2.1):
-			snap = false
+		if ((location - global_transform.origin).length() > snapBreakDistance):
 			brokeSnap = true
+			snap = false
 
 
 	if (not snap):
@@ -70,28 +72,40 @@ func setLocation():
 				if (ray.get_collider() != null):
 					if (ray.get_collider().is_in_group("Block")):
 						var collider = ray.get_collider()
+						
+						#position differences in collider local coordinate space
 						var colPos = collider.to_local(collider.global_transform.origin)
 						var locPos = collider.to_local(global_transform.origin)
 						var diffVector = locPos - colPos
 						var absDiffVector = diffVector.abs()
 						var dir = absDiffVector.max_axis()
-
+						
+						#position differences in self local coord space
+						var localColPos = to_local(collider.global_transform.origin)
+						var localSelfPos = to_local(global_transform.origin)
+						var localAbsDiffVector = (localColPos - localSelfPos).abs()
+						var localDir = localAbsDiffVector.max_axis()
+						
 
 						#90 snapped angle that should be added to collider rotation
 						#for the desired goal rotation
 						var rotDiff = round((rotation_degrees.y-collider.rotation_degrees.y) / 90.0) *90
 
 						var offset = collider.getOffset(dir)
+
 						rotation_degrees.y = collider.rotation_degrees.y + rotDiff
-						
-						if (rotation_degrees.y == 0 or rotation_degrees.y == 180):
+
+						if (localDir == 0): #AXIS_X, old block is on left or right
 							offset += width /2
-						else:
+						elif (localDir == 2): #AXIS_Z, old is front or back
 							offset += depth /2
 
+						
+						snapBreakDistance = offset + SNAPMARGIN
+
+						
 						if (dir == 0): #AXIS_X
 							
-
 							if ( diffVector.x < 0):
 								offset *= -1
 							var newPos = collider.core.to_global(collider.core.translation + Vector3(offset,0, 0))
@@ -101,6 +115,7 @@ func setLocation():
 
 
 						elif (dir == 2): #AXIS_Z
+
 
 							if ( diffVector.z < 0):
 								offset *= -1

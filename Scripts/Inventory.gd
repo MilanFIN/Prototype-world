@@ -15,7 +15,7 @@ func _ready() -> void:
 #load a new item
 func setItem(i):
 	item = load("res://Assets/Items/"+ i+".tscn").instance()
-	print(item)
+
 	itemHolder.add_child(item)
 
 func placeItem():
