@@ -12,14 +12,17 @@ onready var itemHolder = $ItemHolder
 func _ready() -> void:
 	pass # Replace with function body.
 
-#load a new item
+#load a new item to the left hand
 func setItem(i):
+	for i in itemHolder.get_children():
+		i.queue_free()
 	item = load("res://Assets/Items/"+ i+".tscn").instance()
 
 	itemHolder.add_child(item)
 
+
+#check if item can be placed, and return the block if it is placed
 func placeItem():
-	
 	if (block.place()):
 		blockPreview.remove_child(block)
 		var placedBlock = block
@@ -29,6 +32,7 @@ func placeItem():
 	else:
 		return null
 
+#cycle preview of blockplacement to on/off
 func cyclePlace():
 	if (item != null):
 		placeMode = ! placeMode
@@ -37,13 +41,14 @@ func cyclePlace():
 
 	if (not placeMode):
 		for i in blockPreview.get_children():
-			blockPreview.remove_child(i)
+			i.queue_free()
 		block = null
 
 	if (placeMode):
 		block = load("res://Assets/Blocks/"+ item.block+".tscn").instance()
 		blockPreview.add_child(block)
 
+#set the location of the block preview
 func setDirection(dir, location):
 	if (placeMode):
 		block.preview(dir, location)
