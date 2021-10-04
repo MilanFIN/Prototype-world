@@ -51,12 +51,13 @@ func _init( objnode) -> void:
 	semaphore = Semaphore.new()
 	mutex = Mutex.new()
 	exit_thread = false
-
+	"""UNCOMMENT FOR THREADING"""
+	"""
 	for i in range(0,1):
 		var thread = Thread.new()
 		thread.start(self, "_objectWorker")
 		threads.push_back(thread)
-
+	"""
 	objectNode = objnode
 	chunkSize = valueGenerator.chunkSize
 	resolution = valueGenerator.resolution
@@ -112,6 +113,11 @@ func remove(x, z):
 
 
 func process(delta = 0) -> void:
+
+	"""REMOVE FOR THREADING"""
+	if (len(threadInputs) !=0):
+		_objectWorker(null)
+
 
 	mutex.lock()
 	var calculations = 0
@@ -204,6 +210,8 @@ func process(delta = 0) -> void:
 
 #handles entire chunks at a time
 func _objectWorker(userdata):
+	"""MAKE A LOOP FOR THREADING"""
+	"""
 	while true:
 		semaphore.wait() # Wait until posted.
 		mutex.lock()
@@ -211,53 +219,53 @@ func _objectWorker(userdata):
 		mutex.unlock()
 		if should_exit:
 			break
+"""
+	mutex.lock()
+	var inputs = threadInputs.pop_front()
+	mutex.unlock()
 
-		mutex.lock()
-		var inputs = threadInputs.pop_front()
-		mutex.unlock()
 
+	
+	var x = inputs[0]
+	var z = inputs[1]
 
-		
-		var x = inputs[0]
-		var z = inputs[1]
+	var coordinates = Vector2(x, z)
+	
+	
+	var tileSize = float(chunkSize) / resolution 
+	var limit = float(chunkSize) / 2 - tileSize/2
+	var points = []
+	var p = -limit
+	while p < limit or abs(limit - p) < 0.0001:
+		points.append(p)
+		p += tileSize
+	
+	var output = [coordinates,[]]
+	
+	var res = []
+	
+	for i in points:
+		for j in points:
+			var objType = valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)
+			if (objType != -1):
 
-		var coordinates = Vector2(x, z)
-		
-		
-		var tileSize = float(chunkSize) / resolution 
-		var limit = float(chunkSize) / 2 - tileSize/2
-		var points = []
-		var p = -limit
-		while p < limit or abs(limit - p) < 0.0001:
-			points.append(p)
-			p += tileSize
-		
-		var output = [coordinates,[]]
-		
-		var res = []
-		
-		for i in points:
-			for j in points:
-				var objType = valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)
-				if (objType != -1):
+				var result
+				if (objType == 0):
+					result = makeRock(i, j)
 
-					var result
-					if (objType == 0):
-						result = makeRock(i, j)
+					res.push_back([i, j, "rock", result])
+				elif (objType == 1):
+					result = makeTree(i, j)#makeTree(i, j)
+					
+					res.push_back([i, j, "tree", result])
 
-						res.push_back([i, j, "rock", result])
-					elif (objType == 1):
-						result = makeTree(i, j)#makeTree(i, j)
-						
-						res.push_back([i, j, "tree", result])
+	#TODO: FIGURE OUT WHY THIS BREAKS???
+	if (len(res) != 0):
+		output = [coordinates,res]
 
-		#TODO: FIGURE OUT WHY THIS BREAKS???
-		if (len(res) != 0):
-			output = [coordinates,res]
-
-		mutex.lock()
-		threadOutputs.push_back(output)
-		mutex.unlock()
+	mutex.lock()
+	threadOutputs.push_back(output)
+	mutex.unlock()
 
 
 #location = vector3
