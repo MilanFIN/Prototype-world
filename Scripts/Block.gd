@@ -20,6 +20,8 @@ onready var core = $Core
 onready var placementBox = $PlacementBox
 
 var placed = false
+var dead = false
+onready var hitParticles = $HitParticles
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -151,5 +153,18 @@ func place():
 	placed = true
 	return true
 
+func damage(amount):
+	dead = true
+	hitParticles.emitting = true
+	for i in (get_children()):
+		if i is CollisionShape:
+			i.disabled = true
+		if i is MeshInstance:
+			i.visible = false
+		if i is CPUParticles:
+			i.emitting = true
+
 func _physics_process(delta: float) -> void:
-	pass
+	if (dead):
+		if (not hitParticles.emitting):
+			queue_free()

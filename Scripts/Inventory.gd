@@ -14,8 +14,9 @@ func _ready() -> void:
 
 #load a new item to the left hand
 func setItem(i):
-	for i in itemHolder.get_children():
-		i.queue_free()
+	for j in itemHolder.get_children():
+		j.queue_free()
+	print(i)
 	item = load("res://Assets/Items/"+ i+".tscn").instance()
 
 	itemHolder.add_child(item)

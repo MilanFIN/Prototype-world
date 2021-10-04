@@ -25,4 +25,4 @@ func _physics_process(delta: float) -> void:
 
 func pickup():
 	queue_free()
-	return "Item"
+	return item

@@ -43,10 +43,6 @@ var lastCacheTime = OS.get_ticks_msec()
 
 func _init( objnode) -> void:
 
-	#staticobj = load("res://Assets/Objects/StaticObject.tscn")
-	"""
-
-	"""
 	initialized = true
 	
 	

@@ -185,7 +185,7 @@ animation = "Run"
 animation = "Stand"
 
 [sub_resource type="AnimationNodeBlendTree" id=20]
-graph_offset = Vector2( -510.09, 58.25 )
+graph_offset = Vector2( -399, 39 )
 nodes/LeftAttack/node = SubResource( 13 )
 nodes/LeftAttack/position = Vector2( 660, 300 )
 nodes/LeftHit/node = SubResource( 14 )
@@ -201,7 +201,7 @@ nodes/Run/position = Vector2( -220, 220 )
 nodes/Stand/node = SubResource( 19 )
 nodes/Stand/position = Vector2( -220, 100 )
 nodes/output/position = Vector2( 920, 300 )
-node_connections = [ "output", 0, "LeftAttack", "Moving", 0, "Stand", "Moving", 1, "Run", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit" ]
+node_connections = [ "output", 0, "LeftAttack", "Moving", 0, "Stand", "Moving", 1, "Run", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit" ]
 
 [node name="Player" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )

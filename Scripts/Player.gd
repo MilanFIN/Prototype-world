@@ -83,6 +83,8 @@ func melee():
 				elif (body.is_in_group("Pickup")):
 					var item = body.pickup()
 					inventory.setItem(item)
+				elif body.is_in_group("Block"):
+					body.damage(damage)
 
 	if (Input.is_action_just_pressed("SecondaryAttack")):
 		animationTree.set("parameters/LeftAttack/active", true)
