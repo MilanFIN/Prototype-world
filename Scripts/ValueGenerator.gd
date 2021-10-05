@@ -25,8 +25,11 @@ var objectProbability = 0.3#0.15
 var drawDistance = 6
 
 const sandLine = 2.5;
+
 const grassLine = 9.0;
 const snowLine = 12.0;
+
+
 
 #how many milliseconds objects should be kept in memory after a chunk has been deleted
 #just in case the player goes back there
@@ -71,6 +74,8 @@ func getY(x, z):
 # return: -1 for no object, 0-x for obj type
 # note: static only, increase getint parameter when more items are added
 func hasObject(x, z):
+	if (getY(x, z) < 0):
+		return -1
 	if ((objectDensity.get_noise_2d(x, z) +1) *0.5 < objectProbability):
 		return getInt(x, z, 0, 1)
 	return -1

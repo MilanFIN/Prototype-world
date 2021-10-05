@@ -183,7 +183,7 @@ func makeChunk(x, z, emptyMesh1, emptyMesh2):
 	var st = SurfaceTool.new()
 
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	st.add_smooth_group(true)
+	#st.add_smooth_group(true)
 
 	var tileSize = float(chunkSize) / resolution 
 
@@ -207,14 +207,22 @@ func makeChunk(x, z, emptyMesh1, emptyMesh2):
 			var y3 = valueGenerator.getY(x*chunkSize + i +X, z*chunkSize + j -Z)
 			var y4 = valueGenerator.getY(x*chunkSize + i +X, z*chunkSize + j +Z)
 
+			var sand = false
+			var sandLine = valueGenerator.sandLine
+			if (y1 < sandLine or y2 < sandLine or y3 < sandLine or y4 < sandLine):
+				sand = true
 
 
+			st.add_uv(Vector2(0,0)) if sand else st.add_uv(Vector2(1,0))
 			st.add_vertex(Vector3(i-X, y1, j+Z))
+			st.add_uv(Vector2(0,0)) if sand else st.add_uv(Vector2(1,0))
 			st.add_vertex(Vector3(i-X, y2, j-Z))
+			st.add_uv(Vector2(0,0)) if sand else st.add_uv(Vector2(1,0))
 			st.add_vertex(Vector3(i+X, y3, j-Z))
+			st.add_uv(Vector2(0,0)) if sand else st.add_uv(Vector2(1,0))
 			st.add_vertex(Vector3(i+X, y4, j+Z))
 
-
+			
 			st.add_index(index + 0);
 			st.add_index(index + 1);
 			st.add_index(index + 2);

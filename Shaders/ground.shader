@@ -8,12 +8,6 @@ uniform float snowLine;// = 12.0;
 
 void vertex() {
 
-
-	
-	float sandCont = clamp(VERTEX.y - sandLine, 0., 1.);
-	float grassCont = clamp(VERTEX.y - grassLine, 0., 1.);
-	float snowCont = clamp(VERTEX.y - snowLine, 0., 1.);
-	
 	vec4 snow = vec4(0.9, 0.9, 0.9, 1.0);
 	vec4 stone = vec4(0.2, 0.2, 0.2, 1.0);
 	vec4 grass = vec4(0.0, 0.2, 0.0, 1.0);
@@ -21,41 +15,24 @@ void vertex() {
 
 	float pos = VERTEX.y;
 
-	if (pos < sandLine) {
-		COLOR = sand;
-	}
-	if (pos > sandLine && pos < grassLine) {
-		COLOR = grass;
-	}
-	if (pos > grassLine && pos < snowLine) {
-		COLOR = stone;
-	}
-	if (pos > snowLine) {
-		COLOR = snow;
-	}
-
-
 	vec3 normal = NORMAL;
 	vec3 up = vec3(0., 1., 0.);
 	
 	float angle = acos(dot(normal, up)) * 180./3.14;
-
-
-	if (pos < sandLine) {
+	
+	if (UV.x == 0.) {
+		
 		COLOR = sand;
-	} 
-	else if (angle > 35.) {
-		COLOR = stone;
 	}
 	else {
-		COLOR = grass;
+		if (angle > 35.) {
+			COLOR = stone;
+		}
+		else {
+			COLOR = grass;
+		}
 	}
 
-	/*
-	COLOR.r = NORMAL.r;
-	COLOR.g = NORMAL.g;
-	COLOR.b = NORMAL.b;
-	*/
 	
 }
 
