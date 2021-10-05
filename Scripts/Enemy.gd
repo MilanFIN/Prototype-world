@@ -1,5 +1,8 @@
 extends KinematicBody
 
+export var drop = ""
+export var hostile = false
+
 var velocity = Vector3.ZERO
 var gravity = 9.81
 const MOVESPEED = 6
@@ -55,6 +58,11 @@ func damage(amount, direction):
 		dead = true
 		get_node("Body").visible = false
 		hitParticles.emitting = true
+		
+		if (drop != ""):
+			var dropInst = load("res://Assets/Pickups/"+drop+".tscn").instance()
+			get_parent().add_child(dropInst)
+			dropInst.global_transform.origin = global_transform.origin
 	else:
 		pass
 		hitParticles.emitting = true
@@ -85,7 +93,7 @@ func _physics_process(delta: float) -> void:
 	if (is_on_floor()):
 		velocity.y = 0
 		var newVelocity = velocity
-		if (player):
+		if (player and hostile):
 			newVelocity = Vector3.ZERO
 			var dir = player.translation - translation
 			dir = Vector2(dir.x, dir.z).normalized()

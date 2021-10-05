@@ -18,8 +18,9 @@ func _ready() -> void:
 
 func check(pos, force=false):
 	
-	return
-	#todo remove above
+	#uncomment to disable
+	#return
+
 	
 	if (OS.get_ticks_msec() > lastUpdateTime + UPDATEINTERVAL):
 		lastUpdateTime = OS.get_ticks_msec()

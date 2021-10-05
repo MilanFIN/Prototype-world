@@ -156,6 +156,8 @@ extents = Vector3( 10, 10, 10 )
 "Enemy",
 ]]
 script = ExtResource( 1 )
+drop = "Logs"
+hostile = true
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
