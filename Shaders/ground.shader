@@ -20,18 +20,20 @@ void vertex() {
 	
 	float angle = acos(dot(normal, up)) * 180./3.14;
 	
-	if (UV.x == 0.) {
-		
-		COLOR = sand;
+
+
+	if (angle > 35.) {
+		COLOR = stone;
 	}
 	else {
-		if (angle > 35.) {
-			COLOR = stone;
+		if (UV.x == 0.) {
+			COLOR = sand;
 		}
 		else {
 			COLOR = grass;
 		}
 	}
+	
 
 	
 }

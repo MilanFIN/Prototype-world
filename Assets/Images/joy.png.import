@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/white.png-f5f5716526fa3ef286693444ebb093da.stex"
+path="res://.import/joy.png-e97b52e75f5bf08b92fad33e3e4d52d3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Images/white.png"
-dest_files=[ "res://.import/white.png-f5f5716526fa3ef286693444ebb093da.stex" ]
+source_file="res://Assets/Images/joy.png"
+dest_files=[ "res://.import/joy.png-e97b52e75f5bf08b92fad33e3e4d52d3.stex" ]
 
 [params]
 

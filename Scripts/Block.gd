@@ -23,6 +23,9 @@ var placed = false
 var dead = false
 onready var hitParticles = $HitParticles
 
+onready var placedMesh = $PlacedMesh
+onready var previewMesh = $PreviewMesh
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -35,6 +38,15 @@ func getOffset(directionAxis):
 		return width/2
 	else: #AXIS_Z
 		return depth/2
+
+func checkOverlap():
+	var overlap = false
+	for body in placementBox.get_overlapping_bodies():
+		if (body.is_in_group("Block")):
+			if (body != self):
+				overlap = true
+				break
+	return overlap
 
 #call when previewing to set block location based on player pos & camera dir
 func preview(dir, loc):
@@ -55,12 +67,15 @@ func setLocation():
 
 	#currently snapped, check if needs to break
 	if (snap):
-		if ((location - global_transform.origin).length() > snapBreakDistance):
+		if ((location - global_transform.origin).length() > snapBreakDistance
+				or checkOverlap()):
 			brokeSnap = true
 			snap = false
 
+			global_transform.origin = location
+		
 
-	if (not snap):
+	if ((not snap) and not brokeSnap):
 		#set location to the one that was suggested, might modify later
 		#if rays intersect
 		global_transform.origin = location
@@ -70,12 +85,11 @@ func setLocation():
 		
 		#can't snap if in a position where placement would overlap
 		var blockSnapping = false
-		for body in placementBox.get_overlapping_bodies():
-			if (body.is_in_group("Block")):
-				if (body != self):
-					blockSnapping = true
+		if checkOverlap():
+			blockSnapping = true
 		
-		if (not brokeSnap and not blockSnapping):
+		
+		if ((not brokeSnap) and (not blockSnapping)):
 			#go through all 4(?) rays
 			for ray in rays.get_children():
 				if (ray.get_collider() != null):
@@ -145,12 +159,13 @@ func setLocation():
 func place():
 	#check if the block is overapping others, as that would be an illegal
 	#placement
-	for body in placementBox.get_overlapping_bodies():
-		if (body.is_in_group("Block")):
-			if (body != self):
-				return false
+
+	if (checkOverlap()):
+		return false
 	#otherwise all ok
 	placed = true
+	placedMesh.visible = true
+	previewMesh.visible = false
 	return true
 
 func damage(amount):

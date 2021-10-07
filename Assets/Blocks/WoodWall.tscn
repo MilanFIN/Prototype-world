@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Block.gd" type="Script" id=1]
 [ext_resource path="res://Materials/WoodMaterial.tres" type="Material" id=2]
 [ext_resource path="res://Assets/Particles/TreeParticle.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Materials/PreviewMaterial.tres" type="Material" id=4]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 4, 4, 2 )
@@ -20,10 +21,16 @@ collision_mask = 0
 script = ExtResource( 1 )
 width = 4
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
+[node name="PlacedMesh" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+visible = false
 mesh = SubResource( 1 )
 material/0 = ExtResource( 2 )
+
+[node name="PreviewMesh" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+mesh = SubResource( 1 )
+material/0 = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )

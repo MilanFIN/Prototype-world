@@ -2,8 +2,8 @@ extends KinematicBody
 
 
 
-#NEW
-#shamelessly adapted from (was MIT licensed)
+
+#base for the movement was shamelessly adapted from (was MIT licensed)
 #https://github.com/GarbajYT/godot_updated_fps_controller
 var snap
 var gravityVec = Vector3()
@@ -22,12 +22,19 @@ const sensitivity = 10
 const minLookAngle = -88.0
 const maxLookAngle = 88.0
 
+
+var maxHp = 100
+var hp = maxHp
+
 #deg/s
 const turnRate = 480
 
 const zoomStep = 1.0
 const minZoom = 3
 const maxZoom = 20
+
+var lastAttackTime = 0
+var attackDelay = 500 #ms
 
 onready var rightMeleeAnim = $RightMeleeAnim
 onready var rightHitbox = $Body/RightHandHitbox
@@ -62,29 +69,39 @@ func setMouseDelta(mD):
 func setMoveVector(mV):
 	moveVector = mV
 
+func checkAttackDelay(reset = true):
+	if (OS.get_ticks_msec()- lastAttackTime < attackDelay):
+		return false
+	else:
+		if (reset):
+			lastAttackTime = OS.get_ticks_msec()
+		return true
+
 func melee():
+
 	if (Input.is_action_just_pressed("Attack")):
-		animationTree.set("parameters/RightAttack/active", true)
-		if (inventory.placeMode):
-			var item = inventory.placeItem()
-			if (item != null):
-				get_parent().get_node("Blocks").add_child(item)
+		if (checkAttackDelay()):
+			animationTree.set("parameters/RightAttack/active", true)
+			if (inventory.placeMode):
+				var item = inventory.placeItem()
+				if (item != null):
+					get_parent().get_node("Blocks").add_child(item)
+				else:
+					pass
+				
 			else:
-				pass
-			
-		else:
-			for body in rightHitbox.get_overlapping_bodies():
-				if body.is_in_group("Enemy"):
-					var right = camera.global_transform.basis.x
-					var forward = right.rotated(Vector3.UP, deg2rad(90))
-					body.damage(damage, forward)
-				elif body.is_in_group("Resource"):
-					body.damage(damage)
-				elif (body.is_in_group("Pickup")):
-					var item = body.pickup()
-					inventory.setItem(item)
-				elif body.is_in_group("Block"):
-					body.damage(damage)
+				for body in rightHitbox.get_overlapping_bodies():
+					if body.is_in_group("Enemy"):
+						var right = camera.global_transform.basis.x
+						var forward = right.rotated(Vector3.UP, deg2rad(90))
+						body.damage(damage, forward)
+					elif body.is_in_group("Resource"):
+						body.damage(damage)
+					elif (body.is_in_group("Pickup")):
+						var item = body.pickup()
+						inventory.setItem(item)
+					elif body.is_in_group("Block"):
+						body.damage(damage)
 
 	if (Input.is_action_just_pressed("SecondaryAttack")):
 		animationTree.set("parameters/LeftAttack/active", true)

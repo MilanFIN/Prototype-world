@@ -21,6 +21,9 @@ func setItem(i):
 
 	itemHolder.add_child(item)
 
+func loadBlock():
+	block = load("res://Assets/Blocks/"+ item.block+".tscn").instance()
+	blockPreview.add_child(block)
 
 #check if item can be placed, and return the block if it is placed
 func placeItem():
@@ -28,7 +31,8 @@ func placeItem():
 		blockPreview.remove_child(block)
 		var placedBlock = block
 		block = null
-		placeMode = false
+		#placeMode = false
+		loadBlock()
 		return placedBlock
 	else:
 		return null
@@ -46,8 +50,7 @@ func cyclePlace():
 		block = null
 
 	if (placeMode):
-		block = load("res://Assets/Blocks/"+ item.block+".tscn").instance()
-		blockPreview.add_child(block)
+		loadBlock()
 
 #set the location of the block preview
 func setDirection(dir, location):

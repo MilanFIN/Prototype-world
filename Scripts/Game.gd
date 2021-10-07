@@ -2,10 +2,7 @@ extends Node
 
 """
 TODO:
-#generatorit ei enää saa palauttaa materiaaleja, vaan mesh ja materialTYPE 
-(wood, leaf)
-materiaali sijoitetaan sit kun kutsutaan addmesh(mesh, matType)
-
+	
 """
 
 
@@ -29,6 +26,8 @@ var secondDragPressed = false
 var firstLocation = Vector2.ZERO
 var secondLocation = Vector2.ZERO
 
+onready var hud = $Hud
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
@@ -42,13 +41,12 @@ func _process(delta: float) -> void:
 	#if (delta >= 0.017):
 	#	print("SLOW!: ", delta)
 	
-	#if (not stickMoving):
-	#	stick.position = base.position
-	#stickMoving = false
 	
 	if (stickPressed):
 		var moveVector = (stick.position - base.position) / maxStickDelta
 		player.setMoveVector(moveVector)
+	
+	hud.get_node("HealthBar").setHp(player.hp, player.maxHp)
 	
 func _input(event: InputEvent) -> void:
 
