@@ -127,7 +127,8 @@ func damage(amount):
 			var dropRes = load("res://Assets/Pickups/"+drop+".tscn")
 			var dropInst = dropRes.instance()
 			get_parent().add_child(dropInst)
-			dropInst.global_transform.origin = global_transform.origin
+			dropInst.setPosition(global_transform.origin)
+
 	else:
 		
 

@@ -13,7 +13,7 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 #load a new item to the left hand
-func setItem(i):
+func setItem(i, amount):
 	for j in itemHolder.get_children():
 		j.queue_free()
 	print(i)

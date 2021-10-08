@@ -62,7 +62,7 @@ func damage(amount, direction):
 		if (drop != ""):
 			var dropInst = load("res://Assets/Pickups/"+drop+".tscn").instance()
 			get_parent().add_child(dropInst)
-			dropInst.global_transform.origin = global_transform.origin
+			dropInst.setPosition(global_transform.origin)
 	else:
 		pass
 		hitParticles.emitting = true

@@ -26,6 +26,7 @@ onready var hitParticles = $HitParticles
 onready var placedMesh = $PlacedMesh
 onready var previewMesh = $PreviewMesh
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -166,6 +167,8 @@ func place():
 	placed = true
 	placedMesh.visible = true
 	previewMesh.visible = false
+	collisionShape.disabled = false
+	
 	return true
 
 func damage(amount):

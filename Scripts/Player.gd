@@ -24,14 +24,14 @@ const maxLookAngle = 88.0
 
 
 var maxHp = 100
-var hp = maxHp
+var hp = maxHp/2
 
 #deg/s
 const turnRate = 480
 
 const zoomStep = 1.0
 const minZoom = 3
-const maxZoom = 20
+const maxZoom = 40
 
 var lastAttackTime = 0
 var attackDelay = 500 #ms
@@ -98,8 +98,13 @@ func melee():
 					elif body.is_in_group("Resource"):
 						body.damage(damage)
 					elif (body.is_in_group("Pickup")):
-						var item = body.pickup()
-						inventory.setItem(item)
+						var pickup = body.pickup()
+						# {"type": type, "value": amount, "item": item}
+						if (pickup["type"] == "item"):
+							inventory.setItem(pickup["item"], pickup["amount"])
+						elif (pickup["type"] == "health"):
+							hp+= pickup["amount"]
+							hp = clamp(hp, 0, maxHp)
 					elif body.is_in_group("Block"):
 						body.damage(damage)
 
