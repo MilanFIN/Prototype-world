@@ -2,7 +2,8 @@ extends Node
 
 """
 TODO:
-	
+	MOVE MOVEMENT RELATED STUFF TO UNDER IF SETMOVEVECTOR, 
+	otherwise android movement is 50%
 """
 
 
@@ -41,10 +42,10 @@ func _process(delta: float) -> void:
 	#if (delta >= 0.017):
 	#	print("SLOW!: ", delta)
 	
-	
+	var moveVector = Vector2.ZERO
 	if (stickPressed):
-		var moveVector = (stick.position - base.position) / maxStickDelta
-		player.setMoveVector(moveVector)
+		moveVector = (stick.position - base.position) / maxStickDelta
+	player.setMoveVector(moveVector)
 	
 	hud.get_node("HealthBar").setHp(player.hp, player.maxHp)
 	

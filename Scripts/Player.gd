@@ -57,6 +57,8 @@ var damage = 4
 
 var initialized = false
 
+var setMoveVector = false
+
 # initializing mouse to be captured
 func _ready() -> void:
 	camera.translation.z = cameraWallChecker.cast_to.z
@@ -67,6 +69,7 @@ func setMouseDelta(mD):
 	mouseDelta = mD
 
 func setMoveVector(mV):
+	setMoveVector = true
 	moveVector = mV
 
 func checkAttackDelay(reset = true):
@@ -206,30 +209,26 @@ func _physics_process(delta: float) -> void:
 	var relativeDir = (forward * input.y + right * input.x)
 	
 	#body.rotation_degrees = 0
-	if (input != Vector2.ZERO):
-		
+
+	var animBlend = 0
+	if (input.length_squared() != 0):
+
 		var angle = -rad2deg(Vector2(relativeDir.z, relativeDir.x).angle_to(Vector2.UP))
 		angle = int(angle) % 360
-		"""
-		var rotation = int(body.rotation_degrees.y) % 360
-		var angleDiff = rotation - angle
-		angleDiff = clamp(angleDiff, -delta*turnRate, delta*turnRate)
-		body.rotation_degrees.y -= angleDiff
-		"""
+
 		body.rotation_degrees.y = angle
 
-		animationTree.set("parameters/Moving/blend_amount", input.length())
-		#
-	
-	else:
-		#animator.play("Stand")
-		animationTree.set("parameters/Moving/blend_amount", 0)
+		animBlend = input.length()
+		animBlend = clamp(animBlend, 0.0, 1.0)
 
+	if (setMoveVector == true):
+		animationTree.set("parameters/Moving/blend_amount", animBlend)
+	setMoveVector = false
 
 	#print(Vector2(relativeDir.z, relativeDir.x), Vector2.UP)
-	
 
-		
+
+
 
 	if is_on_floor():
 		snap = -get_floor_normal()
