@@ -11,6 +11,8 @@ const DRAWDISTANCE = 300
 const ANIMALLIMIT = 30
 const SPAWNRADIUS = 200
 
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	lastUpdateTime = OS.get_ticks_msec()

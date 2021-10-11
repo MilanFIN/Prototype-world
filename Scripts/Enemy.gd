@@ -21,6 +21,11 @@ var waypoints = []
 var waypointIndex = 0
 
 export var hp = 10
+
+var lastAttackTime = 0
+export var attackDelay = 333#ms
+export var damage = 3.0
+
 var dead = false
 var remove = false
 
@@ -31,6 +36,7 @@ var initialized = false
 onready var animationTree = $AnimationTree
 onready var hitParticles = $HitParticles
 
+onready var attackShape = $AttackShape
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -87,6 +93,14 @@ func _physics_process(delta: float) -> void:
 		if (collider != null):
 			transform.origin.y = get_node("SetRay").get_collision_point().y + 3
 			set = true
+
+
+	for body in attackShape.get_overlapping_bodies():
+		if (body.is_in_group("Player")):
+			if (OS.get_ticks_msec()- lastAttackTime > attackDelay):
+				player.damage(damage)
+				lastAttackTime = OS.get_ticks_msec()
+
 
 	velocity.y = move_and_slide(velocity, Vector3.UP).y
 

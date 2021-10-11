@@ -74,7 +74,7 @@ func setLocation():
 			snap = false
 
 			global_transform.origin = location
-		
+
 
 	if ((not snap) and not brokeSnap):
 		#set location to the one that was suggested, might modify later

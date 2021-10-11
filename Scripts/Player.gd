@@ -24,7 +24,7 @@ const maxLookAngle = 88.0
 
 
 var maxHp = 100
-var hp = maxHp/2
+var hp = maxHp
 
 #deg/s
 const turnRate = 480
@@ -76,6 +76,10 @@ func checkAttackDelay(reset = true):
 		if (reset):
 			lastAttackTime = OS.get_ticks_msec()
 		return true
+
+func damage(amount):
+	hp -= amount
+
 
 func melee():
 
