@@ -38,6 +38,8 @@ onready var hitParticles = $HitParticles
 
 onready var attackShape = $AttackShape
 
+onready var detectionArea = $DetectionArea
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for i in range(5):
@@ -45,7 +47,7 @@ func _ready() -> void:
 		var z = global_transform.origin.z + randi()%21+1 - 10
 		waypoints.push_back(Vector2(x, z))
 
-
+"""
 func _on_DetectionArea_body_entered(body: Node) -> void:
 	if body.name == "Player":
 		player = body
@@ -54,7 +56,7 @@ func _on_DetectionArea_body_entered(body: Node) -> void:
 func _on_DetectionArea_body_exited(body: Node) -> void:
 	if body.name == "Player":
 		player = null
-
+"""
 
 
 func damage(amount, direction):
@@ -98,11 +100,17 @@ func _physics_process(delta: float) -> void:
 	for body in attackShape.get_overlapping_bodies():
 		if (body.is_in_group("Player")):
 			if (OS.get_ticks_msec()- lastAttackTime > attackDelay):
-				player.damage(damage)
+				body.damage(damage)
 				lastAttackTime = OS.get_ticks_msec()
 
 
 	velocity.y = move_and_slide(velocity, Vector3.UP).y
+
+	player = null
+	var bodies = detectionArea.get_overlapping_bodies()
+	if (len(bodies) != 0):
+		player = bodies[0]
+		
 
 	if (is_on_floor()):
 		velocity.y = 0
@@ -147,8 +155,6 @@ func _physics_process(delta: float) -> void:
 
 	else:
 		velocity.y -= gravity *delta 
-
-
 
 
 	animationTree.set("parameters/Moving/blend_amount", 1)

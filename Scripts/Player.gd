@@ -57,7 +57,7 @@ var damage = 4
 
 var initialized = false
 
-var setMoveVector = false
+
 
 # initializing mouse to be captured
 func _ready() -> void:
@@ -69,7 +69,6 @@ func setMouseDelta(mD):
 	mouseDelta = mD
 
 func setMoveVector(mV):
-	setMoveVector = true
 	moveVector = mV
 
 func checkAttackDelay(reset = true):
@@ -210,7 +209,7 @@ func _physics_process(delta: float) -> void:
 	
 	#body.rotation_degrees = 0
 
-	var animBlend = 0
+	var animBlend
 	if (input.length_squared() != 0):
 
 		var angle = -rad2deg(Vector2(relativeDir.z, relativeDir.x).angle_to(Vector2.UP))
@@ -221,11 +220,11 @@ func _physics_process(delta: float) -> void:
 		animBlend = input.length()
 		animBlend = clamp(animBlend, 0.0, 1.0)
 
-	if (setMoveVector == true):
-		animationTree.set("parameters/Moving/blend_amount", animBlend)
-	setMoveVector = false
 
-	#print(Vector2(relativeDir.z, relativeDir.x), Vector2.UP)
+	animationTree.set("parameters/Moving/blend_amount", animBlend)
+
+
+
 
 
 
@@ -250,5 +249,5 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide_with_snap(movement, snap, Vector3.UP)
 	
-	moveVector = Vector2.ZERO
+
 

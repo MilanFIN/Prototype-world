@@ -8,7 +8,7 @@ var lastUpdateTime
 const UPDATEINTERVAL = 2000
 #how far animals can go until they are removed
 const DRAWDISTANCE = 300
-const ANIMALLIMIT = 30
+const ANIMALLIMIT = 100
 const SPAWNRADIUS = 200
 
 
@@ -21,7 +21,7 @@ func _ready() -> void:
 func check(pos, force=false):
 	
 	#uncomment to disable
-	return
+	#return
 
 	
 	if (OS.get_ticks_msec() > lastUpdateTime + UPDATEINTERVAL):
@@ -36,7 +36,7 @@ func check(pos, force=false):
 				animal.queue_free()
 				animals.remove(i)
 
-		for i in range(1):
+		for i in range(100):
 			if (len(animals) >= ANIMALLIMIT):
 				break
 			var xPos = (randi()%SPAWNRADIUS+2) - SPAWNRADIUS/2 + pos.x
