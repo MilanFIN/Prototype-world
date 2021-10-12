@@ -2,8 +2,7 @@ extends Node
 
 """
 TODO:
-	MOVE MOVEMENT RELATED STUFF TO UNDER IF SETMOVEVECTOR, 
-	otherwise android movement is 50%
+	FIX STONE GENERATION
 """
 
 

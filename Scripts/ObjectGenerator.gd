@@ -272,9 +272,9 @@ func _objectWorker(userdata):
 func makeLeaf(location):
 	var st = SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var radius = valueGenerator.value(location.x, location.z, 1, 3)
+	var radius = valueGenerator.value(location.x, location.z, 1, 5)
 	var top = location
-	top.y += radius
+	top.y += radius / 1.5
 	
 	var index = 0#1
 	var upperRingVector = Vector3(radius, 0, 0)
@@ -301,7 +301,7 @@ func makeLeaf(location):
 		st.add_index(index-1);
 	
 	var bottom = location
-	bottom.y -= radius
+	bottom.y -= radius / 1.5
 	st.add_vertex(bottom)
 	index += 1
 	var bottomIndex = index
@@ -443,7 +443,7 @@ func makeRock(x, z):
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
 	var innerRadius = valueGenerator.value(x, z,1,3)
-	var outerRadius = valueGenerator.value(x, z,0.5*innerRadius,1.5*innerRadius)
+	var outerRadius = valueGenerator.value(x, z,innerRadius,1.5*innerRadius)
 	var height = outerRadius#valueGenerator.value(1,1,1,3)
 
 	var topxz = valueGenerator.value2d(x, z,-1,1)
@@ -452,6 +452,7 @@ func makeRock(x, z):
 
 
 	var lowerPoint = Vector3(innerRadius, height/1.5, 0)
+	
 	var index = 1
 
 	#generate the 3 points that make up the first 3 triangels under the top
@@ -461,13 +462,35 @@ func makeRock(x, z):
 	for i in range(3):
 		
 		var point = lowerPoint.rotated(Vector3.UP, deg2rad(120.0*i))
+		point.x += top.x
+		point.z += top.z
+
 		var pointOffset = valueGenerator.value2d(x, z,0.5, 1.5, i)
-		point.x *= pointOffset.x
-		point.z *= pointOffset.y
+		var xDir = point.x - top.x
+		if (xDir > 0): xDir = 1
+		else: xDir = -1
+		var zDir = point.z - top.z
+		if (zDir > 0): zDir = 1
+		else: zDir = -1
+		#point.x += pointOffset.x * xDir
+		#point.z += pointOffset.y * zDir
 		points.push_back(point)
 
+	for i in range(3):
+		#set vertices to make first triangle
+		st.add_vertex(points[i])
+		if (i < 2):
+			st.add_vertex(points[i+1])
+		else:
+			st.add_vertex(points[0])
+		#create topmost triangle
+		st.add_index(0);
+		st.add_index(index+1);
+		st.add_index(index);
+		index += 2
 
 
+	"""
 	for i in range(3):
 
 		var first = points[i]
@@ -499,12 +522,21 @@ func makeRock(x, z):
 		lowSecond = Vector3(lowSecond.x, -1, lowSecond.y)
 		lowCenter = Vector3(lowCenter.x, -1, lowCenter.y)
 		var centerOffset = valueGenerator.value2d(x, z,0.5, 1.5, i)
-		lowCenter.x *= centerOffset.x
-		lowCenter.z *= centerOffset.y
+		
+		var xDir = lowCenter.x - top.x
+		if (xDir > 0): xDir = 1
+		else: xDir = -1
+		var zDir = lowCenter.z - top.z
+		if (zDir > 0): zDir = 1
+		else: zDir = -1
+		
+		#lowCenter.x += centerOffset.x * xDir
+		#lowCenter.z += centerOffset.y * zDir
 
 		st.add_vertex(lowFirst)
 		st.add_vertex(lowCenter)
 		st.add_vertex(lowSecond)
+
 
 		#leftmost triangle
 		st.add_index(index);
@@ -524,7 +556,7 @@ func makeRock(x, z):
 		#increment index, as each side of the "pyramid" has 5 vertices
 		# in addition to the top, which is shared
 		index += 5
-
+	"""
 
 	st.generate_normals()
 	var mesh = st.commit()

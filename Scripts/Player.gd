@@ -34,7 +34,7 @@ const minZoom = 3
 const maxZoom = 40
 
 var lastAttackTime = 0
-var attackDelay = 500 #ms
+var attackDelay = 333 #ms
 
 onready var rightMeleeAnim = $RightMeleeAnim
 onready var rightHitbox = $Body/RightHandHitbox
