@@ -443,7 +443,8 @@ func makeRock(x, z):
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
 	var innerRadius = valueGenerator.value(x, z,1,3)
-	var outerRadius = valueGenerator.value(x, z,innerRadius,1.5*innerRadius)
+	var outerRadius = valueGenerator.value(x, z,innerRadius*0.8 ,innerRadius*1.2)
+	
 	var height = outerRadius#valueGenerator.value(1,1,1,3)
 
 	var topxz = valueGenerator.value2d(x, z,-1,1)
@@ -451,7 +452,7 @@ func makeRock(x, z):
 	st.add_vertex(top)
 
 
-	var lowerPoint = Vector3(innerRadius, height/1.5, 0)
+	var lowerPoint = Vector3(innerRadius, height/2, 0)
 	
 	var index = 1
 
@@ -476,6 +477,7 @@ func makeRock(x, z):
 		#point.z += pointOffset.y * zDir
 		points.push_back(point)
 
+	"""
 	for i in range(3):
 		#set vertices to make first triangle
 		st.add_vertex(points[i])
@@ -488,9 +490,9 @@ func makeRock(x, z):
 		st.add_index(index+1);
 		st.add_index(index);
 		index += 2
-
-
 	"""
+	
+	
 	for i in range(3):
 
 		var first = points[i]
@@ -499,39 +501,38 @@ func makeRock(x, z):
 			second = points[i+1]
 		else:
 			second = points[0]
-
-		#set vertices to make first triangle
 		st.add_vertex(first)
 		st.add_vertex(second)
-		#create topmost triangle
+
 		st.add_index(0);
 		st.add_index(index+1);
 		st.add_index(index);
-
 		#create 3 triangles under that to make a wider base 
 		#aka finishing a triforce for one side
 		#first must calculate the vertexes that make up the base (in 2d space)
-		var lowFirst = Vector2(first.x, first.z).normalized() * outerRadius
-		var lowSecond = Vector2(second.x, second.z).normalized() * outerRadius
-		var lowCenter = (lowFirst+lowSecond).normalized() * outerRadius
+
+		var bottomXz = Vector2(top.x, top.z)
+
+
+		var lowFirstXz = Vector2(first.x, first.z)
+		lowFirstXz += (lowFirstXz - bottomXz).normalized()* (outerRadius-innerRadius)
+		var lowFirst = Vector3(lowFirstXz.x, top.y-height, lowFirstXz.y)
 
 
 		
-		#converting to 3d space
-		lowFirst = Vector3(lowFirst.x, -1, lowFirst.y)
-		lowSecond = Vector3(lowSecond.x, -1, lowSecond.y)
-		lowCenter = Vector3(lowCenter.x, -1, lowCenter.y)
-		var centerOffset = valueGenerator.value2d(x, z,0.5, 1.5, i)
+		var lowSecondXz = Vector2(second.x, second.z)
+		lowSecondXz += (lowSecondXz - bottomXz).normalized()* (outerRadius-innerRadius)
+		var lowSecond = Vector3(lowSecondXz.x, top.y-height, lowSecondXz.y)
 		
-		var xDir = lowCenter.x - top.x
-		if (xDir > 0): xDir = 1
-		else: xDir = -1
-		var zDir = lowCenter.z - top.z
-		if (zDir > 0): zDir = 1
-		else: zDir = -1
-		
-		#lowCenter.x += centerOffset.x * xDir
-		#lowCenter.z += centerOffset.y * zDir
+		var bottom = top
+		bottom.y = top.y-height
+		var lowCenter = ((lowFirst + lowSecond) / 2) 
+		var lowDir = lowCenter - bottom
+		lowCenter += lowDir.normalized() * (outerRadius - lowDir.length())
+
+
+
+		#lowCenter += (lowCenter - lowTop) * 0.5
 
 		st.add_vertex(lowFirst)
 		st.add_vertex(lowCenter)
@@ -552,11 +553,11 @@ func makeRock(x, z):
 		st.add_index(index+1);
 		st.add_index(index+4);
 		st.add_index(index+3);
-
+		
 		#increment index, as each side of the "pyramid" has 5 vertices
 		# in addition to the top, which is shared
 		index += 5
-	"""
+		
 
 	st.generate_normals()
 	var mesh = st.commit()

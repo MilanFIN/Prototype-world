@@ -102,7 +102,7 @@ func _process(delta: float) -> void:
 		#var ground = get_node("SetRay").get_collision_point()
 		#if (ground != null):
 		var height = Global.valueGenerator.getY(transform.origin.x, transform.origin.z)
-		transform.origin.y = height#ground.y
+		transform.origin.y = height #ground.y
 		set = true
 
 
