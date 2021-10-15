@@ -10,4 +10,5 @@ drop = "Logs"
 particleType = "TreeParticle"
 
 [node name="SetRay" type="RayCast" parent="."]
+enabled = true
 cast_to = Vector3( 0, -1000, 0 )

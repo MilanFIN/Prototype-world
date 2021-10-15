@@ -106,6 +106,12 @@ func value2d(x, z, minimum, maximum, optional = 1):
 	var second = value(x, z, minimum, maximum, optional << 2)
 	return Vector2(first, second)
 
+func value3d(x, z, minimum, maximum, optional = 1):
+	var first = value(x, z, minimum, maximum, optional)
+	var second = value(x, z, minimum, maximum, optional << 2)
+	var third = value(x, z, minimum, maximum, optional << 4)
+	return Vector3(first, second, third)
+
 # parameters: same as value()
 # returns a pseudorandom integer between range min&max
 func getInt(x, z, minimum, maximum, optional = 1):

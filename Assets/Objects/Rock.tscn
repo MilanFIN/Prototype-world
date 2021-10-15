@@ -8,6 +8,8 @@
 script = ExtResource( 1 )
 drop = "Stone"
 particleType = "StoneParticle"
+roll = true
 
 [node name="SetRay" type="RayCast" parent="."]
+enabled = true
 cast_to = Vector3( 0, -1000, 0 )

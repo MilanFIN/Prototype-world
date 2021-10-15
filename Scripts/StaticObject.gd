@@ -2,7 +2,7 @@ extends StaticBody
 
 export var drop = ""
 export var particleType = ""
-
+export var roll = false
 
 var particle
 
@@ -29,6 +29,7 @@ var materialDict = {
 var shaderDict
 var hitParticle
 
+onready var setRay = $SetRay
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -97,13 +98,27 @@ func _process(delta: float) -> void:
 
 	if (not initialized):
 		return
-	if (not set):
+	if (not set and setRay.get_collider() != null):
 
 		#var ground = get_node("SetRay").get_collision_point()
 		#if (ground != null):
 		var height = Global.valueGenerator.getY(transform.origin.x, transform.origin.z)
 		transform.origin.y = height #ground.y
+		
+		if (roll):
+			
+			var normal = setRay.get_collision_normal()
+
+			#works for sure
+			var xAngle = Vector2(normal.z, normal.y).angle_to(Vector2.UP)
+			var zAngle = Vector2(normal.x, normal.y).angle_to(Vector2.UP)
+
+
+			rotation_degrees.x = rad2deg(xAngle) +180
+			rotation_degrees.z = -rad2deg(zAngle) +180
 		set = true
+		
+		
 
 
 func damage(amount):

@@ -41,6 +41,8 @@ var resolution
 
 var lastCacheTime = OS.get_ticks_msec()
 
+var SURFACETOOL = SurfaceTool.new()
+
 func _init( objnode) -> void:
 
 	initialized = true
@@ -114,9 +116,15 @@ func remove(x, z):
 
 func process(delta = 0) -> void:
 
+
+	print(len(objectNode.get_children()))
 	"""REMOVE FOR THREADING"""
-	if (len(threadInputs) !=0):
+	var r = len(threadInputs)
+	r = clamp(r, 0, 2)
+	for i in range(r):
 		_objectWorker(null)
+	#if (len(threadInputs) !=0):
+	#	_objectWorker(null)
 
 
 	mutex.lock()
@@ -270,7 +278,7 @@ func _objectWorker(userdata):
 
 #location = vector3
 func makeLeaf(location):
-	var st = SurfaceTool.new()
+	var st = SURFACETOOL#SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	var radius = valueGenerator.value(location.x, location.z, 1, 5)
 	var top = location
@@ -330,12 +338,12 @@ func makeLeaf(location):
 	st.generate_normals()
 	var mesh = st.commit()
 
-
+	st.clear()
 	return [mesh, "leaf"]
 
 func makeTree(x, z):
 
-	var st = SurfaceTool.new()
+	var st = SURFACETOOL#SurfaceTool.new()
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	var height = valueGenerator.value(x, z,5,20, 1)
@@ -416,7 +424,7 @@ func makeTree(x, z):
 	var trunkMesh = st.commit()
 
 	
-
+	st.clear()
 	
 	var leaves = []
 	for i in branchTips:
@@ -438,7 +446,7 @@ func makeTree(x, z):
 
 func makeRock(x, z):
 
-	var st = SurfaceTool.new()
+	var st = SURFACETOOL#SurfaceTool.new()
 
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
 
@@ -452,7 +460,7 @@ func makeRock(x, z):
 	st.add_vertex(top)
 
 
-	var lowerPoint = Vector3(innerRadius, height/2, 0)
+	var lowerPoint = Vector3(innerRadius, height/1.3, 0)
 	
 	var index = 1
 
@@ -466,32 +474,12 @@ func makeRock(x, z):
 		point.x += top.x
 		point.z += top.z
 
-		var pointOffset = valueGenerator.value2d(x, z,0.5, 1.5, i)
-		var xDir = point.x - top.x
-		if (xDir > 0): xDir = 1
-		else: xDir = -1
-		var zDir = point.z - top.z
-		if (zDir > 0): zDir = 1
-		else: zDir = -1
-		#point.x += pointOffset.x * xDir
-		#point.z += pointOffset.y * zDir
+		point += valueGenerator.value3d(x, z,-0.5, 0.5, i)
+
+
 		points.push_back(point)
 
-	"""
-	for i in range(3):
-		#set vertices to make first triangle
-		st.add_vertex(points[i])
-		if (i < 2):
-			st.add_vertex(points[i+1])
-		else:
-			st.add_vertex(points[0])
-		#create topmost triangle
-		st.add_index(0);
-		st.add_index(index+1);
-		st.add_index(index);
-		index += 2
-	"""
-	
+
 	
 	for i in range(3):
 
@@ -519,7 +507,7 @@ func makeRock(x, z):
 		var lowFirst = Vector3(lowFirstXz.x, top.y-height, lowFirstXz.y)
 
 
-		
+
 		var lowSecondXz = Vector2(second.x, second.z)
 		lowSecondXz += (lowSecondXz - bottomXz).normalized()* (outerRadius-innerRadius)
 		var lowSecond = Vector3(lowSecondXz.x, top.y-height, lowSecondXz.y)
@@ -530,8 +518,9 @@ func makeRock(x, z):
 		var lowDir = lowCenter - bottom
 		lowCenter += lowDir.normalized() * (outerRadius - lowDir.length())
 
-
-
+		var lowCenterOffset = valueGenerator.value2d(x, z,-0.5, 0.5, i*3)
+		lowCenter.x += lowCenterOffset.x
+		lowCenter.z += lowCenterOffset.y
 		#lowCenter += (lowCenter - lowTop) * 0.5
 
 		st.add_vertex(lowFirst)
@@ -562,7 +551,7 @@ func makeRock(x, z):
 	st.generate_normals()
 	var mesh = st.commit()
 	#var mesh = Mesh.new()#null
-
+	st.clear()
 
 	return [[mesh, "rock"]]#CubeMesh.new()
 
