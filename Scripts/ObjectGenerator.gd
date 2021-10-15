@@ -2,8 +2,11 @@ extends Node
 
 var tree = preload("res://Assets/Objects/Tree.tscn") 
 var rock = preload("res://Assets/Objects/Rock.tscn") 
+var boxTree = preload("res://Assets/Objects/BoxTree.tscn") 
 
+var cubeMesh = preload("res://Assets/Objects/CubeMesh.tres") 
 
+const GENSPERFRAME = 3
 #shaders
 var stoneShader# = preload("res://Shaders/stone.shader")
 var woodShader# = preload("res://Shaders/wood.shader")
@@ -43,6 +46,11 @@ var lastCacheTime = OS.get_ticks_msec()
 
 var SURFACETOOL = SurfaceTool.new()
 
+var treeMeshes = []
+var rockMeshes = []
+
+var test = 0
+
 func _init( objnode) -> void:
 
 	initialized = true
@@ -64,6 +72,12 @@ func _init( objnode) -> void:
 	chunkSize = valueGenerator.chunkSize
 	resolution = valueGenerator.resolution
 
+	for i in range(10):
+		for j in range(10):
+			treeMeshes.push_back(makeTree(i, j))
+	for i in range(10):
+		for j in range(10):
+			rockMeshes.push_back(makeRock(i, j))
 func populate(x, z):
 	
 	var coordinates = Vector2(x, z)
@@ -112,23 +126,90 @@ func remove(x, z):
 			for j in orphans[i][1]:
 				objectNode.remove_child(j)
 
+func test():
+	print(test)
+	test += 1
+
+func makeMeshes():
+
+	mutex.lock()
+	var inputs = threadInputs.pop_front()
+	mutex.unlock()
+
+
+	
+	var x = inputs[0]
+	var z = inputs[1]
+
+	var coordinates = Vector2(x, z)
+	
+	
+	var tileSize = float(chunkSize) / resolution 
+
+	var limit = float(chunkSize) / 2 - tileSize/2
+	var points = []
+	var p = -limit
+	while p < limit or abs(limit - p) < 0.0001:
+		points.append(p)
+		p += tileSize
+	
+	var output = [coordinates,[]]
+	
+	var res = []
+	
+	for i in points:
+		for j in points:
+
+			var objType = valueGenerator.hasObject(x * chunkSize + i, z* chunkSize + j)
+
+			if (objType != -1):#-1):
+
+				var result
+				var meshNumber = int(valueGenerator.value(x * chunkSize + i, 
+										z* chunkSize + j, 0, 99))
+				
+				if (objType == 0):
+					result = rockMeshes[meshNumber]#[[resMesh, "rock"]]
+					res.push_back([i, j, "rock", result])
+				elif (objType == 1): # == 1
+					result = treeMeshes[meshNumber]#[[resMesh, "rock"]]
+					res.push_back([i, j, "tree", result])
+
+
+
+
+
+	if (len(res) != 0):
+		output = [coordinates,res]
+
+	mutex.lock()
+	threadOutputs.push_back(output)
+	mutex.unlock()
+
 
 
 func process(delta = 0) -> void:
 
+	#print(len(objectNode.get_children()))
 
-	print(len(objectNode.get_children()))
 	"""REMOVE FOR THREADING"""
+	"""
 	var r = len(threadInputs)
-	r = clamp(r, 0, 2)
+	r = clamp(r, 0, GENSPERFRAME)
 	for i in range(r):
 		_objectWorker(null)
 	#if (len(threadInputs) !=0):
 	#	_objectWorker(null)
 
+	"""
 
+	while (len(threadInputs) != 0):
+		makeMeshes()
+
+	
 	mutex.lock()
 	var calculations = 0
+
 	while (len(threadOutputs) != 0):
 
 		var out = threadOutputs.pop_back()
@@ -150,49 +231,33 @@ func process(delta = 0) -> void:
 
 
 
+#			if (not (coordinates in populations)):
+
+			
+			var newObj
+			if (type == "tree"):
+				newObj = tree.instance()
+			elif (type == "rock"):
+				newObj = rock.instance()
+
+
+			newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
+
+			objectNode.add_child(newObj)
+			newObj.setType(type)
+
+			for i in meshList:
+
+				newObj.addMesh(i[0], i[1])
+
+			newObj.initialized = true
+
+
+
 			if (not (coordinates in populations)):
-
-				
-				var newObj
-				if (type == "tree"):
-					newObj = tree.instance()
-				elif (type == "rock"):
-					newObj = rock.instance()
-
-
-				newObj.transform.origin = Vector3(coordinates.x*chunkSize + x, 500, coordinates.y*chunkSize + z)
-
-				objectNode.add_child(newObj)
-				newObj.setType(type)
-
-				for i in meshList:
-					"""
-					var meshInst = MeshInstance.new()
-					meshInst.mesh = i[0]
-
-					meshInst.set_surface_material(0, i[1])
-
-					#old broken shite, should avoid
-					#meshInst.create_trimesh_collision()
-					#FIX is HERE, creating separate collisionpolys for each
-					#mesh and adding them to the root spatial node of staticobj
-					var collisionShape = i[0].create_trimesh_shape()
-					var collisionPoly = CollisionShape.new()
-					collisionPoly.shape = collisionShape
-					newObj.add_child(collisionPoly)
-
-					newObj.add_child(meshInst)
-					"""
-					newObj.addMesh(i[0], i[1])
-
-				newObj.initialized = true
-
-
-
-				if (not (coordinates in populations)):
-					populations[coordinates] = [newObj]
-				else:
-					populations[coordinates].push_back(newObj)
+				populations[coordinates] = [newObj]
+			else:
+				populations[coordinates].push_back(newObj)
 				
 		calculations += 1
 		if (calculations > valueGenerator.calculationLimit):
@@ -200,7 +265,7 @@ func process(delta = 0) -> void:
 	mutex.unlock()
 
 
-
+	
 
 	var currentTime = OS.get_ticks_msec()
 	if (currentTime - lastCacheTime > valueGenerator.cacheTime):

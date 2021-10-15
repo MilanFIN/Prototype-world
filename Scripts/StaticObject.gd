@@ -23,7 +23,8 @@ var type = ""
 var materialDict = {
 	"rock": "RockMaterial.tres",
 	"wood": "WoodMaterial.tres",
-	"leaf": "LeafMaterial.tres"
+	"leaf": "LeafMaterial.tres",
+	"box": "WoodMaterial.tres"
 }
 
 var shaderDict

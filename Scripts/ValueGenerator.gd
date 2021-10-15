@@ -1,9 +1,9 @@
 extends Node
 
 #size (godot units), of an individual chunk
-const chunkSize = 25
+const chunkSize = 25#25
 #resolution (how many tiles per chunk) of a chunk
-const resolution = 5
+const resolution = 5#5
 
 #how many chunks can be added/populated per frame
 #used to limit heavy operations
@@ -74,6 +74,7 @@ func getY(x, z):
 # return: -1 for no object, 0-x for obj type
 # note: static only, increase getint parameter when more items are added
 func hasObject(x, z):
+
 	if (getY(x, z) < 0):
 		return -1
 	if ((objectDensity.get_noise_2d(x, z) +1) *0.5 < objectProbability):
