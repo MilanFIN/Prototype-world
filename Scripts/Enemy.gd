@@ -40,6 +40,8 @@ onready var attackShape = $AttackShape
 
 onready var detectionArea = $DetectionArea
 
+onready var info = $Info
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for i in range(5):
@@ -65,6 +67,7 @@ func damage(amount, direction):
 		#die
 		dead = true
 		get_node("Body").visible = false
+		info.visible = false
 		hitParticles.emitting = true
 		
 		if (drop != ""):

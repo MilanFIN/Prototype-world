@@ -21,7 +21,7 @@ func _ready() -> void:
 func check(pos, force=false):
 	
 	#uncomment to disable
-	return
+	#return
 
 	
 	if (OS.get_ticks_msec() > lastUpdateTime + UPDATEINTERVAL):

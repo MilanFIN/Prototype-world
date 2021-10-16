@@ -2,7 +2,7 @@ extends Node
 
 """
 TODO:
-	FIX STONE GENERATION
+
 """
 
 

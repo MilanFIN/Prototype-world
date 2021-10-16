@@ -162,6 +162,9 @@ func _physics_process(delta: float) -> void:
 
 	camera.translation.z = cameraOffset
 
+	get_node("ViewPortContainer/Viewport/InfoCamera").global_transform.origin = camera.global_transform.origin
+	get_node("ViewPortContainer/Viewport/InfoCamera").global_transform = camera.global_transform
+
 	mouseDelta = Vector2.ZERO
 
 

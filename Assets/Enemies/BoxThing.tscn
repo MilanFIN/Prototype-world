@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Particles/BloodParticle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Materials/DarkGreen.tres" type="Material" id=3]
+[ext_resource path="res://Assets/Hud/EnemyInfo.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 1.25
@@ -247,3 +248,6 @@ shape = SubResource( 16 )
 
 [node name="HitParticles" parent="." instance=ExtResource( 2 )]
 initial_velocity = 3.0
+
+[node name="Info" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
