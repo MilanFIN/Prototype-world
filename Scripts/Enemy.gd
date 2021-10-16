@@ -20,11 +20,16 @@ var player = null
 var waypoints = []
 var waypointIndex = 0
 
+
 export var hp = 10
+var maxHp = hp
 
 var lastAttackTime = 0
 export var attackDelay = 333#ms
 export var damage = 3.0
+
+export var minLevel = 1
+export var title = ""
 
 var dead = false
 var remove = false
@@ -49,20 +54,14 @@ func _ready() -> void:
 		var z = global_transform.origin.z + randi()%21+1 - 10
 		waypoints.push_back(Vector2(x, z))
 
-"""
-func _on_DetectionArea_body_entered(body: Node) -> void:
-	if body.name == "Player":
-		player = body
-
-
-func _on_DetectionArea_body_exited(body: Node) -> void:
-	if body.name == "Player":
-		player = null
-"""
-
+	info.setInfo(title, minLevel)
+	info.setHp(hp, maxHp)
 
 func damage(amount, direction):
+	if (hp <= 0):
+		return
 	hp -= amount
+	info.setHp(hp, maxHp)
 	if (hp <= 0):
 		#die
 		dead = true

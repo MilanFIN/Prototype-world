@@ -13,12 +13,18 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-
-	var camera = get_viewport().get_camera()
-	var point = camera.global_transform.origin
-	#point.y *= -1
-	#healthBar.look_at(Vector3(point.x, point.y, point.z), Vector3.UP)
+	pass
+	#var camera = get_viewport().get_camera()
+	#var point = camera.global_transform.origin
 	#look_at(point, Vector3.DOWN)
+	#look_at(Vector3(point.x, plane.transform.y, point.z), Vector3.DOWN)
+func setInfo(name, level):
+	get_node("LevelViewPort/Label").text = name + "\n" \
+												+ "Level " + str(level)
 
-
-		#look_at(Vector3(point.x, plane.transform.y, point.z), Vector3.DOWN)
+func setHp(hp, maxHp):
+	var fraction = float(hp)/maxHp
+	var green = get_node("HealthViewPort/Green")
+	var red = get_node("HealthViewPort/Red")
+	var maxWidth = red.rect_size.x
+	green.rect_size.x = maxWidth * fraction
