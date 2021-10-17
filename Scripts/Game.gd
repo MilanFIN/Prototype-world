@@ -37,7 +37,7 @@ func _process(delta: float) -> void:
 	var playerPos = player.translation
 
 	get_node("Terrain").check(playerPos)
-	get_node("Animals").check(playerPos)
+
 	#if (delta >= 0.017):
 	#	print("SLOW!: ", delta)
 	
@@ -48,7 +48,11 @@ func _process(delta: float) -> void:
 	
 	hud.get_node("HealthBar").setHp(player.hp, player.maxHp)
 	
-
+	var dayState = get_node("DayAnimator").current_animation_position
+	if (dayState > 3 && dayState < 7):
+		get_node("Animals").check(delta, playerPos, false)
+	else:
+		get_node("Animals").check(delta, playerPos, true)
 	
 func _input(event: InputEvent) -> void:
 

@@ -18,10 +18,15 @@ func _ready() -> void:
 	lastUpdateTime = OS.get_ticks_msec()
 
 
-func check(pos, force=false):
-	
+func check(delta, pos, day):
+
 	#uncomment to disable
-	return
+	#return
+
+	if (day):
+		for animal in animals:
+			if (animal.nocturnal):
+				animal.damage(delta*5, Vector3.ZERO, true)
 
 	
 	if (OS.get_ticks_msec() > lastUpdateTime + UPDATEINTERVAL):
@@ -35,17 +40,17 @@ func check(pos, force=false):
 			if (animal.remove):
 				animal.queue_free()
 				animals.remove(i)
-
-		for i in range(100):
-			if (len(animals) >= ANIMALLIMIT):
-				break
-			var xPos = (randi()%SPAWNRADIUS+2) - SPAWNRADIUS/2 + pos.x
-			var zPos = (randi()%SPAWNRADIUS+2) - SPAWNRADIUS/2 + pos.z
-			var newAnim = blob.instance()
-			newAnim.global_transform.origin = Vector3(xPos,20,zPos)
-			add_child(newAnim)
-			animals.push_back(newAnim)
-			newAnim.initialized = true
+		if (!day):
+			for i in range(100):
+				if (len(animals) >= ANIMALLIMIT):
+					break
+				var xPos = (randi()%SPAWNRADIUS+2) - SPAWNRADIUS/2 + pos.x
+				var zPos = (randi()%SPAWNRADIUS+2) - SPAWNRADIUS/2 + pos.z
+				var newAnim = blob.instance()
+				newAnim.global_transform.origin = Vector3(xPos,20,zPos)
+				add_child(newAnim)
+				animals.push_back(newAnim)
+				newAnim.initialized = true
 
 
 

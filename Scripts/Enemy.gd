@@ -2,6 +2,7 @@ extends KinematicBody
 
 export var drop = ""
 export var hostile = false
+export var nocturnal = false
 
 var velocity = Vector3.ZERO
 var gravity = 9.81
@@ -57,7 +58,7 @@ func _ready() -> void:
 	info.setInfo(title, minLevel)
 	info.setHp(hp, maxHp)
 
-func damage(amount, direction):
+func damage(amount, direction, environmentDamage=false):
 	if (hp <= 0):
 		return
 	hp -= amount
@@ -69,7 +70,7 @@ func damage(amount, direction):
 		info.visible = false
 		hitParticles.emitting = true
 		
-		if (drop != ""):
+		if (drop != "" and !environmentDamage):
 			var dropInst = load("res://Assets/Pickups/"+drop+".tscn").instance()
 			get_parent().add_child(dropInst)
 			dropInst.setPosition(global_transform.origin)
