@@ -31,7 +31,7 @@ onready var hud = $Hud
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
-	pass
+	get_node("DayAnimator").play("DayCycle")
 
 func _process(delta: float) -> void:
 	var playerPos = player.translation
@@ -47,6 +47,8 @@ func _process(delta: float) -> void:
 	player.setMoveVector(moveVector)
 	
 	hud.get_node("HealthBar").setHp(player.hp, player.maxHp)
+	
+
 	
 func _input(event: InputEvent) -> void:
 
