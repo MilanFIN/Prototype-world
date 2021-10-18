@@ -6,20 +6,19 @@
 [ext_resource path="res://Materials/PreviewMaterial.tres" type="Material" id=4]
 
 [sub_resource type="CubeMesh" id=1]
-size = Vector3( 12, 4, 2 )
+size = Vector3( 2, 4, 2 )
 
 [sub_resource type="BoxShape" id=2]
-extents = Vector3( 6, 2, 1 )
+extents = Vector3( 1, 2, 1 )
 
 [sub_resource type="BoxShape" id=3]
-extents = Vector3( 5.4, 1.8, 0.9 )
+extents = Vector3( 0.9, 1.8, 0.9 )
 
 [node name="Block" type="StaticBody" groups=[
 "Block",
 ]]
 collision_mask = 0
 script = ExtResource( 1 )
-width = 12
 
 [node name="PlacedMesh" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
@@ -53,22 +52,22 @@ cast_to = Vector3( 0, 0, 0 )
 [node name="LeftRay" type="RayCast" parent="Rays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 enabled = true
-cast_to = Vector3( -8, 0, 0 )
+cast_to = Vector3( -2, 0, 0 )
 
 [node name="LeftRay2" type="RayCast" parent="Rays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
 enabled = true
-cast_to = Vector3( -8, 0, 0 )
+cast_to = Vector3( -2, 0, 0 )
 
 [node name="RightRay" type="RayCast" parent="Rays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 enabled = true
-cast_to = Vector3( 8, 0, 0 )
+cast_to = Vector3( 2, 0, 0 )
 
 [node name="RightRay2" type="RayCast" parent="Rays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
 enabled = true
-cast_to = Vector3( 8, 0, 0 )
+cast_to = Vector3( 2, 0, 0 )
 
 [node name="ForwardRay" type="RayCast" parent="Rays"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )

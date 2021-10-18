@@ -10,10 +10,9 @@
 
 [sub_resource type="Environment" id=1]
 background_mode = 1
-background_color = Color( 0.452236, 0.806274, 0.969882, 1 )
-ambient_light_color = Color( 0.452236, 0.806274, 0.969882, 1 )
+background_color = Color( 0.466667, 0.835294, 1, 1 )
+ambient_light_color = Color( 0.466667, 0.835294, 1, 1 )
 ambient_light_energy = 0.25
-tonemap_exposure = 1.1
 
 [sub_resource type="Animation" id=2]
 length = 10.0
@@ -101,22 +100,26 @@ texture = ExtResource( 6 )
 position = Vector2( 120, 600 )
 texture = ExtResource( 5 )
 
-[node name="Attack" type="TouchScreenButton" parent="Hud"]
-position = Vector2( 1075, 525 )
+[node name="Toggle" type="TouchScreenButton" parent="Hud"]
+position = Vector2( 1075, 340 )
 normal = ExtResource( 5 )
-action = "Attack"
+action = "ToggleNext"
 
 [node name="Place" type="TouchScreenButton" parent="Hud"]
 position = Vector2( 1075, 430 )
 normal = ExtResource( 5 )
 action = "SecondaryAttack"
 
+[node name="Attack" type="TouchScreenButton" parent="Hud"]
+position = Vector2( 1075, 525 )
+normal = ExtResource( 5 )
+action = "Attack"
+
 [node name="HealthBar" parent="Hud" instance=ExtResource( 7 )]
 position = Vector2( 350, 520 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.125333, 0.992115, 0, -0.992115, 0.125333, 0, 29, 0 )
-light_energy = 0.933333
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 29, 0 )
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]

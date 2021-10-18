@@ -6,39 +6,39 @@
 [ext_resource path="res://Materials/PreviewMaterial.tres" type="Material" id=4]
 
 [sub_resource type="CubeMesh" id=1]
-size = Vector3( 12, 4, 2 )
+size = Vector3( 4, 2, 2 )
 
 [sub_resource type="BoxShape" id=2]
-extents = Vector3( 6, 2, 1 )
+extents = Vector3( 2, 1, 1 )
 
 [sub_resource type="BoxShape" id=3]
-extents = Vector3( 5.4, 1.8, 0.9 )
+extents = Vector3( 1.8, 0.9, 0.9 )
 
 [node name="Block" type="StaticBody" groups=[
 "Block",
 ]]
 collision_mask = 0
 script = ExtResource( 1 )
-width = 12
+width = 4
 
 [node name="PlacedMesh" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 visible = false
 mesh = SubResource( 1 )
 material/0 = ExtResource( 2 )
 
 [node name="PreviewMesh" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 mesh = SubResource( 1 )
 material/0 = ExtResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 shape = SubResource( 2 )
 disabled = true
 
 [node name="PlacementBox" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="PlacementBox"]
 shape = SubResource( 3 )
@@ -51,44 +51,44 @@ cast_to = Vector3( 0, 0, 0 )
 [node name="Rays" type="Spatial" parent="."]
 
 [node name="LeftRay" type="RayCast" parent="Rays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0 )
 enabled = true
-cast_to = Vector3( -8, 0, 0 )
+cast_to = Vector3( -4, 0, 0 )
 
 [node name="LeftRay2" type="RayCast" parent="Rays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0 )
 enabled = true
-cast_to = Vector3( -8, 0, 0 )
+cast_to = Vector3( -4, 0, 0 )
 
 [node name="RightRay" type="RayCast" parent="Rays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0 )
 enabled = true
-cast_to = Vector3( 8, 0, 0 )
+cast_to = Vector3( 4, 0, 0 )
 
 [node name="RightRay2" type="RayCast" parent="Rays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0 )
 enabled = true
-cast_to = Vector3( 8, 0, 0 )
+cast_to = Vector3( 4, 0, 0 )
 
 [node name="ForwardRay" type="RayCast" parent="Rays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, -2 )
 
 [node name="ForwardRay2" type="RayCast" parent="Rays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, -2 )
 
 [node name="BackRay" type="RayCast" parent="Rays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, 2 )
 
 [node name="BackRay2" type="RayCast" parent="Rays"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, 2 )
 
 [node name="HitParticles" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
