@@ -205,7 +205,7 @@ nodes/Run/position = Vector2( -220, 220 )
 nodes/Stand/node = SubResource( 19 )
 nodes/Stand/position = Vector2( -220, 100 )
 nodes/output/position = Vector2( 920, 300 )
-node_connections = [ "output", 0, "LeftAttack", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "Moving", 0, "Stand", "Moving", 1, "Run", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit" ]
+node_connections = [ "output", 0, "LeftAttack", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit", "Moving", 0, "Stand", "Moving", 1, "Run" ]
 
 [node name="Player" type="KinematicBody" groups=[
 "Player",
@@ -285,6 +285,7 @@ cast_to = Vector3( 0, -1000, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
 cull_mask = 1048569
 current = true
+size = 200.0
 near = 0.01
 
 [node name="WallChecker" type="RayCast" parent="CameraJoint"]
