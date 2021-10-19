@@ -24,6 +24,7 @@ width = 4
 [node name="PlacedMesh" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 visible = false
+layers = 5
 mesh = SubResource( 1 )
 material/0 = ExtResource( 2 )
 

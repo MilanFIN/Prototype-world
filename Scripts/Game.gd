@@ -32,15 +32,13 @@ onready var hud = $Hud
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
 	#get_node("DayAnimator").play("DayCycle")
+	get_node("Hud/MiniMap").player = player
 
 func _process(delta: float) -> void:
 	var playerPos = player.translation
 
 	get_node("Terrain").check(playerPos)
 
-	#if (delta >= 0.017):
-	#	print("SLOW!: ", delta)
-	
 	var moveVector = Vector2.ZERO
 	if (stickPressed):
 		moveVector = (stick.position - base.position) / maxStickDelta
@@ -48,12 +46,14 @@ func _process(delta: float) -> void:
 	
 	hud.get_node("HealthBar").setHp(player.hp, player.maxHp)
 	
+	
 	var dayState = get_node("DayAnimator").current_animation_position
 	if (dayState > 3 && dayState < 7):
 		get_node("Animals").check(delta, playerPos, false)
 	else:
 		get_node("Animals").check(delta, playerPos, true)
 	
+
 func _input(event: InputEvent) -> void:
 
 	if event is InputEventScreenTouch:

@@ -84,6 +84,7 @@ func damage(amount):
 
 
 func melee():
+	
 
 	if (Input.is_action_just_pressed("Attack")):
 		if (checkAttackDelay()):
@@ -120,7 +121,17 @@ func melee():
 
 func _process(delta: float) -> void:
 	#handCamera.global_transform = camera.global_transform
-	pass
+	
+	updateMinimap()
+
+
+
+
+func getRotation():
+	var bodyAngle = fmod(body.rotation_degrees.y, 360)
+	var cameraAngle = fmod(cameraJoint.rotation_degrees.y, 360)
+
+	return bodyAngle - cameraAngle
 
 func zoomIn(amount = zoomStep):
 	var zoom = cameraWallChecker.cast_to.z
@@ -162,7 +173,7 @@ func _physics_process(delta: float) -> void:
 
 	camera.translation.z = cameraOffset
 
-	get_node("ViewPortContainer/Viewport/InfoCamera").global_transform.origin = camera.global_transform.origin
+	#get_node("ViewPortContainer/Viewport/InfoCamera").global_transform.origin = camera.global_transform.origin
 	get_node("ViewPortContainer/Viewport/InfoCamera").global_transform = camera.global_transform
 
 	mouseDelta = Vector2.ZERO
@@ -251,6 +262,14 @@ func _physics_process(delta: float) -> void:
 	var movement = velocity + gravityVec
 	
 	move_and_slide_with_snap(movement, snap, Vector3.UP)
-	
+
+
+func updateMinimap():
+	var pos = global_transform.origin
+	var cameraRot = fmod(cameraJoint.rotation_degrees.y, 360) + 90
+	get_node("MinimapViewportContainer/Viewport/MinimapCamera").global_transform.origin.x = pos.x
+	get_node("MinimapViewportContainer/Viewport/MinimapCamera").global_transform.origin.z = pos.z
+	get_node("MinimapViewportContainer/Viewport/MinimapCamera").global_transform.origin.y = pos.y+50
+	get_node("MinimapViewportContainer/Viewport/MinimapCamera").rotation_degrees.y = cameraRot
 
 

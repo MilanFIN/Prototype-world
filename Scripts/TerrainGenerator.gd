@@ -330,6 +330,10 @@ func _process(delta: float) -> void:
 		newMeshInstance.set_surface_material(0, groundMaterial)
 		newMeshInstance.transform.origin = Vector3(coordinates.x*chunkSize, 0, coordinates.y*chunkSize)
 		newMeshInstance.create_trimesh_collision()
+
+
+		newMeshInstance.set_layer_mask_bit(2, true)
+
 		#do watermesh -> meshinstance conversion
 		var waterMaterial = ShaderMaterial.new()
 		waterMaterial.set_shader_param("location", Vector2(coordinates.x*chunkSize, coordinates.y*chunkSize))
@@ -343,8 +347,9 @@ func _process(delta: float) -> void:
 			waterMesh.mesh = chunk[1][i]
 			waterMesh.transform.origin = Vector3(coordinates.x*chunkSize, 0, coordinates.y*chunkSize)
 			waterMesh.set_surface_material(0, waterMaterial)
+			waterMesh.set_layer_mask_bit(2, true)
 			waterMeshInstances.push_back(waterMesh)
-	
+
 		#append to the game to make visible
 		if (not (coordinates  in chunks)):
 			var node = Node.new()

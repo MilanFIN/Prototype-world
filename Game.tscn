@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Player/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Terrain/Terrain.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Assets/Images/joy.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Images/base.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Hud/HealthBar.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Hud/MiniMap.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Environment" id=1]
 background_mode = 1
@@ -118,9 +119,10 @@ action = "Attack"
 [node name="HealthBar" parent="Hud" instance=ExtResource( 7 )]
 position = Vector2( 350, 520 )
 
+[node name="MiniMap" parent="Hud" instance=ExtResource( 8 )]
+
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 29, 0 )
-shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
