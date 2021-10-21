@@ -5,7 +5,7 @@
 [ext_resource path="res://Materials/Skin.tres" type="Material" id=3]
 [ext_resource path="res://Materials/Shirt.tres" type="Material" id=4]
 [ext_resource path="res://Materials/Pants.tres" type="Material" id=5]
-[ext_resource path="res://Assets/Hud/EnemyMarker.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Hud/Marker.tscn" type="PackedScene" id=6]
 
 [sub_resource type="CapsuleShape" id=1]
 height = 2.0
@@ -205,7 +205,7 @@ nodes/Run/position = Vector2( -220, 220 )
 nodes/Stand/node = SubResource( 19 )
 nodes/Stand/position = Vector2( -220, 100 )
 nodes/output/position = Vector2( 920, 300 )
-node_connections = [ "output", 0, "LeftAttack", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit", "Moving", 0, "Stand", "Moving", 1, "Run" ]
+node_connections = [ "output", 0, "LeftAttack", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "Moving", 0, "Stand", "Moving", 1, "Run" ]
 
 [node name="Player" type="KinematicBody" groups=[
 "Player",
@@ -324,6 +324,7 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 50, 
 cull_mask = 4
 projection = 1
 size = 228.55
+far = 200.0
 
 [node name="ViewPortContainer" type="ViewportContainer" parent="."]
 margin_right = 1280.0
@@ -343,3 +344,4 @@ visible = false
 cull_mask = 2
 
 [node name="Marker" parent="." instance=ExtResource( 6 )]
+type = 0

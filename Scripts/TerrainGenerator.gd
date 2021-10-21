@@ -1,5 +1,6 @@
 extends Spatial
 
+const THREADCOUNT = 2
 
 var objectGenerator
 
@@ -57,12 +58,12 @@ func _ready():
 
 
 	"""UNCOMMENT FOR THREADING"""
-	"""
-	for i in range(0,7):
-		var thread = Thread.new()
-		thread.start(self, "_terrainWorker")
-		threads.push_back(thread)
-	"""
+	if (THREADCOUNT != 0):
+		for i in range(0,7):
+			var thread = Thread.new()
+			thread.start(self, "_terrainWorker")
+			threads.push_back(thread)
+
 	generate(0,0)
 	
 
@@ -277,44 +278,55 @@ func generate(x, z):
 
 func _terrainWorker(userdata):
 	"""MAKE A LOOP FOR THREADING"""
-	"""
-	while true:
+	if (THREADCOUNT != 0):
+#	"""
+		while true:
 
-		semaphore.wait() # Wait until posted.
+			semaphore.wait() # Wait until posted.
 
+			mutex.lock()
+			var should_exit = exit_thread
+			mutex.unlock()
+
+			if should_exit:
+				break
+	#"""
+			mutex.lock()
+			var out = threadInputs.pop_front()
+			mutex.unlock()
+			
+			var coordinates = out[0]
+			var mesh1 = out[1]
+			var mesh2 = out[2]
+
+			var chunk = makeChunk(coordinates.x, coordinates.y, mesh1, mesh2)
+
+			#push outputs
+			mutex.lock()
+			threadOutputs.push_back([coordinates, chunk])
+			mutex.unlock()
+	else:			
 		mutex.lock()
-		var should_exit = exit_thread
+		var out = threadInputs.pop_front()
 		mutex.unlock()
+		
+		var coordinates = out[0]
+		var mesh1 = out[1]
+		var mesh2 = out[2]
 
-		if should_exit:
-			break
-"""
-	mutex.lock()
-	var out = threadInputs.pop_front()
-	mutex.unlock()
-	
-	var coordinates = out[0]
-	var mesh1 = out[1]
-	var mesh2 = out[2]
-	"""
-	#prevent any issues with an empty list
-	#(shouldn't happen, but just in case)
-	if (coordinates == null):
-		continue
-	"""
-	var chunk = makeChunk(coordinates.x, coordinates.y, mesh1, mesh2)
+		var chunk = makeChunk(coordinates.x, coordinates.y, mesh1, mesh2)
 
-	#push outputs
-	mutex.lock()
-	threadOutputs.push_back([coordinates, chunk])
-	mutex.unlock()
-
+		#push outputs
+		mutex.lock()
+		threadOutputs.push_back([coordinates, chunk])
+		mutex.unlock()
 
 func _process(delta: float) -> void:
 	
 	"""REMOVE FOR THREADING"""
-	if (len(threadInputs) != 0):
-		_terrainWorker(null)
+	if (THREADCOUNT == 0):
+		if (len(threadInputs) != 0):
+			_terrainWorker(null)
 	
 	mutex.lock()
 	var calculations = 0

@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Particles/BloodParticle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Materials/DarkGreen.tres" type="Material" id=3]
 [ext_resource path="res://Assets/Hud/EnemyInfo.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Hud/Marker.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 1.25
@@ -165,7 +166,7 @@ extents = Vector3( 10, 10, 10 )
 ]]
 script = ExtResource( 1 )
 drop = "Health"
-hostile = true
+nocturnal = true
 title = "Turtle"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -252,3 +253,5 @@ initial_velocity = 3.0
 
 [node name="Info" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+
+[node name="Marker" parent="." instance=ExtResource( 5 )]
