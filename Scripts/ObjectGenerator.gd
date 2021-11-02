@@ -245,11 +245,13 @@ func process(delta = 0) -> void:
 
 			objectNode.add_child(newObj)
 			newObj.setType(type)
-
-			for i in meshList:
-
-				newObj.addMesh(i[0], i[1])
 			var rot = valueGenerator.value(coordinates.x*chunkSize + x, coordinates.y*chunkSize + z, 0, 360, 10)
+			for i in meshList:
+				
+				newObj.addMesh(i[0], i[1])
+
+			for i in newObj.get_children():
+				i.rotation_degrees.y = rot
 			#newObj.rotation_degrees.y = rot
 			
 			newObj.initialized = true

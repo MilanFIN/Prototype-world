@@ -148,7 +148,7 @@ animation = "Run"
 animation = "Stand"
 
 [sub_resource type="AnimationNodeBlendTree" id=15]
-graph_offset = Vector2( 0, 30 )
+graph_offset = Vector2( 0, 36 )
 nodes/Moving/node = SubResource( 12 )
 nodes/Moving/position = Vector2( 460, 60 )
 nodes/Run/node = SubResource( 13 )
@@ -245,8 +245,6 @@ collision_mask = 2
 [node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00148964, 0.0143025, -7.9155e-05 )
 shape = SubResource( 16 )
-
-[node name="CPUParticles" type="CPUParticles" parent="."]
 
 [node name="HitParticles" parent="." instance=ExtResource( 2 )]
 initial_velocity = 3.0

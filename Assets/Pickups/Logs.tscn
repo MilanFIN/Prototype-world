@@ -13,7 +13,6 @@ size = Vector3( 0.8, 0.8, 0.8 )
 "Pickup",
 ]]
 script = ExtResource( 2 )
-type = "item"
 item = "WoodItem"
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

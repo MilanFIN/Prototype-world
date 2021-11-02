@@ -3,9 +3,12 @@ extends KinematicBody
 
 var velocity = Vector3.ZERO
 var gravity = 9.8
-export var type = ""
+
 export var item = ""
 export var amount = 1
+
+enum TYPE {block, health, weapon }
+export(TYPE) var type = TYPE.block
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -30,4 +33,4 @@ func _physics_process(delta: float) -> void:
 
 func pickup():
 	queue_free()
-	return  {"type": type, "amount": amount, "item": item}
+	return  {"type": TYPE.keys()[type], "amount": amount, "item": item}

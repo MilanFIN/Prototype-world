@@ -14,6 +14,11 @@ background_mode = 1
 background_color = Color( 0.466667, 0.835294, 1, 1 )
 ambient_light_color = Color( 0.466667, 0.835294, 1, 1 )
 ambient_light_energy = 0.25
+glow_enabled = true
+glow_intensity = 1.0
+glow_strength = 0.95
+glow_blend_mode = 0
+glow_hdr_threshold = 3.0
 
 [sub_resource type="Animation" id=2]
 length = 10.0

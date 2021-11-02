@@ -49,7 +49,11 @@ onready var body = $Body
 onready var animator = $Animator
 onready var animationTree = $AnimationTree
 
-onready var inventory = $Body/LeftShoulder/LeftArm/Inventory
+onready var blockInventory = $Body/LeftShoulder/LeftArm/BlockInventory
+
+onready var minimapCamera = $MinimapViewportContainer/Viewport/MinimapCamera
+
+onready var weaponHolder = $Body/RightShoulder/RightArm/WeaponHolder
 
 #onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
@@ -89,8 +93,8 @@ func melee():
 	if (Input.is_action_just_pressed("Attack")):
 		if (checkAttackDelay()):
 			animationTree.set("parameters/RightAttack/active", true)
-			if (inventory.placeMode):
-				var item = inventory.placeItem()
+			if (blockInventory.placeMode):
+				var item = blockInventory.placeItem()
 				if (item != null):
 					get_parent().get_node("Blocks").add_child(item)
 				else:
@@ -106,18 +110,26 @@ func melee():
 						body.damage(damage)
 					elif (body.is_in_group("Pickup")):
 						var pickup = body.pickup()
+
 						# {"type": type, "value": amount, "item": item}
-						if (pickup["type"] == "item"):
-							inventory.setItem(pickup["item"], pickup["amount"])
+						if (pickup["type"] == "block"):
+							blockInventory.setItem(pickup["item"], pickup["amount"])
 						elif (pickup["type"] == "health"):
+
 							hp+= pickup["amount"]
 							hp = clamp(hp, 0, maxHp)
+						elif (pickup["type"] == "weapon"):
+
+							weaponHolder.setWeapon(pickup["item"])
+						else:
+							pass
+							#print(pickup["type"])
 					elif body.is_in_group("Block"):
 						body.damage(damage)
 
 	if (Input.is_action_just_pressed("SecondaryAttack")):
 		animationTree.set("parameters/LeftAttack/active", true)
-		inventory.cyclePlace()
+		blockInventory.cyclePlace()
 
 func _process(delta: float) -> void:
 	#handCamera.global_transform = camera.global_transform
@@ -157,7 +169,7 @@ func _physics_process(delta: float) -> void:
 	#rotation_degrees.y -= mouseDelta.x * delta
 	#mouseDelta = Vector2()
 
-	inventory.setDirection(camera.global_transform.basis.x.rotated(Vector3.UP, deg2rad(90))
+	blockInventory.setDirection(camera.global_transform.basis.x.rotated(Vector3.UP, deg2rad(90))
 							, translation)
 
 	#vertical rotation
@@ -267,9 +279,10 @@ func _physics_process(delta: float) -> void:
 func updateMinimap():
 	var pos = global_transform.origin
 	var cameraRot = fmod(cameraJoint.rotation_degrees.y, 360) + 90
-	get_node("MinimapViewportContainer/Viewport/MinimapCamera").global_transform.origin.x = pos.x
-	get_node("MinimapViewportContainer/Viewport/MinimapCamera").global_transform.origin.z = pos.z
-	get_node("MinimapViewportContainer/Viewport/MinimapCamera").global_transform.origin.y = pos.y+50
-	get_node("MinimapViewportContainer/Viewport/MinimapCamera").rotation_degrees.y = cameraRot
+	minimapCamera.global_transform.origin.x = pos.x
+	minimapCamera.global_transform.origin.z = pos.z
+	#must be way above player regardless of position
+	minimapCamera.global_transform.origin.y = pos.y+50
+	minimapCamera.rotation_degrees.y = cameraRot
 
 

@@ -1,6 +1,7 @@
 extends Node
 
-var blob = preload("res://Assets/Enemies/BoxThing.tscn")
+var turtle = preload("res://Assets/Enemies/BoxThing.tscn")
+var zombie = preload("res://Assets/Enemies/Zombie.tscn")
 var animals = []
 
 var lastUpdateTime
@@ -8,7 +9,7 @@ var lastUpdateTime
 const UPDATEINTERVAL = 2000
 #how far animals can go until they are removed
 const DRAWDISTANCE = 300
-const ANIMALLIMIT = 100
+const ANIMALLIMIT = 10
 const SPAWNRADIUS = 200
 
 
@@ -17,6 +18,12 @@ const SPAWNRADIUS = 200
 func _ready() -> void:
 	lastUpdateTime = OS.get_ticks_msec()
 
+func pickAnimal(day):
+	var choise = randi()%2+1 #int between 1 and 2
+	if (choise == 1):
+		return turtle.instance()
+	else:
+		return zombie.instance()
 
 func check(delta, pos, day):
 
@@ -40,13 +47,13 @@ func check(delta, pos, day):
 			if (animal.remove):
 				animal.queue_free()
 				animals.remove(i)
-		if (!day):
-			for i in range(100):
+		if (day):
+			for i in range(20):
 				if (len(animals) >= ANIMALLIMIT):
 					break
 				var xPos = (randi()%SPAWNRADIUS+2) - SPAWNRADIUS/2 + pos.x
 				var zPos = (randi()%SPAWNRADIUS+2) - SPAWNRADIUS/2 + pos.z
-				var newAnim = blob.instance()
+				var newAnim = pickAnimal(day)
 				newAnim.global_transform.origin = Vector3(xPos,20,zPos)
 				add_child(newAnim)
 				animals.push_back(newAnim)
