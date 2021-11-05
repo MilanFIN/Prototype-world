@@ -2,6 +2,7 @@ extends Node
 
 var turtle = preload("res://Assets/Enemies/BoxThing.tscn")
 var zombie = preload("res://Assets/Enemies/Zombie.tscn")
+var squirrel = preload("res://Assets/Enemies/Squirrel.tscn")
 var animals = []
 
 var lastUpdateTime
@@ -21,7 +22,7 @@ func _ready() -> void:
 func pickAnimal(day):
 	var choise = randi()%2+1 #int between 1 and 2
 	if (choise == 1):
-		return turtle.instance()
+		return squirrel.instance()
 	else:
 		return zombie.instance()
 

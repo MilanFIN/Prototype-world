@@ -2,7 +2,8 @@ extends Node
 
 """
 TODO:
-
+viholliset ei saa hyökätä jos ne ei oo hostile
+oravan animaatiot
 """
 
 

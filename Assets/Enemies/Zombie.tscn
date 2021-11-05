@@ -149,7 +149,7 @@ animation = "Run"
 animation = "Stand"
 
 [sub_resource type="AnimationNodeBlendTree" id=15]
-graph_offset = Vector2( 0, 72 )
+graph_offset = Vector2( -186, 27.5 )
 nodes/Moving/node = SubResource( 12 )
 nodes/Moving/position = Vector2( 380, 100 )
 nodes/Run/node = SubResource( 13 )

@@ -57,7 +57,7 @@ onready var weaponHolder = $Body/RightShoulder/RightArm/WeaponHolder
 
 #onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
-var damage = 4
+
 
 var initialized = false
 
@@ -76,7 +76,7 @@ func setMoveVector(mV):
 	moveVector = mV
 
 func checkAttackDelay(reset = true):
-	if (OS.get_ticks_msec()- lastAttackTime < attackDelay):
+	if (OS.get_ticks_msec()- lastAttackTime < weaponHolder.getAttackDelay()):
 		return false
 	else:
 		if (reset):
@@ -105,8 +105,10 @@ func melee():
 					if body.is_in_group("Enemy"):
 						var right = camera.global_transform.basis.x
 						var forward = right.rotated(Vector3.UP, deg2rad(90))
+						var damage = weaponHolder.getDamage()
 						body.damage(damage, forward)
 					elif body.is_in_group("Resource"):
+						var damage = weaponHolder.getDamage()
 						body.damage(damage)
 					elif (body.is_in_group("Pickup")):
 						var pickup = body.pickup()
@@ -125,6 +127,7 @@ func melee():
 							pass
 							#print(pickup["type"])
 					elif body.is_in_group("Block"):
+						var damage = weaponHolder.getDamage()
 						body.damage(damage)
 
 	if (Input.is_action_just_pressed("SecondaryAttack")):
