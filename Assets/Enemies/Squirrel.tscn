@@ -156,7 +156,7 @@ tracks/4/keys = {
 "values": [ Vector3( -45, 0, 0 ) ]
 }
 
-[sub_resource type="AnimationNodeBlend2" id=13]
+[sub_resource type="AnimationNodeBlend2" id=10]
 
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "Run"
@@ -164,9 +164,9 @@ animation = "Run"
 [sub_resource type="AnimationNodeAnimation" id=12]
 animation = "Stand"
 
-[sub_resource type="AnimationNodeBlendTree" id=10]
+[sub_resource type="AnimationNodeBlendTree" id=13]
 graph_offset = Vector2( -139, -23 )
-nodes/Moving/node = SubResource( 13 )
+nodes/Moving/node = SubResource( 10 )
 nodes/Moving/position = Vector2( 338, 89 )
 nodes/Run/node = SubResource( 11 )
 nodes/Run/position = Vector2( 100, 220 )
@@ -239,12 +239,16 @@ material/0 = ExtResource( 1 )
 
 [node name="AttackShape" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="AttackShape"]
 shape = SubResource( 7 )
 
 [node name="DetectionArea" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+collision_layer = 0
+collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
 shape = SubResource( 7 )
@@ -255,6 +259,8 @@ shape = SubResource( 7 )
 type = 2
 
 [node name="SetRay" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, -1000, 0 )
 
 [node name="Info" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
@@ -265,7 +271,7 @@ anims/Run = SubResource( 8 )
 anims/Stand = SubResource( 9 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 10 )
+tree_root = SubResource( 13 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Moving/blend_amount = 0.0

@@ -3,6 +3,8 @@ extends Node
 var turtle = preload("res://Assets/Enemies/BoxThing.tscn")
 var zombie = preload("res://Assets/Enemies/Zombie.tscn")
 var squirrel = preload("res://Assets/Enemies/Squirrel.tscn")
+var troll = preload("res://Assets/Enemies/Troll.tscn")
+var cow = preload("res://Assets/Enemies/Cow.tscn")
 var animals = []
 
 var lastUpdateTime
@@ -24,7 +26,7 @@ func pickAnimal(day):
 	if (choise == 1):
 		return squirrel.instance()
 	else:
-		return zombie.instance()
+		return cow.instance()
 
 func check(delta, pos, day):
 

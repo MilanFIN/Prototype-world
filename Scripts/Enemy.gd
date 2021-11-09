@@ -93,18 +93,19 @@ func _physics_process(delta: float) -> void:
 	if (not initialized):
 		return
 	if (not set):
-		pass
+
 		var collider = get_node("SetRay").get_collider()
 		if (collider != null):
 			transform.origin.y = get_node("SetRay").get_collision_point().y + 3
 			set = true
 
 
-	for body in attackShape.get_overlapping_bodies():
-		if (body.is_in_group("Player")):
-			if (OS.get_ticks_msec()- lastAttackTime > attackDelay):
-				body.damage(damage)
-				lastAttackTime = OS.get_ticks_msec()
+	if (hostile):
+		for body in attackShape.get_overlapping_bodies():
+			if (body.is_in_group("Player")):
+				if (OS.get_ticks_msec()- lastAttackTime > attackDelay):
+					body.damage(damage)
+					lastAttackTime = OS.get_ticks_msec()
 
 
 	velocity.y = move_and_slide(velocity, Vector3.UP).y
