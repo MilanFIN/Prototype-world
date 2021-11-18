@@ -11,16 +11,16 @@
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 1.25, 1.5, 3 )
 
-[sub_resource type="SpatialMaterial" id=12]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.784314, 0.784314, 0.784314, 1 )
 
-[sub_resource type="CubeMesh" id=3]
+[sub_resource type="CubeMesh" id=4]
 size = Vector3( 0.5, 1, 0.5 )
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CubeMesh" id=5]
 size = Vector3( 0.75, 0.75, 0.75 )
 
-[sub_resource type="CubeMesh" id=5]
+[sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.25, 0.25, 0.75 )
 
 [sub_resource type="Animation" id=7]
@@ -88,8 +88,7 @@ tracks/4/keys = {
 "values": [ Vector3( 45, 30, 0 ), Vector3( 45, 15, 0 ), Vector3( 45, -30, 0 ), Vector3( 45, -15, 0 ) ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "Stand"
+[sub_resource type="Animation" id=8]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Body/RightShoulder:rotation_degrees")
 tracks/0/interp = 1
@@ -171,7 +170,7 @@ animation = "Run"
 [sub_resource type="AnimationNodeAnimation" id=11]
 animation = "Stand"
 
-[sub_resource type="AnimationNodeBlendTree" id=8]
+[sub_resource type="AnimationNodeBlendTree" id=12]
 graph_offset = Vector2( -500.03, 56 )
 nodes/Moving/node = SubResource( 9 )
 nodes/Moving/position = Vector2( 140, 100 )
@@ -187,7 +186,9 @@ extents = Vector3( 5, 5, 5 )
 
 [sub_resource type="BoxShape" id=14]
 
-[node name="Cow" type="KinematicBody"]
+[node name="Cow" type="KinematicBody" groups=[
+"Enemy",
+]]
 script = ExtResource( 1 )
 title = "Cow"
 
@@ -208,14 +209,14 @@ shape = SubResource( 1 )
 
 [node name="Body" type="MeshInstance" parent="."]
 mesh = SubResource( 2 )
-material/0 = SubResource( 12 )
+material/0 = SubResource( 3 )
 
 [node name="RightShoulder" type="BoneAttachment" parent="Body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 0, -1 )
 
 [node name="leg" type="MeshInstance" parent="Body/RightShoulder"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
-mesh = SubResource( 3 )
+mesh = SubResource( 4 )
 material/0 = ExtResource( 5 )
 
 [node name="LeftShoulder" type="BoneAttachment" parent="Body"]
@@ -223,7 +224,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 0, -1 )
 
 [node name="leg" type="MeshInstance" parent="Body/LeftShoulder"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
-mesh = SubResource( 3 )
+mesh = SubResource( 4 )
 material/0 = ExtResource( 5 )
 
 [node name="RightHip" type="BoneAttachment" parent="Body"]
@@ -231,7 +232,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.875, 0, 1 )
 
 [node name="leg" type="MeshInstance" parent="Body/RightHip"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
-mesh = SubResource( 3 )
+mesh = SubResource( 4 )
 material/0 = ExtResource( 5 )
 
 [node name="LeftHip" type="BoneAttachment" parent="Body"]
@@ -239,7 +240,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.875, 0, 1 )
 
 [node name="leg" type="MeshInstance" parent="Body/LeftHip"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
-mesh = SubResource( 3 )
+mesh = SubResource( 4 )
 material/0 = ExtResource( 5 )
 
 [node name="Neck" type="BoneAttachment" parent="Body"]
@@ -247,7 +248,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -1 )
 
 [node name="head" type="MeshInstance" parent="Body/Neck"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3 )
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 material/0 = ExtResource( 5 )
 
 [node name="Tail" type="BoneAttachment" parent="Body"]
@@ -255,15 +256,15 @@ transform = Transform( 1, 0, 0, 0, 0.707107, -0.707107, 0, 0.707107, 0.707107, 0
 
 [node name="tail" type="MeshInstance" parent="Body/Tail"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.33 )
-mesh = SubResource( 5 )
+mesh = SubResource( 6 )
 material/0 = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Run = SubResource( 7 )
-anims/Stand = SubResource( 6 )
+anims/Stand = SubResource( 8 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 8 )
+tree_root = SubResource( 12 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Moving/blend_amount = 0.0
