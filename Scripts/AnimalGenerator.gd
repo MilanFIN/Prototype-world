@@ -6,6 +6,7 @@ var squirrel = preload("res://Assets/Enemies/Squirrel.tscn")
 var troll = preload("res://Assets/Enemies/Troll.tscn")
 var cow = preload("res://Assets/Enemies/Cow.tscn")
 var blurb = preload("res://Assets/Enemies/Blurb.tscn")
+var fish = preload("res://Assets/Enemies/Fish.tscn")
 var animals = []
 
 var lastUpdateTime
@@ -25,7 +26,7 @@ func _ready() -> void:
 func pickAnimal(day):
 	var choise = randi()%2+1 #int between 1 and 2
 	if (choise == 1):
-		return blurb.instance()
+		return fish.instance()
 	else:
 		return cow.instance()
 
