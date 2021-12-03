@@ -3,6 +3,8 @@ extends KinematicBody
 export var drop = ""
 export var hostile = false
 export var nocturnal = false
+export var underwater = false
+
 
 var velocity = Vector3.ZERO
 var gravity = 9.81
@@ -53,7 +55,13 @@ func _ready() -> void:
 	for i in range(5):
 		var x = global_transform.origin.x +  randi()%21+1 - 10
 		var z = global_transform.origin.z + randi()%21+1 - 10
-		waypoints.push_back(Vector2(x, z))
+		var y = Global.valueGenerator.getY(x, z)
+		if (underwater):
+			if (y <= 0):
+				waypoints.push_back(Vector2(x, z))
+		else:
+			if (y >= 0):
+				waypoints.push_back(Vector2(x, z))
 
 	info.setInfo(title, minLevel)
 	info.setHp(hp, maxHp)
@@ -150,17 +158,29 @@ func _physics_process(delta: float) -> void:
 				waypointIndex += 1
 				if (waypointIndex == len(waypoints)):
 					waypointIndex = 0
-			
+
+
 
 			velocity = velocity.linear_interpolate(newVelocity, 3*delta)
+			
+			
 		var angle = rad2deg(Vector2(velocity.z, velocity.x).angle())
 		rotation_degrees.y = angle + 180
-		
+
 
 	else:
 		velocity.y -= gravity *delta 
 
 
+	var futureX = global_transform.origin.x + velocity.normalized().x
+	var futureZ = global_transform.origin.z + velocity.normalized().z
+	if (underwater and Global.valueGenerator.getY(futureX, futureZ) > 0):
+		velocity.x = 0
+		velocity.z = 0
+
+	elif (!underwater and Global.valueGenerator.getY(futureX, futureZ) < 0):
+		velocity.x = 0
+		velocity.z = 0
 	animationTree.set("parameters/Moving/blend_amount", 1)
 
 

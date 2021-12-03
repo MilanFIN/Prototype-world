@@ -1,10 +1,10 @@
 [gd_scene load_steps=22 format=2]
 
-[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Particles/BloodParticle.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Materials/DarkGreen.tres" type="Material" id=3]
-[ext_resource path="res://Assets/Hud/EnemyInfo.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Assets/Hud/Marker.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Materials/DarkGreen.tres" type="Material" id=1]
+[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Particles/BloodParticle.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Hud/Marker.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Hud/EnemyInfo.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 1.25
@@ -20,7 +20,7 @@ size = Vector3( 1.25, 1.25, 2 )
 albedo_color = Color( 0.298039, 0.2, 0.0117647, 1 )
 
 [sub_resource type="CubeMesh" id=5]
-material = ExtResource( 3 )
+material = ExtResource( 1 )
 size = Vector3( 0.5, 1, 0.5 )
 
 [sub_resource type="CubeMesh" id=6]
@@ -161,12 +161,11 @@ node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "
 [sub_resource type="BoxShape" id=16]
 extents = Vector3( 10, 10, 10 )
 
-[node name="BoxThing" type="KinematicBody" groups=[
+[node name="Turtle" type="KinematicBody" groups=[
 "Enemy",
 ]]
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 drop = "Health"
-nocturnal = true
 title = "Turtle"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -198,7 +197,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1 )
 [node name="Leg" type="MeshInstance" parent="Body/RightShoulder"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
 mesh = SubResource( 6 )
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 1 )
 
 [node name="LeftHip" type="BoneAttachment" parent="Body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
@@ -206,7 +205,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 1 )
 [node name="Leg" type="MeshInstance" parent="Body/LeftHip"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
 mesh = SubResource( 7 )
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 1 )
 
 [node name="RightHip" type="BoneAttachment" parent="Body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1 )
@@ -214,7 +213,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1 )
 [node name="Leg" type="MeshInstance" parent="Body/RightHip"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
 mesh = SubResource( 8 )
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 1 )
 
 [node name="Neck" type="BoneAttachment" parent="Body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
@@ -222,7 +221,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 [node name="Head" type="MeshInstance" parent="Body/Neck"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.25 )
 mesh = SubResource( 9 )
-material/0 = ExtResource( 3 )
+material/0 = ExtResource( 1 )
 
 [node name="SetRay" type="RayCast" parent="."]
 enabled = true
@@ -246,10 +245,11 @@ collision_mask = 2
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00148964, 0.0143025, -7.9155e-05 )
 shape = SubResource( 16 )
 
-[node name="HitParticles" parent="." instance=ExtResource( 2 )]
+[node name="HitParticles" parent="." instance=ExtResource( 3 )]
 initial_velocity = 3.0
 
-[node name="Info" parent="." instance=ExtResource( 4 )]
+[node name="Info" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
 
-[node name="Marker" parent="." instance=ExtResource( 5 )]
+[node name="Marker" parent="." instance=ExtResource( 4 )]
+type = 2

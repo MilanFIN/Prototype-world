@@ -165,6 +165,7 @@ node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "
 script = ExtResource( 4 )
 drop = "Sword"
 hostile = true
+nocturnal = true
 title = "Zombie"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
