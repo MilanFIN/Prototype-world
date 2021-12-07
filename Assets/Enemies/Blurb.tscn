@@ -132,6 +132,7 @@ extents = Vector3( 10, 10, 10 )
 "Enemy",
 ]]
 script = ExtResource( 1 )
+drop = "blurb"
 hostile = true
 title = "Blurb"
 

@@ -165,7 +165,7 @@ extents = Vector3( 10, 10, 10 )
 "Enemy",
 ]]
 script = ExtResource( 2 )
-drop = "Health"
+drop = "turtle"
 title = "Turtle"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

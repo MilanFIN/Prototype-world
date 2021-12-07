@@ -52,6 +52,7 @@ onready var info = $Info
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+
 	for i in range(5):
 		var x = global_transform.origin.x +  randi()%21+1 - 10
 		var z = global_transform.origin.z + randi()%21+1 - 10
@@ -62,6 +63,11 @@ func _ready() -> void:
 		else:
 			if (y >= 0):
 				waypoints.push_back(Vector2(x, z))
+
+	if (len(waypoints) == 0):
+		var x = global_transform.origin.x
+		var z = global_transform.origin.z
+		waypoints.push(Vector2(x, z))
 
 	info.setInfo(title, minLevel)
 	info.setHp(hp, maxHp)
@@ -79,9 +85,23 @@ func damage(amount, direction, environmentDamage=false):
 		hitParticles.emitting = true
 		
 		if (drop != "" and !environmentDamage):
-			var dropInst = load("res://Assets/Pickups/"+drop+".tscn").instance()
-			get_parent().add_child(dropInst)
-			dropInst.setPosition(global_transform.origin)
+			if (drop in Global.dropTable):
+				var dropList = Global.dropTable[drop]
+				if (len(dropList) != 0):
+					var probRange = 0.0
+					for i in (dropList):
+						probRange += i[0]
+					var limit = rand_range(0.0001, probRange - 0.0001)
+					var cumulative = 0
+					var dropRes = ""
+					for i in dropList:
+						if (cumulative <= limit && cumulative+i[0] > limit):
+							dropRes = i[1]
+						cumulative += i[0]
+					if (dropRes != ""):
+						var dropInst = load("res://Assets/Pickups/"+dropRes+".tscn").instance()
+						get_parent().add_child(dropInst)
+						dropInst.setPosition(global_transform.origin)
 	else:
 		pass
 		hitParticles.emitting = true

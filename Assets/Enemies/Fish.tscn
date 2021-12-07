@@ -162,6 +162,7 @@ extents = Vector3( 5, 5, 5 )
 
 [node name="Fish" type="KinematicBody"]
 script = ExtResource( 1 )
+drop = "fish"
 hostile = true
 underwater = true
 title = "Fish"

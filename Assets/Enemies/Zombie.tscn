@@ -163,7 +163,7 @@ node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "
 "Enemy",
 ]]
 script = ExtResource( 4 )
-drop = "Sword"
+drop = "zombie"
 hostile = true
 nocturnal = true
 title = "Zombie"
