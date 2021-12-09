@@ -17,6 +17,9 @@ func _ready() -> void:
 	velocity.x = rand_range(-5.0, 5.0)
 	velocity.z = rand_range(-5.0, 5.0)
 	pass # Replace with function body.
+	
+	if type == TYPE.weapon:
+		print("WEAPON")
 
 func setPosition(pos):
 	global_transform.origin = pos

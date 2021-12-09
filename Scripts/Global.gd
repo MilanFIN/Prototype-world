@@ -3,13 +3,13 @@ extends Node
 var valueGenerator = preload("res://Scripts/ValueGenerator.gd").new()
 
 var dropTable = {
-	"blurb": [],
-	"cow": [[1, "Health"], [1, "Hammer"]],
-	"fish": [],
-	"squirrel": [],
-	"troll": [],
-	"turtle": [],
-	"zombie": []
+	"blurb": [[1, "Health"], [1, "Hammer"], [1, "Club"], [3, ""]],
+	"cow": [[1, "Health"], [1, "Logs"], [1, "Stone"], [2, ""]],
+	"fish": [[1, "Health"], [1, "Logs"], [4, ""]],
+	"squirrel": [[1, "Health"], [1, "Stone"], [2, ""]],
+	"troll": [[1, "Spear"], [1, "Hammer"], [1, "Club"], [2, ""]],
+	"turtle": [[1, "Health"], [1, "Stone"], [2, ""]],
+	"zombie": [[1, "Spear"], [1, "Sword"], [2, ""]]
 }
 #	"cow": [(1, "Health")]
 

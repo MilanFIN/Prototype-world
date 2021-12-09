@@ -206,7 +206,7 @@ nodes/Run/position = Vector2( -220, 220 )
 nodes/Stand/node = SubResource( 19 )
 nodes/Stand/position = Vector2( -220, 100 )
 nodes/output/position = Vector2( 920, 300 )
-node_connections = [ "output", 0, "LeftAttack", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit", "Moving", 0, "Stand", "Moving", 1, "Run" ]
+node_connections = [ "output", 0, "LeftAttack", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "Moving", 0, "Stand", "Moving", 1, "Run", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit" ]
 
 [node name="Player" type="KinematicBody" groups=[
 "Player",
@@ -249,6 +249,7 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.25, 
 [node name="RightHandHitbox" type="Area" parent="Body"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -2.5, -0.5 )
 gravity = 0.0
+collision_layer = 9
 
 [node name="CollisionShape" type="CollisionShape" parent="Body/RightHandHitbox"]
 transform = Transform( 2, 0, 0, 0, 10, 0, 0, 0, 1.5, 0, 0, 0 )

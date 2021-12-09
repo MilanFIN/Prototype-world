@@ -67,7 +67,7 @@ func _ready() -> void:
 	if (len(waypoints) == 0):
 		var x = global_transform.origin.x
 		var z = global_transform.origin.z
-		waypoints.push(Vector2(x, z))
+		waypoints.push_back(Vector2(x, z))
 
 	info.setInfo(title, minLevel)
 	info.setHp(hp, maxHp)

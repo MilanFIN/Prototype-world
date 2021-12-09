@@ -99,7 +99,7 @@ func melee():
 					get_parent().get_node("Blocks").add_child(item)
 				else:
 					pass
-				
+
 			else:
 				for body in rightHitbox.get_overlapping_bodies():
 					if body.is_in_group("Enemy"):

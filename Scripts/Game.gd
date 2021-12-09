@@ -2,8 +2,10 @@ extends Node
 
 """
 TODO:
-lyöntianimaatiot mobeille
-lisää mobeja
+
+Selvitä miten saa collisionin toimimaan kun ovi on auki
+
+lyöntianimaatiot mobeille?
 enemyinfon pitäis kääntyä eikä mennä limittäin
 """
 
