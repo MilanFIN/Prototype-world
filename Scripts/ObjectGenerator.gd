@@ -2,9 +2,7 @@ extends Node
 
 var tree = preload("res://Assets/Objects/Tree.tscn") 
 var rock = preload("res://Assets/Objects/Rock.tscn") 
-var boxTree = preload("res://Assets/Objects/BoxTree.tscn") 
 
-var cubeMesh = preload("res://Assets/Objects/CubeMesh.tres") 
 
 const GENSPERFRAME = 3
 #shaders

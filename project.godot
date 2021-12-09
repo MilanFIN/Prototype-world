@@ -98,6 +98,8 @@ pointing/emulate_mouse_from_touch=false
 3d_physics/layer_3="minimap"
 3d_render/layer_4="door"
 3d_physics/layer_4="door"
+3d_render/layer_5="ground"
+3d_physics/layer_5="ground"
 
 [physics]
 

@@ -296,6 +296,7 @@ near = 0.01
 [node name="WallChecker" type="RayCast" parent="CameraJoint"]
 enabled = true
 cast_to = Vector3( 0, 0, 10 )
+collision_mask = 16
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 anims/LeftHit = SubResource( 9 )

@@ -345,6 +345,11 @@ func _process(delta: float) -> void:
 
 
 		newMeshInstance.set_layer_mask_bit(2, true)
+		
+		#camera ray collision should only collide with "ground"
+		#so in this case layer 5 (indx 4)
+		newMeshInstance.get_child(0).set_collision_layer_bit(4, true)
+
 
 		#do watermesh -> meshinstance conversion
 		var waterMaterial = ShaderMaterial.new()
