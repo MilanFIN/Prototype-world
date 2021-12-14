@@ -31,6 +31,8 @@ var firstLocation = Vector2.ZERO
 var secondLocation = Vector2.ZERO
 
 onready var hud = $Hud
+onready var skipNightButton = $Hud/SkipNight
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -53,11 +55,27 @@ func _process(delta: float) -> void:
 	
 	
 	var dayState = get_node("DayAnimator").current_animation_position
+	var day = true
 	if (dayState > 3 && dayState < 7):
-		get_node("Animals").check(delta, playerPos, false)
-	else:
-		get_node("Animals").check(delta, playerPos, true)
+		day = false
+
+
+	get_node("Animals").check(delta, playerPos, day)
 	
+	
+	if (day and skipNightButton.visible):
+		skipNightButton.visible = false
+	elif (!day and !skipNightButton.visible):
+		skipNightButton.visible = true
+	
+
+	if (Input.is_action_just_pressed("SkipNight")):
+
+		if (!day and player.inRoom):
+			print("skip")
+			get_node("DayAnimator").seek(7.0)
+		
+
 
 func _input(event: InputEvent) -> void:
 
@@ -115,3 +133,4 @@ func _input(event: InputEvent) -> void:
 
 	elif (event.is_action_pressed("out")):
 		player.zoomOut()
+

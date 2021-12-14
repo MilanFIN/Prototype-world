@@ -30,16 +30,17 @@ func setItem(i, amount):
 	itemHolder.add_child(item)
 
 func cycleBlock():
-	if (len(item.blocks) <= 1):
-		return
-	else:
-		currentIndex += 1
-		if (currentIndex >= len(item.blocks)):
-			currentIndex = 0
-		for i in blockPreview.get_children():
-			i.queue_free()
-		block = load("res://Assets/Blocks/"+ item.blocks[currentIndex]+".tscn").instance()
-		blockPreview.add_child(block)
+	if (item != null):
+		if (len(item.blocks) <= 1):
+			return
+		else:
+			currentIndex += 1
+			if (currentIndex >= len(item.blocks)):
+				currentIndex = 0
+			for i in blockPreview.get_children():
+				i.queue_free()
+			block = load("res://Assets/Blocks/"+ item.blocks[currentIndex]+".tscn").instance()
+			blockPreview.add_child(block)
 
 func loadBlock():
 	currentIndex = 0

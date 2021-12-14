@@ -36,6 +36,10 @@ const maxZoom = 40
 var lastAttackTime = 0
 var attackDelay = 333 #ms
 
+
+var inRoom = false
+
+
 onready var rightMeleeAnim = $RightMeleeAnim
 onready var rightHitbox = $Body/RightHandHitbox
 
@@ -60,6 +64,16 @@ onready var weaponHolder = $Body/RightShoulder/RightArm/WeaponHolder
 
 
 var initialized = false
+
+onready var F1 = $RoomDetection/F1
+onready var F2 = $RoomDetection/F2
+onready var B1 = $RoomDetection/B1
+onready var B2 = $RoomDetection/B2
+onready var L1 = $RoomDetection/L1
+onready var L2 = $RoomDetection/L2
+onready var R1 = $RoomDetection/R1
+onready var R2 = $RoomDetection/R2
+
 
 
 
@@ -278,6 +292,20 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide_with_snap(movement, snap, Vector3.UP)
 
+
+
+	
+	if (F1.get_collider() == null && F2.get_collider() == null):
+		inRoom = false
+	elif (B1.get_collider() == null && B2.get_collider() == null):
+		inRoom = false
+	elif (L1.get_collider() == null && L2.get_collider() == null):
+		inRoom = false
+	elif (R1.get_collider() == null && R2.get_collider() == null):
+		inRoom = false
+	else:
+		inRoom = true
+	#print(inRoom)
 
 func updateMinimap():
 	var pos = global_transform.origin
