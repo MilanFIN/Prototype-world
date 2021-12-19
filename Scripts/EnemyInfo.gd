@@ -3,7 +3,7 @@ extends Spatial
 
 
 onready var healthBar = $HealthBar
-
+var enemyName = ""
 
 
 # Called when the node enters the scene tree for the first time.
@@ -18,8 +18,9 @@ func _process(delta: float) -> void:
 	#var point = camera.global_transform.origin
 	#look_at(point, Vector3.DOWN)
 	#look_at(Vector3(point.x, plane.transform.y, point.z), Vector3.DOWN)
-func setInfo(name, level):
-	get_node("LevelViewPort/Label").text = name + "\n" \
+func setInfo(n, level):
+	enemyName = n
+	get_node("LevelViewPort/Label").text = enemyName + "\n" \
 												+ "Level " + str(level)
 
 func setHp(hp, maxHp):
@@ -28,3 +29,6 @@ func setHp(hp, maxHp):
 	var red = get_node("HealthViewPort/Red")
 	var maxWidth = red.rect_size.x
 	green.rect_size.x = maxWidth * fraction
+
+func setLevel(level):
+	setInfo(name, level)

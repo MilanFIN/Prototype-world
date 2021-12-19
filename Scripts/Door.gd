@@ -1,7 +1,6 @@
 extends "res://Scripts/Block.gd"
 
-var hp = 10.0
-var maxHp = 10.0
+
 
 
 onready var placedOpen = $PlacedOpen

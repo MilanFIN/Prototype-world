@@ -32,6 +32,7 @@ export var attackDelay = 333#ms
 export var damage = 3.0
 
 export var minLevel = 1
+var level = minLevel
 export var title = ""
 
 var dead = false
@@ -52,6 +53,7 @@ onready var info = $Info
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	level = minLevel
 
 	for i in range(5):
 		var x = global_transform.origin.x +  randi()%21+1 - 10
@@ -71,6 +73,16 @@ func _ready() -> void:
 
 	info.setInfo(title, minLevel)
 	info.setHp(hp, maxHp)
+
+func setLevel(level):
+	level = level
+	hp = hp * level
+	maxHp = hp
+	info.setInfo(title, level)
+	info.setHp(hp, maxHp)
+
+func getDamage():
+	return damage * level
 
 func damage(amount, direction, environmentDamage=false):
 	if (hp <= 0):
@@ -132,7 +144,7 @@ func _physics_process(delta: float) -> void:
 		for body in attackShape.get_overlapping_bodies():
 			if (body.is_in_group("Player")):
 				if (OS.get_ticks_msec()- lastAttackTime > attackDelay):
-					body.damage(damage)
+					body.damage(getDamage())
 					lastAttackTime = OS.get_ticks_msec()
 
 

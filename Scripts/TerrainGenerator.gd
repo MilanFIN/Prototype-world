@@ -1,6 +1,6 @@
 extends Spatial
 
-const THREADCOUNT = 2
+const THREADCOUNT = 2 #2
 
 var objectGenerator
 
@@ -289,6 +289,7 @@ func _terrainWorker(userdata):
 			mutex.unlock()
 
 			if should_exit:
+				print("EXIT")
 				break
 	#"""
 			mutex.lock()
@@ -307,19 +308,21 @@ func _terrainWorker(userdata):
 			mutex.unlock()
 	else:			
 		mutex.lock()
-		var out = threadInputs.pop_front()
+		var out = null
+		if (len(threadInputs) != 0):
+			out = threadInputs.pop_front()
 		mutex.unlock()
-		
-		var coordinates = out[0]
-		var mesh1 = out[1]
-		var mesh2 = out[2]
+		if (out != null):
+			var coordinates = out[0]
+			var mesh1 = out[1]
+			var mesh2 = out[2]
 
-		var chunk = makeChunk(coordinates.x, coordinates.y, mesh1, mesh2)
+			var chunk = makeChunk(coordinates.x, coordinates.y, mesh1, mesh2)
 
-		#push outputs
-		mutex.lock()
-		threadOutputs.push_back([coordinates, chunk])
-		mutex.unlock()
+			#push outputs
+			mutex.lock()
+			threadOutputs.push_back([coordinates, chunk])
+			mutex.unlock()
 
 func _process(delta: float) -> void:
 	
@@ -387,7 +390,8 @@ func _process(delta: float) -> void:
 
 # Thread must be disposed (or "joined"), for portability.
 func _exit_tree():
-
+	print("exiting")
+	
 	# Set exit condition to true.
 	mutex.lock()
 	exit_thread = true # Protect with Mutex.
@@ -396,4 +400,8 @@ func _exit_tree():
 	# Wait until it exits.
 	for thread in threads:
 		semaphore.post()
+		semaphore.post()
+		semaphore.post()
+		semaphore.post()
 		thread.wait_to_finish()
+	

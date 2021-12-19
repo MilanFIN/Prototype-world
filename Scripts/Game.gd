@@ -3,7 +3,7 @@ extends Node
 """
 TODO:
 
-Selvitä miten saa collisionin toimimaan kun ovi on auki
+
 
 lyöntianimaatiot mobeille?
 enemyinfon pitäis kääntyä eikä mennä limittäin
@@ -33,13 +33,20 @@ var secondLocation = Vector2.ZERO
 onready var hud = $Hud
 onready var skipNightButton = $Hud/SkipNight
 
+var gameOver = false
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
+
 	get_node("DayAnimator").play("DayCycle")
 
 	get_node("Hud/MiniMap").player = player
+	
+
+
 
 func _process(delta: float) -> void:
 	var playerPos = player.translation
@@ -76,7 +83,26 @@ func _process(delta: float) -> void:
 			get_node("DayAnimator").seek(7.0)
 		
 
+	if (!gameOver):
 
+		if (player.hp <= 0):
+
+			gameOver = true
+			get_tree().paused = true
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)  
+			get_node("Hud/DeathNote").visible = true
+			yield(get_tree().create_timer(3.0), "timeout")
+			
+			get_tree().paused = false
+			for i in get_children():
+
+				i.queue_free()
+			get_tree().change_scene("res://Menu.tscn")
+
+			#get_tree().paused = false
+
+
+			
 func _input(event: InputEvent) -> void:
 
 	if event is InputEventScreenTouch:
@@ -133,4 +159,5 @@ func _input(event: InputEvent) -> void:
 
 	elif (event.is_action_pressed("out")):
 		player.zoomOut()
+
 

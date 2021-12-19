@@ -16,6 +16,7 @@ size = Vector3( 0.1, 0.3, 0.1 )
 [node name="Spatial" type="Spatial"]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
 script = ExtResource( 3 )
+damage = 5
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.9, -0.05 )

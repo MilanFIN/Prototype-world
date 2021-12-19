@@ -78,10 +78,15 @@ func check(delta, pos, day):
 			if y < 0:
 				water = true
 			var newAnim = pickAnimal(day, water)
-			newAnim.global_transform.origin = Vector3(xPos,20,zPos)
+			var yPos = Global.valueGenerator.getY(xPos, zPos)
+			newAnim.global_transform.origin = Vector3(xPos,yPos+3,zPos)
+
+
 			add_child(newAnim)
 			animals.push_back(newAnim)
 			newAnim.initialized = true
+			var level = randi()%4+newAnim.minLevel
+			newAnim.setLevel(level)
 
 
 

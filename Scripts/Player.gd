@@ -141,7 +141,7 @@ func melee():
 							pass
 							#print(pickup["type"])
 					elif body.is_in_group("Block"):
-						var damage = weaponHolder.getDamage()
+						var damage = 1#weaponHolder.getDamage()
 						body.damage(damage)
 
 	if (Input.is_action_just_pressed("SecondaryAttack")):

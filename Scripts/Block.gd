@@ -27,6 +27,9 @@ onready var placedMesh = $PlacedMesh
 onready var previewMesh = $PreviewMesh
 
 
+var hp = 5.0
+var maxHp = 5.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -172,16 +175,21 @@ func place():
 	return true
 
 func damage(amount):
-	dead = true
-	hitParticles.emitting = true
-	for i in (get_children()):
-		if i is CollisionShape:
-			i.disabled = true
-		if i is MeshInstance:
-			i.visible = false
-		if i is CPUParticles:
-			i.emitting = true
-
+	hp -= amount
+	if (hp <= 0):
+		dead = true
+		hitParticles.emitting = true
+		for i in (get_children()):
+			if i is CollisionShape:
+				i.disabled = true
+			if i is MeshInstance:
+				i.visible = false
+			if i is CPUParticles:
+				i.emitting = true
+	else:
+		for i in (get_children()):
+			if i is CPUParticles:
+				i.emitting = true
 func _physics_process(delta: float) -> void:
 	if (dead):
 		if (not hitParticles.emitting):
