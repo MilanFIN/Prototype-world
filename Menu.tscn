@@ -20,12 +20,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="CanvasLayer"]
-margin_right = 48.0
-margin_bottom = 20.0
+[node name="Begin" type="Button" parent="CanvasLayer"]
+margin_left = 600.466
+margin_top = 311.815
+margin_right = 648.466
+margin_bottom = 331.815
 text = "Begin"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="CanvasLayer/Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Begin" to="." method="_on_Begin_pressed"]

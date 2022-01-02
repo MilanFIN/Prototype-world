@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/newlanding.wav-e9dc41a8b22c0277029aebf2577fd2ba.sample"
+
+[deps]
+
+source_file="res://Audio/newlanding.wav"
+dest_files=[ "res://.import/newlanding.wav-e9dc41a8b22c0277029aebf2577fd2ba.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -206,7 +206,7 @@ nodes/Run/position = Vector2( -220, 220 )
 nodes/Stand/node = SubResource( 19 )
 nodes/Stand/position = Vector2( -220, 100 )
 nodes/output/position = Vector2( 920, 300 )
-node_connections = [ "output", 0, "LeftAttack", "Moving", 0, "Stand", "Moving", 1, "Run", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit" ]
+node_connections = [ "output", 0, "LeftAttack", "Moving", 0, "Stand", "Moving", 1, "Run", "LeftAttack", 0, "RightAttack", "LeftAttack", 1, "LeftHit", "RightAttack", 0, "Moving", "RightAttack", 1, "RightHit" ]
 
 [node name="Player" type="KinematicBody" groups=[
 "Player",
@@ -401,3 +401,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2, 0 )
 enabled = true
 cast_to = Vector3( 50, 0, 0 )
 collision_mask = 32
+
+[node name="JumpAudio" type="AudioStreamPlayer3D" parent="."]

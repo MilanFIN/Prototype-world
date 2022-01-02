@@ -61,6 +61,7 @@ onready var weaponHolder = $Body/RightShoulder/RightArm/WeaponHolder
 
 #onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
+onready var jumpAudio = $JumpAudio
 
 
 var initialized = false
@@ -80,6 +81,10 @@ onready var R2 = $RoomDetection/R2
 # initializing mouse to be captured
 func _ready() -> void:
 	camera.translation.z = cameraWallChecker.cast_to.z
+	
+	var landingsound = preload("res://Audio/newlanding.wav")
+	jumpAudio.stream = landingsound
+	
 
 
 # recording mouse movements
@@ -273,9 +278,19 @@ func _physics_process(delta: float) -> void:
 
 
 	if is_on_floor():
+		if (gravityVec != Vector3.ZERO):
+			if (!jumpAudio.is_playing()):
+				jumpAudio.play()
+		elif (relativeDir.length_squared() != 0):
+			if (!jumpAudio.is_playing()):
+				jumpAudio.play()
 		snap = -get_floor_normal()
 		accel = GROUNDACCEL
+
 		gravityVec = Vector3.ZERO
+		
+		
+
 	else:
 		snap = Vector3.DOWN
 		accel = AIRACCEL

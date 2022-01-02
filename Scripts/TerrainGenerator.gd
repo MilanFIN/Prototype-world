@@ -400,8 +400,7 @@ func _exit_tree():
 	# Wait until it exits.
 	for thread in threads:
 		semaphore.post()
-		semaphore.post()
-		semaphore.post()
-		semaphore.post()
+	for thread in threads:
+
 		thread.wait_to_finish()
 	
