@@ -62,7 +62,7 @@ onready var weaponHolder = $Body/RightShoulder/RightArm/WeaponHolder
 #onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
 onready var jumpAudio = $JumpAudio
-
+onready var hitAudio = $HitAudio
 
 var initialized = false
 
@@ -85,6 +85,8 @@ func _ready() -> void:
 	var landingsound = preload("res://Audio/newlanding.wav")
 	jumpAudio.stream = landingsound
 	
+	var hitsound = preload("res://Audio/hit.wav")
+	hitAudio.stream = hitsound
 
 
 # recording mouse movements
@@ -126,10 +128,17 @@ func melee():
 						var forward = right.rotated(Vector3.UP, deg2rad(90))
 						var damage = weaponHolder.getDamage()
 						body.damage(damage, forward)
+						if (!hitAudio.is_playing()):
+							hitAudio.play()
 					elif body.is_in_group("Resource"):
 						var damage = weaponHolder.getDamage()
 						body.damage(damage)
+						if (!hitAudio.is_playing()):
+							hitAudio.play()
 					elif (body.is_in_group("Pickup")):
+						if (!hitAudio.is_playing()):
+							hitAudio.play()
+						
 						var pickup = body.pickup()
 
 						# {"type": type, "value": amount, "item": item}
@@ -148,6 +157,8 @@ func melee():
 					elif body.is_in_group("Block"):
 						var damage = 1#weaponHolder.getDamage()
 						body.damage(damage)
+						if (!hitAudio.is_playing()):
+							hitAudio.play()
 
 	if (Input.is_action_just_pressed("SecondaryAttack")):
 		animationTree.set("parameters/LeftAttack/active", true)

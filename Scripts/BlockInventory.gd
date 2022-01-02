@@ -10,11 +10,12 @@ var placeMode = false
 onready var blockPreview = $BlockPreview
 onready var itemHolder = $ItemHolder
 
-
+onready var blockAudio = $BlockAudio
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	var blocksound = preload("res://Audio/placement1.wav")
+	blockAudio.stream = blocksound
 
 func _process(delta):
 	if (Input.is_action_just_pressed("ToggleNext")):
@@ -29,8 +30,13 @@ func setItem(i, amount):
 
 	itemHolder.add_child(item)
 
+func playSound():
+	if (!blockAudio.is_playing()):
+		blockAudio.play()
+
 func cycleBlock():
 	if (item != null):
+		playSound()
 		if (len(item.blocks) <= 1):
 			return
 		else:
@@ -49,6 +55,7 @@ func loadBlock():
 
 #check if item can be placed, and return the block if it is placed
 func placeItem():
+	playSound()
 	if (block.place()):
 		blockPreview.remove_child(block)
 		var placedBlock = block
@@ -74,6 +81,8 @@ func cyclePlace():
 
 	if (placeMode):
 		loadBlock()
+		
+	playSound()
 
 #set the location of the block preview
 func setDirection(dir, location):

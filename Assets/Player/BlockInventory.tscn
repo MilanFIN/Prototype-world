@@ -8,3 +8,6 @@ script = ExtResource( 1 )
 [node name="ItemHolder" type="Spatial" parent="."]
 
 [node name="BlockPreview" type="Node" parent="."]
+
+[node name="BlockAudio" type="AudioStreamPlayer3D" parent="."]
+attenuation_model = 3
