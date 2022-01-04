@@ -1,6 +1,24 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Menu.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/Arial.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+font_data = ExtResource( 2 )
+
+[sub_resource type="Theme" id=4]
+default_font = SubResource( 3 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 32
+font_data = ExtResource( 2 )
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -14,28 +32,55 @@ __meta__ = {
 layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-margin_right = 1307.0
-margin_bottom = 755.0
+margin_left = 1.41418
+margin_top = 4.39691
+margin_right = 1308.41
+margin_bottom = 759.397
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Begin" type="Button" parent="CanvasLayer"]
-margin_left = 600.466
-margin_top = 311.815
-margin_right = 648.466
-margin_bottom = 331.815
+margin_left = 1090.0
+margin_top = 455.0
+margin_right = 1210.0
+margin_bottom = 530.0
+custom_fonts/font = SubResource( 1 )
 text = "Play"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="License notice" type="Button" parent="CanvasLayer"]
-margin_left = 573.739
-margin_top = 367.05
-margin_right = 680.739
-margin_bottom = 387.05
+margin_left = 1090.0
+margin_top = 550.0
+margin_right = 1210.0
+margin_bottom = 575.0
+custom_fonts/font = SubResource( 2 )
 text = "License Notice"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 155.168
+margin_top = 118.586
+margin_right = 888.159
+margin_bottom = 837.586
+theme = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 5 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "Controls:
+
+W/A/S/D: Move
+Space: Jump
+Mouse: Rotate view
+Mouse1: Attack/place blocks
+Mouse2: Cycle place mode/normal mode
+Mouse Wheel: Zoom view
+E: Cycle through blocks in place mode
+Q: Skip night when surrounded by blocks
+ESC: Return to menu"
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -61,7 +61,7 @@ onready var weaponHolder = $Body/RightShoulder/RightArm/WeaponHolder
 
 #onready var handCamera = $Camera/ViewportContainer/Viewport/HandCamera
 
-onready var jumpAudio = $JumpAudio
+onready var walkAudio = $WalkAudio
 onready var hitAudio = $HitAudio
 
 var initialized = false
@@ -83,7 +83,7 @@ func _ready() -> void:
 	camera.translation.z = cameraWallChecker.cast_to.z
 	
 	var landingsound = preload("res://Audio/newlanding.wav")
-	jumpAudio.stream = landingsound
+	walkAudio.stream = landingsound
 	
 	var hitsound = preload("res://Audio/hit.wav")
 	hitAudio.stream = hitsound
@@ -290,11 +290,11 @@ func _physics_process(delta: float) -> void:
 
 	if is_on_floor():
 		if (gravityVec != Vector3.ZERO):
-			if (!jumpAudio.is_playing()):
-				jumpAudio.play()
+			if (!walkAudio.is_playing()):
+				walkAudio.play()
 		elif (relativeDir.length_squared() != 0):
-			if (!jumpAudio.is_playing()):
-				jumpAudio.play()
+			if (!walkAudio.is_playing()):
+				walkAudio.play()
 		snap = -get_floor_normal()
 		accel = GROUNDACCEL
 

@@ -3,10 +3,9 @@ extends Node
 """
 TODO:
 
-
-
-lyöntianimaatiot mobeille?
-enemyinfon pitäis kääntyä eikä mennä limittäin
+TODO:
+	labelit menee limittäin?
+	oven plaement malli
 """
 
 
@@ -82,6 +81,11 @@ func _process(delta: float) -> void:
 			print("skip")
 			get_node("DayAnimator").seek(7.0)
 		
+	if (Input.is_action_just_pressed("Escape")):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)  
+		for i in get_children():
+			i.queue_free()
+		get_tree().change_scene("res://Menu.tscn")
 
 	if (!gameOver):
 
