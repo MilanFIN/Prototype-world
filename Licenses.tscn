@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Licenses.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/Arial.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Audio/placement1.wav" type="AudioStream" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 2 )
@@ -20,6 +21,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="MenuClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 0
 
@@ -27,6 +31,7 @@ layer = 0
 margin_top = -1.78174
 margin_right = 1307.0
 margin_bottom = 753.218
+color = Color( 0.396078, 0.396078, 0.396078, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -60,8 +65,8 @@ __meta__ = {
 [node name="Main" type="Button" parent="CanvasLayer"]
 margin_left = 1090.0
 margin_top = 455.0
-margin_right = 1181.0
-margin_bottom = 505.0
+margin_right = 1210.0
+margin_bottom = 530.0
 custom_fonts/font = SubResource( 3 )
 text = "Main menu"
 __meta__ = {

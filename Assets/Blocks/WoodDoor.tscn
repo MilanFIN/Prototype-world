@@ -62,8 +62,27 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.03498, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = ExtResource( 4 )
 
-[node name="PreviewMesh" type="MeshInstance" parent="."]
+[node name="PreviewMesh" type="Spatial" parent="."]
+
+[node name="Hinge" type="BoneAttachment" parent="PreviewMesh"]
+transform = Transform( 0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -5, 2, 0 )
+
+[node name="DoorMesh" type="MeshInstance" parent="PreviewMesh/Hinge"]
+transform = Transform( 1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 2.03498, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = ExtResource( 3 )
+
+[node name="Hinge2" type="BoneAttachment" parent="PreviewMesh"]
+transform = Transform( -0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866025, 5, 2, 0 )
+
+[node name="DoorMesh" type="MeshInstance" parent="PreviewMesh/Hinge2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.03498, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = ExtResource( 3 )
+
+[node name="PreviewMesh" type="MeshInstance" parent="PreviewMesh"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+visible = false
 mesh = SubResource( 1 )
 material/0 = ExtResource( 3 )
 

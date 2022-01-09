@@ -1,6 +1,7 @@
 extends Control
 
 
+onready var menuClick = $MenuClick
 
 
 
@@ -14,5 +15,7 @@ func _process(delta: float) -> void:
 
 
 func _on_Main_pressed() -> void:
+	menuClick.play()
+	yield(menuClick, "finished")
 	get_tree().change_scene("res://Menu.tscn")
 

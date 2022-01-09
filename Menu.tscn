@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scripts/Menu.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/Arial.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Audio/placement1.wav" type="AudioStream" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -32,10 +33,11 @@ __meta__ = {
 layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
-margin_left = 1.41418
-margin_top = 4.39691
-margin_right = 1308.41
-margin_bottom = 759.397
+margin_left = -7.57569
+margin_top = -22.5726
+margin_right = 1299.42
+margin_bottom = 732.427
+color = Color( 0.396078, 0.396078, 0.396078, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -84,6 +86,22 @@ ESC: Return to menu"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Name" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 961.285
+margin_top = 38.128
+margin_right = 1255.29
+margin_bottom = 86.128
+theme = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 5 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "github.com/milanfin"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
 
 [connection signal="pressed" from="CanvasLayer/Begin" to="." method="_on_Begin_pressed"]
 [connection signal="pressed" from="CanvasLayer/License notice" to="." method="_on_License_notice_pressed"]

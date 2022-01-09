@@ -109,7 +109,8 @@ func damage(amount):
 
 
 func melee():
-	
+	if (!initialized):
+		return
 
 	if (Input.is_action_just_pressed("Attack")):
 		if (checkAttackDelay()):
