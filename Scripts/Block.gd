@@ -2,6 +2,7 @@ extends StaticBody
 
 export var width = 2
 export var depth = 2
+export var maxHp = 5.0
 
 var lastPos = Vector3.ZERO
 
@@ -27,11 +28,12 @@ onready var placedMesh = $PlacedMesh
 onready var previewMesh = $PreviewMesh
 
 
-var hp = 5.0
-var maxHp = 5.0
+var hp = 0 
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	hp = maxHp
 	pass # Replace with function body.
 
 #returns the distance of an edge from core, if looking at a direction
@@ -175,7 +177,7 @@ func place():
 	return true
 
 func damage(amount):
-	hp -= amount
+	hp -= 3
 	if (hp <= 0):
 		dead = true
 		hitParticles.emitting = true

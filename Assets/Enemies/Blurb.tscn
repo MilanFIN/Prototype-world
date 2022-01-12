@@ -134,6 +134,9 @@ extents = Vector3( 10, 10, 10 )
 script = ExtResource( 1 )
 drop = "blurb"
 hostile = true
+nocturnal = true
+speed = 4
+hp = 8
 title = "Blurb"
 
 [node name="Info" parent="." instance=ExtResource( 2 )]

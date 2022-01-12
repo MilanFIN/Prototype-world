@@ -2,10 +2,11 @@ extends Node
 
 """
 TODO:
-
-TODO:
+	ammo palikoihin
+	nappula kuvat
+	joystick kuvat
 	labelit menee limittäin?
-	oven plaement malli
+
 """
 
 
@@ -34,16 +35,17 @@ onready var skipNightButton = $Hud/SkipNight
 
 var gameOver = false
 
-
+var score = 0
+var previousWasDay = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
+	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
 
 	get_node("DayAnimator").play("DayCycle")
 
 	get_node("Hud/MiniMap").player = player
-	
+
 
 
 
@@ -64,15 +66,37 @@ func _process(delta: float) -> void:
 	var day = true
 	if (dayState > 3 && dayState < 7):
 		day = false
-
+	
 
 	get_node("Animals").check(delta, playerPos, day)
 	
+	
+	if (!previousWasDay and day):
+		score += 1
+
+	previousWasDay = day
 	
 	if (day and skipNightButton.visible):
 		skipNightButton.visible = false
 	elif (!day and !skipNightButton.visible):
 		skipNightButton.visible = true
+
+	if (!day and player.inRoom):
+		$Hud/SkipLabel.visible = true
+		$Hud/SkipNight.visible = true
+	else:
+		$Hud/SkipLabel.visible = false
+		$Hud/SkipNight.visible = false
+
+	if (player.blockInventory.item != null):
+		$Hud/Place.visible = true
+		if (player.blockInventory.placeMode):
+			$Hud/Toggle.visible = true
+		else:
+			$Hud/Toggle.visible = false
+	else:
+		$Hud/Place.visible = false
+		$Hud/Toggle.visible = false
 	
 
 	if (Input.is_action_just_pressed("SkipNight")):
@@ -94,6 +118,7 @@ func _process(delta: float) -> void:
 			gameOver = true
 			get_tree().paused = true
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)  
+			get_node("Hud/DeathNote").setScore(score)
 			get_node("Hud/DeathNote").visible = true
 			yield(get_tree().create_timer(3.0), "timeout")
 			

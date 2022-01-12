@@ -9,7 +9,7 @@ onready var collider = $CollisionShape
 func _process(delta: float) -> void:
 	hp += delta
 	if (hp > maxHp):
-		hp = maxHp*3
+		hp = maxHp
 
 func damage(amount):
 	hp -= 3

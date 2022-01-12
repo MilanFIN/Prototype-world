@@ -4,11 +4,11 @@ export var drop = ""
 export var hostile = false
 export var nocturnal = false
 export var underwater = false
-
+export var speed = 6
 
 var velocity = Vector3.ZERO
-var gravity = 9.81
-const MOVESPEED = 6
+var gravity = 13
+
 var bounce = 9
 var knockBack = 5
 
@@ -163,8 +163,8 @@ func _physics_process(delta: float) -> void:
 			newVelocity = Vector3.ZERO
 			var dir = player.translation - translation
 			dir = Vector2(dir.x, dir.z).normalized()
-			newVelocity.x = dir.x * MOVESPEED
-			newVelocity.z = dir.y * MOVESPEED
+			newVelocity.x = dir.x * speed
+			newVelocity.z = dir.y * speed
 			velocity = newVelocity
 		else:
 			var waypoint = waypoints[waypointIndex]
@@ -173,16 +173,16 @@ func _physics_process(delta: float) -> void:
 			var zDiff = global_transform.origin.z - waypoint.y
 
 			if (xDiff < -1):
-				newVelocity.x = MOVESPEED#*delta
+				newVelocity.x = speed#*delta
 			elif (xDiff > 1):
-				newVelocity.x = -MOVESPEED#*delta
+				newVelocity.x = -speed#*delta
 			else:
 				newVelocity.x = 0
 
 			if (zDiff < -1):
-				newVelocity.z = MOVESPEED#*delta
+				newVelocity.z = speed#*delta
 			elif (zDiff > 1):
-				newVelocity.z = -MOVESPEED#*delta
+				newVelocity.z = -speed#*delta
 			else:
 				newVelocity.z = 0
 

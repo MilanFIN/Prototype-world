@@ -35,6 +35,7 @@ size = Vector2( 0.5, 0.5 )
 collision_layer = 32
 collision_mask = 41
 script = ExtResource( 1 )
+maxHp = 10.0
 
 [node name="PlacedMesh" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )

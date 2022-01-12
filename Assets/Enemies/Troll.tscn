@@ -169,6 +169,10 @@ node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "
 script = ExtResource( 1 )
 drop = "troll"
 hostile = true
+nocturnal = true
+speed = 5
+hp = 20
+damage = 4.0
 title = "Troll"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

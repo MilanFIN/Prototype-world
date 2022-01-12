@@ -2,7 +2,7 @@ extends KinematicBody
 
 
 var velocity = Vector3.ZERO
-var gravity = 9.8
+var gravity = 13
 
 export var item = ""
 export var amount = 1

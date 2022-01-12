@@ -166,6 +166,8 @@ script = ExtResource( 4 )
 drop = "zombie"
 hostile = true
 nocturnal = true
+hp = 12
+damage = 2.0
 title = "Zombie"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

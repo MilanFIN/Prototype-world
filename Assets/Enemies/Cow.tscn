@@ -191,6 +191,8 @@ extents = Vector3( 5, 5, 5 )
 ]]
 script = ExtResource( 1 )
 drop = "cow"
+speed = 3
+hp = 12
 title = "Cow"
 
 [node name="Marker" parent="." instance=ExtResource( 2 )]

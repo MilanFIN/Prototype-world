@@ -64,6 +64,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Exit" type="Button" parent="CanvasLayer"]
+margin_left = 1090.0
+margin_top = 590.0
+margin_right = 1210.0
+margin_bottom = 615.0
+custom_fonts/font = SubResource( 2 )
+text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
 margin_left = 155.168
 margin_top = 118.586
@@ -105,3 +116,4 @@ stream = ExtResource( 3 )
 
 [connection signal="pressed" from="CanvasLayer/Begin" to="." method="_on_Begin_pressed"]
 [connection signal="pressed" from="CanvasLayer/License notice" to="." method="_on_License_notice_pressed"]
+[connection signal="pressed" from="CanvasLayer/Exit" to="." method="_on_Exit_pressed"]

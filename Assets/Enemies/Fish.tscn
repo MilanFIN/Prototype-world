@@ -167,6 +167,9 @@ script = ExtResource( 1 )
 drop = "fish"
 hostile = true
 underwater = true
+speed = 8
+hp = 4
+damage = 1.0
 title = "Fish"
 
 [node name="Marker" parent="." instance=ExtResource( 2 )]

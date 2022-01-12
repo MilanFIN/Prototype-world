@@ -166,6 +166,7 @@ extents = Vector3( 10, 10, 10 )
 ]]
 script = ExtResource( 2 )
 drop = "turtle"
+speed = 2
 title = "Turtle"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
@@ -228,6 +229,7 @@ enabled = true
 cast_to = Vector3( 0, -1000, 0 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 0.25
 anims/Run = SubResource( 10 )
 anims/Stand = SubResource( 11 )
 

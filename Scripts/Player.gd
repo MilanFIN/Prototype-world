@@ -3,17 +3,17 @@ extends KinematicBody
 
 
 
-#base for the movement was shamelessly adapted from (was MIT licensed)
+#base for the movement was shamelessly adapted from (MIT licensed)
 #https://github.com/GarbajYT/godot_updated_fps_controller
 var snap
 var gravityVec = Vector3()
 const GROUNDACCEL = 10
 const AIRACCEL = 3
 onready var accel = GROUNDACCEL
-const jumpPower = 10 # 7
+const jumpPower = 7 # 7
 var velocity = Vector3(0,0,0)
-const moveSpeed = 20
-const gravity = 9.8
+const moveSpeed = 10
+const gravity = 13
 var mouseDelta = Vector2()
 var moveVector = Vector2()
 const sensitivity = 10

@@ -20,3 +20,9 @@ func _on_License_notice_pressed() -> void:
 	yield(menuClick, "finished")
 	get_tree().change_scene("res://Licenses.tscn")
 
+
+
+func _on_Exit_pressed() -> void:
+	menuClick.play()
+	yield(menuClick, "finished")
+	get_tree().quit()

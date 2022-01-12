@@ -180,6 +180,8 @@ node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "
 ]]
 script = ExtResource( 5 )
 drop = "squirrel"
+speed = 7
+hp = 5
 title = "Squirrel"
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
