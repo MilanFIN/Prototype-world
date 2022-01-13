@@ -1,19 +1,11 @@
 extends Node
 
-"""
-TODO:
-	ammo palikoihin
-	nappula kuvat
-	joystick kuvat
-	labelit menee limittäin?
-
-"""
 
 
 onready var player = $Player
 
-onready var base = $Hud/Base
-onready var stick = $Hud/Stick
+onready var base = $Android/Base
+onready var stick = $Android/Stick
 var stickMoving = false
 const maxStickDelta = 100
 
@@ -31,18 +23,20 @@ var firstLocation = Vector2.ZERO
 var secondLocation = Vector2.ZERO
 
 onready var hud = $Hud
-onready var skipNightButton = $Hud/SkipNight
+onready var androidHud = $Android
+onready var skipNightButton = $Android/SkipNight
 
 var gameOver = false
 
 var score = 0
 var previousWasDay = true
 
+var initialized = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
 
-	get_node("DayAnimator").play("DayCycle")
+
 
 	get_node("Hud/MiniMap").player = player
 
@@ -50,6 +44,13 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
+	
+	if (player.initialized and !initialized):
+		get_node("DayAnimator").play("DayCycle")
+		initialized = true
+	
+
+
 	var playerPos = player.translation
 
 	get_node("Terrain").check(playerPos)
@@ -83,20 +84,20 @@ func _process(delta: float) -> void:
 
 	if (!day and player.inRoom):
 		$Hud/SkipLabel.visible = true
-		$Hud/SkipNight.visible = true
+		$Android/SkipNight.visible = true
 	else:
 		$Hud/SkipLabel.visible = false
-		$Hud/SkipNight.visible = false
+		$Android/SkipNight.visible = false
 
 	if (player.blockInventory.item != null):
-		$Hud/Place.visible = true
+		$Android/Place.visible = true
 		if (player.blockInventory.placeMode):
-			$Hud/Toggle.visible = true
+			$Android/Toggle.visible = true
 		else:
-			$Hud/Toggle.visible = false
+			$Android/Toggle.visible = false
 	else:
-		$Hud/Place.visible = false
-		$Hud/Toggle.visible = false
+		$Android/Place.visible = false
+		$Android/Toggle.visible = false
 	
 
 	if (Input.is_action_just_pressed("SkipNight")):

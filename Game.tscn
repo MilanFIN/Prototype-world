@@ -116,48 +116,8 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 200,
 
 [node name="Hud" type="CanvasLayer" parent="."]
 
-[node name="Base" type="Sprite" parent="Hud"]
-modulate = Color( 1, 1, 1, 0.223529 )
-position = Vector2( 120, 600 )
-scale = Vector2( 3, 3 )
-texture = ExtResource( 6 )
-
-[node name="Stick" type="Sprite" parent="Hud"]
-position = Vector2( 120, 600 )
-texture = ExtResource( 6 )
-
-[node name="SkipNight" type="TouchScreenButton" parent="Hud"]
-modulate = Color( 1, 1, 1, 0.588235 )
-position = Vector2( 900, 35 )
-scale = Vector2( 0.5, 0.5 )
-normal = ExtResource( 12 )
-action = "SkipNight"
-
-[node name="Toggle" type="TouchScreenButton" parent="Hud"]
-modulate = Color( 1, 1, 1, 0.588235 )
-position = Vector2( 1075, 340 )
-normal = ExtResource( 14 )
-action = "ToggleNext"
-
-[node name="Place" type="TouchScreenButton" parent="Hud"]
-modulate = Color( 1, 1, 1, 0.588235 )
-position = Vector2( 1075, 430 )
-normal = ExtResource( 13 )
-action = "SecondaryAttack"
-
-[node name="Attack" type="TouchScreenButton" parent="Hud"]
-modulate = Color( 1, 1, 1, 0.588235 )
-position = Vector2( 1075, 525 )
-normal = ExtResource( 5 )
-action = "Attack"
-
-[node name="Quit" type="TouchScreenButton" parent="Hud"]
-modulate = Color( 1, 1, 1, 0.498039 )
-normal = ExtResource( 11 )
-action = "Escape"
-
 [node name="HealthBar" parent="Hud" instance=ExtResource( 7 )]
-position = Vector2( 350, 520 )
+position = Vector2( 740, 25 )
 
 [node name="MiniMap" parent="Hud" instance=ExtResource( 8 )]
 
@@ -191,6 +151,53 @@ text = "It's night & you are surrounded by walls. You can skip till morning with
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Android" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Quit" type="TouchScreenButton" parent="Android"]
+modulate = Color( 1, 1, 1, 0.498039 )
+normal = ExtResource( 11 )
+action = "Escape"
+
+[node name="SkipNight" type="TouchScreenButton" parent="Android"]
+modulate = Color( 1, 1, 1, 0.588235 )
+position = Vector2( 900, 35 )
+scale = Vector2( 0.5, 0.5 )
+normal = ExtResource( 12 )
+action = "SkipNight"
+
+[node name="Toggle" type="TouchScreenButton" parent="Android"]
+modulate = Color( 1, 1, 1, 0.588235 )
+position = Vector2( 1075, 340 )
+normal = ExtResource( 14 )
+action = "ToggleNext"
+
+[node name="Place" type="TouchScreenButton" parent="Android"]
+modulate = Color( 1, 1, 1, 0.588235 )
+position = Vector2( 1075, 430 )
+normal = ExtResource( 13 )
+action = "SecondaryAttack"
+
+[node name="Attack" type="TouchScreenButton" parent="Android"]
+modulate = Color( 1, 1, 1, 0.588235 )
+position = Vector2( 1075, 525 )
+normal = ExtResource( 5 )
+action = "Attack"
+
+[node name="Base" type="Sprite" parent="Android"]
+modulate = Color( 1, 1, 1, 0.223529 )
+position = Vector2( 120, 600 )
+scale = Vector2( 3, 3 )
+texture = ExtResource( 6 )
+
+[node name="Stick" type="Sprite" parent="Android"]
+position = Vector2( 120, 600 )
+texture = ExtResource( 6 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 29, 0 )

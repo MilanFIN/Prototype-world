@@ -40,7 +40,7 @@ var attackDelay = 333 #ms
 var inRoom = false
 
 
-onready var rightMeleeAnim = $RightMeleeAnim
+
 onready var rightHitbox = $Body/RightHandHitbox
 
 onready var camera = $CameraJoint/Camera

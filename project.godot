@@ -12,7 +12,9 @@ config_version=4
 
 config/name="3dprocedural"
 run/main_scene="res://Menu.tscn"
-boot_splash/image="res://icon.png"
+boot_splash/fullsize=false
+boot_splash/use_filter=false
+boot_splash/bg_color=Color( 0.396078, 0.396078, 0.396078, 1 )
 config/icon="res://icon.png"
 
 [autoload]
