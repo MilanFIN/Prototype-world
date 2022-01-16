@@ -391,8 +391,13 @@ func _process(delta: float) -> void:
 
 	objectGenerator.process()
 
+#returns how many tiles have been generated in percentages of maximum
+func getProgress():
+	var total = pow(2*drawDistance+1, 2)
+	var current = chunks.size()
+	return float(current) / total * 100
 	
-
+ 
 # Thread must be disposed (or "joined"), for portability.
 func _exit_tree():
 	print("exiting")

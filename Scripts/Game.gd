@@ -51,11 +51,20 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	
-	if (player.initialized and !initialized):
-		get_node("DayAnimator").play("DayCycle")
-		initialized = true
+	#if (player.initialized and !initialized):
+	#	get_node("DayAnimator").play("DayCycle")
+	#	initialized = true
 	
-
+	if (!initialized):
+		$Hud/LoadingScreen.visible = true
+		
+		var loadStage = get_node("Terrain").getProgress()
+		$Hud/LoadingScreen/LoadingText.text = "Loading... " + str(int(loadStage)) + "%"
+		if (loadStage == 100):
+			get_node("DayAnimator").play("DayCycle")
+			initialized = true
+	else:
+		$Hud/LoadingScreen.visible = false
 
 	var playerPos = player.translation
 
