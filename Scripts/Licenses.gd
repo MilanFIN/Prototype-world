@@ -4,10 +4,11 @@ extends Control
 onready var menuClick = $MenuClick
 
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#	pass
+func _ready() -> void:
+	if (OS.get_name() != "Android"):
+		for i in get_node("CanvasLayer").get_children():
+			if (i is TouchScreenButton):
+				i.visible = false
 
 func _process(delta: float) -> void:
 	if (Input.is_action_just_pressed("Escape")):

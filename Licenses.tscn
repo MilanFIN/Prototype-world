@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scripts/Licenses.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/Arial.ttf" type="DynamicFontData" id=2]
@@ -12,6 +12,9 @@ default_font = SubResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
 font_data = ExtResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 60, 40 )
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -73,4 +76,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2( 1089.59, 451.991 )
+shape = SubResource( 4 )
+
 [connection signal="pressed" from="CanvasLayer/Main" to="." method="_on_Main_pressed"]
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton" to="." method="_on_Main_pressed"]

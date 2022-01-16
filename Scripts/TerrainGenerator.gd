@@ -1,6 +1,6 @@
 extends Spatial
 
-const THREADCOUNT = 2 #2
+var THREADCOUNT = 0 #2
 
 var objectGenerator
 
@@ -34,6 +34,11 @@ var threadOutputs = []
 
 
 func _ready():
+
+	if (OS.get_name() == "Android"):
+		THREADCOUNT = 0
+	else:
+		THREADCOUNT = 2
 
 	valueGenerator = Global.valueGenerator
 	

@@ -2,7 +2,11 @@ extends Control
 
 onready var menuClick = $MenuClick
 
-
+func _ready() -> void:
+	if (OS.get_name() != "Android"):
+		for i in get_node("CanvasLayer").get_children():
+			if (i is TouchScreenButton):
+				i.visible = false
 
 
 

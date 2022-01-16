@@ -34,6 +34,12 @@ var previousWasDay = true
 var initialized = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	
+	if (OS.get_name() == "Android"):
+		androidHud.visible = true
+	else:
+		androidHud.visible = false
+	
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)  
 
 
