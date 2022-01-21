@@ -11,6 +11,7 @@ var dropTable = {
 	"turtle": [[1, "Health"], [1, "Stone"], [2, ""]],
 	"zombie": [[1, "Spear"], [1, "Sword"], [2, ""]]
 }
+var shadows = false
 #	"cow": [(1, "Health")]
 
 # Called when the node enters the scene tree for the first time.

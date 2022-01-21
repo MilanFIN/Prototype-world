@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Materials/Squirrel.tres" type="Material" id=1]
 [ext_resource path="res://Assets/Particles/BloodParticle.tscn" type="PackedScene" id=2]
@@ -24,10 +24,7 @@ size = Vector3( 0.2, 0.5, 0.2 )
 [sub_resource type="CubeMesh" id=6]
 size = Vector3( 0.3, 0.3, 0.75 )
 
-[sub_resource type="BoxShape" id=7]
-extents = Vector3( 10, 10, 10 )
-
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 resource_name = "Run"
 length = 0.5
 loop = true
@@ -92,7 +89,7 @@ tracks/4/keys = {
 "values": [ Vector3( -45, 0, 0 ), Vector3( -30, 0, 0 ), Vector3( -45, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=8]
 resource_name = "Stand"
 loop = true
 tracks/0/type = "value"
@@ -156,21 +153,21 @@ tracks/4/keys = {
 "values": [ Vector3( -45, 0, 0 ) ]
 }
 
-[sub_resource type="AnimationNodeBlend2" id=10]
+[sub_resource type="AnimationNodeBlend2" id=9]
 
-[sub_resource type="AnimationNodeAnimation" id=11]
+[sub_resource type="AnimationNodeAnimation" id=10]
 animation = "Run"
 
-[sub_resource type="AnimationNodeAnimation" id=12]
+[sub_resource type="AnimationNodeAnimation" id=11]
 animation = "Stand"
 
-[sub_resource type="AnimationNodeBlendTree" id=13]
+[sub_resource type="AnimationNodeBlendTree" id=12]
 graph_offset = Vector2( -139, -23 )
-nodes/Moving/node = SubResource( 10 )
+nodes/Moving/node = SubResource( 9 )
 nodes/Moving/position = Vector2( 338, 89 )
-nodes/Run/node = SubResource( 11 )
+nodes/Run/node = SubResource( 10 )
 nodes/Run/position = Vector2( 100, 220 )
-nodes/Stand/node = SubResource( 12 )
+nodes/Stand/node = SubResource( 11 )
 nodes/Stand/position = Vector2( 100, 20 )
 nodes/output/position = Vector2( 540, 80 )
 node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "Run" ]
@@ -244,17 +241,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape" type="CollisionShape" parent="AttackShape"]
-shape = SubResource( 7 )
-
-[node name="DetectionArea" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
-shape = SubResource( 7 )
-
 [node name="HitParticles" parent="." instance=ExtResource( 2 )]
 
 [node name="Marker" parent="." instance=ExtResource( 3 )]
@@ -269,11 +255,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Stand"
-anims/Run = SubResource( 8 )
-anims/Stand = SubResource( 9 )
+anims/Run = SubResource( 7 )
+anims/Stand = SubResource( 8 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 13 )
+tree_root = SubResource( 12 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Moving/blend_amount = 0.0

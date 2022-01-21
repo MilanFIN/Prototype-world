@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Hud/Marker.tscn" type="PackedScene" id=2]
@@ -25,10 +25,7 @@ size = Vector3( 1, 2.5, 1 )
 [sub_resource type="BoxShape" id=6]
 extents = Vector3( 2, 5, 2 )
 
-[sub_resource type="BoxShape" id=7]
-extents = Vector3( 10, 10, 10 )
-
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=7]
 resource_name = "Run"
 loop = true
 tracks/0/type = "value"
@@ -80,7 +77,7 @@ tracks/3/keys = {
 "values": [ Vector3( 15, 0, 0 ), Vector3( -15, 0, 0 ), Vector3( 15, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=8]
 resource_name = "Stand"
 loop = true
 tracks/0/type = "value"
@@ -144,21 +141,21 @@ tracks/4/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="AnimationNodeBlend2" id=10]
+[sub_resource type="AnimationNodeBlend2" id=9]
 
-[sub_resource type="AnimationNodeAnimation" id=11]
+[sub_resource type="AnimationNodeAnimation" id=10]
 animation = "Run"
 
-[sub_resource type="AnimationNodeAnimation" id=12]
+[sub_resource type="AnimationNodeAnimation" id=11]
 animation = "Stand"
 
-[sub_resource type="AnimationNodeBlendTree" id=13]
+[sub_resource type="AnimationNodeBlendTree" id=12]
 graph_offset = Vector2( -145, 3.75 )
-nodes/Moving/node = SubResource( 10 )
+nodes/Moving/node = SubResource( 9 )
 nodes/Moving/position = Vector2( 400, 120 )
-nodes/Run/node = SubResource( 11 )
+nodes/Run/node = SubResource( 10 )
 nodes/Run/position = Vector2( 99, 349.75 )
-nodes/Stand/node = SubResource( 12 )
+nodes/Stand/node = SubResource( 11 )
 nodes/Stand/position = Vector2( 100, 120 )
 nodes/output/position = Vector2( 680, 140 )
 node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "Run" ]
@@ -171,6 +168,7 @@ drop = "troll"
 hostile = true
 nocturnal = true
 speed = 5
+detectionDistance = 15
 hp = 20
 damage = 4.0
 title = "Troll"
@@ -243,20 +241,13 @@ collision_mask = 2
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3 )
 shape = SubResource( 6 )
 
-[node name="DetectionArea" type="Area" parent="."]
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
-shape = SubResource( 7 )
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "Stand"
-anims/Run = SubResource( 8 )
-anims/Stand = SubResource( 9 )
+anims/Run = SubResource( 7 )
+anims/Stand = SubResource( 8 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 13 )
+tree_root = SubResource( 12 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Moving/blend_amount = 0.0

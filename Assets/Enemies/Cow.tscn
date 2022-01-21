@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Hud/Marker.tscn" type="PackedScene" id=2]
@@ -182,9 +182,6 @@ nodes/output/position = Vector2( 360, 120 )
 node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "Run" ]
 
 [sub_resource type="BoxShape" id=13]
-extents = Vector3( 5, 5, 5 )
-
-[sub_resource type="BoxShape" id=14]
 
 [node name="Cow" type="KinematicBody" groups=[
 "Enemy",
@@ -272,17 +269,10 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Moving/blend_amount = 0.0
 
-[node name="DetectionArea" type="Area" parent="."]
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
-shape = SubResource( 13 )
-
 [node name="AttackShape" type="Area" parent="."]
 collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="AttackShape"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3 )
-shape = SubResource( 14 )
+shape = SubResource( 13 )

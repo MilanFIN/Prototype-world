@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Materials/ZombieSkin.tres" type="Material" id=1]
 [ext_resource path="res://Materials/Pants.tres" type="Material" id=2]
@@ -32,10 +32,7 @@ size = Vector3( 1, 1, 0.8 )
 [sub_resource type="BoxShape" id=8]
 extents = Vector3( 1, 5, 1 )
 
-[sub_resource type="BoxShape" id=9]
-extents = Vector3( 10, 10, 10 )
-
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=15]
 resource_name = "Run"
 loop = true
 step = 0.25
@@ -88,7 +85,7 @@ tracks/3/keys = {
 "values": [ Vector3( 30, 0, 0 ), Vector3( -30, 0, 0 ), Vector3( 30, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=10]
 resource_name = "Stand"
 loop = true
 tracks/0/type = "value"
@@ -140,21 +137,21 @@ tracks/3/keys = {
 "values": [ Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="AnimationNodeBlend2" id=12]
+[sub_resource type="AnimationNodeBlend2" id=11]
 
-[sub_resource type="AnimationNodeAnimation" id=13]
+[sub_resource type="AnimationNodeAnimation" id=12]
 animation = "Run"
 
-[sub_resource type="AnimationNodeAnimation" id=14]
+[sub_resource type="AnimationNodeAnimation" id=13]
 animation = "Stand"
 
-[sub_resource type="AnimationNodeBlendTree" id=15]
+[sub_resource type="AnimationNodeBlendTree" id=14]
 graph_offset = Vector2( -186, 27.5 )
-nodes/Moving/node = SubResource( 12 )
+nodes/Moving/node = SubResource( 11 )
 nodes/Moving/position = Vector2( 380, 100 )
-nodes/Run/node = SubResource( 13 )
+nodes/Run/node = SubResource( 12 )
 nodes/Run/position = Vector2( 140, 220 )
-nodes/Stand/node = SubResource( 14 )
+nodes/Stand/node = SubResource( 13 )
 nodes/Stand/position = Vector2( 139, 82 )
 nodes/output/position = Vector2( 580, 100 )
 node_connections = [ "output", 0, "Moving", "Moving", 0, "Stand", "Moving", 1, "Run" ]
@@ -166,6 +163,7 @@ script = ExtResource( 4 )
 drop = "zombie"
 hostile = true
 nocturnal = true
+detectionDistance = 15
 hp = 12
 damage = 2.0
 title = "Zombie"
@@ -230,20 +228,12 @@ shape = SubResource( 8 )
 [node name="HitParticles" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.25, 0 )
 
-[node name="DetectionArea" type="Area" parent="."]
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00148964, 0.0143025, -7.9155e-05 )
-shape = SubResource( 9 )
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Run = SubResource( 10 )
-anims/Stand = SubResource( 11 )
+anims/Run = SubResource( 15 )
+anims/Stand = SubResource( 10 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( 15 )
+tree_root = SubResource( 14 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Moving/blend_amount = 0.0

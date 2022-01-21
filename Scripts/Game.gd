@@ -45,6 +45,9 @@ func _ready() -> void:
 
 
 	get_node("Hud/MiniMap").player = player
+	
+
+	get_node("DirectionalLight").shadow_enabled = Global.shadows
 
 
 
@@ -59,9 +62,10 @@ func _process(delta: float) -> void:
 		$Hud/LoadingScreen.visible = true
 		
 		var loadStage = get_node("Terrain").getProgress()
-		$Hud/LoadingScreen/LoadingText.text = "Loading... " + str(int(loadStage)) + "%"
+		$Hud/LoadingScreen/LoadingText.text = "Generating a new world... " + str(int(loadStage)) + "%"
 		if (loadStage == 100):
 			get_node("DayAnimator").play("DayCycle")
+
 			initialized = true
 	else:
 		$Hud/LoadingScreen.visible = false

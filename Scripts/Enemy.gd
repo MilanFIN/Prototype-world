@@ -5,6 +5,7 @@ export var hostile = false
 export var nocturnal = false
 export var underwater = false
 export var speed = 6
+export var detectionDistance = 5
 
 var velocity = Vector3.ZERO
 var gravity = 13
@@ -47,7 +48,7 @@ onready var hitParticles = $HitParticles
 
 onready var attackShape = $AttackShape
 
-onready var detectionArea = $DetectionArea
+
 
 onready var info = $Info
 
@@ -151,9 +152,14 @@ func _physics_process(delta: float) -> void:
 	velocity.y = move_and_slide(velocity, Vector3.UP).y
 
 	player = null
-	var bodies = detectionArea.get_overlapping_bodies()
-	if (len(bodies) != 0):
-		player = bodies[0]
+	var distance = (get_tree().get_root().get_node("Game/Player").global_transform.origin 
+						- global_transform.origin).length()
+	if (distance < detectionDistance):
+		player = get_tree().get_root().get_node("Game/Player")
+
+
+
+
 		
 
 	if (is_on_floor()):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/Menu.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/Arial.ttf" type="DynamicFontData" id=2]
@@ -27,6 +27,9 @@ extents = Vector2( 60, 15 )
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 60, 40 )
 
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 30, 30 )
+
 [node name="Control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -40,19 +43,20 @@ layer = 0
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 margin_left = -7.57569
-margin_top = -22.5726
+margin_top = -23.9074
 margin_right = 1299.42
-margin_bottom = 732.427
+margin_bottom = 731.092
 color = Color( 0.396078, 0.396078, 0.396078, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Begin" type="Button" parent="CanvasLayer"]
-margin_left = 1090.0
-margin_top = 455.0
-margin_right = 1210.0
-margin_bottom = 530.0
+margin_left = 975.0
+margin_top = 170.0
+margin_right = 1095.0
+margin_bottom = 245.0
+rect_scale = Vector2( 1.5, 1.5 )
 custom_fonts/font = SubResource( 1 )
 text = "Play"
 __meta__ = {
@@ -60,10 +64,11 @@ __meta__ = {
 }
 
 [node name="License notice" type="Button" parent="CanvasLayer"]
-margin_left = 1090.0
-margin_top = 550.0
-margin_right = 1210.0
-margin_bottom = 575.0
+margin_left = 975.0
+margin_top = 315.0
+margin_right = 1095.0
+margin_bottom = 340.0
+rect_scale = Vector2( 1.5, 1.5 )
 custom_fonts/font = SubResource( 2 )
 text = "License Notice"
 __meta__ = {
@@ -71,25 +76,26 @@ __meta__ = {
 }
 
 [node name="Exit" type="Button" parent="CanvasLayer"]
-margin_left = 1090.0
-margin_top = 590.0
-margin_right = 1210.0
-margin_bottom = 615.0
+margin_left = 975.0
+margin_top = 385.0
+margin_right = 1095.0
+margin_bottom = 410.0
+rect_scale = Vector2( 1.5, 1.5 )
 custom_fonts/font = SubResource( 2 )
 text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
-margin_left = 155.168
-margin_top = 118.586
-margin_right = 888.159
-margin_bottom = 837.586
+[node name="ControlLabel" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 132.693
+margin_top = 99.108
+margin_right = 865.684
+margin_bottom = 818.108
 theme = SubResource( 4 )
 custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
-text = "Controls:
+text = "Keyboard Controls:
 
 W/A/S/D: Move
 Space: Jump
@@ -117,17 +123,49 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Shadowlabel" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = 718.0
+margin_top = 583.0
+margin_right = 1165.0
+margin_bottom = 677.0
+theme = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 5 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "Enable shadows
+(resource intensive on android)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TouchScreenButton" type="TouchScreenButton" parent="CanvasLayer"]
-position = Vector2( 1090.03, 547.523 )
+position = Vector2( 975.234, 311.757 )
+scale = Vector2( 1.5, 1.5 )
 shape = SubResource( 6 )
 
 [node name="TouchScreenButton2" type="TouchScreenButton" parent="CanvasLayer"]
-position = Vector2( 1089.4, 587.211 )
+position = Vector2( 975.787, 382.624 )
+scale = Vector2( 1.5, 1.5 )
 shape = SubResource( 6 )
 
 [node name="TouchScreenButton3" type="TouchScreenButton" parent="CanvasLayer"]
-position = Vector2( 1090.03, 454.332 )
+position = Vector2( 975.03, 167.832 )
+scale = Vector2( 1.5, 1.5 )
 shape = SubResource( 7 )
+
+[node name="Shadows" type="CheckBox" parent="CanvasLayer"]
+margin_left = 667.05
+margin_top = 578.723
+margin_right = 691.05
+margin_bottom = 602.723
+rect_scale = Vector2( 2, 2 )
+button_mask = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TouchScreenButton4" type="TouchScreenButton" parent="CanvasLayer"]
+position = Vector2( 659.919, 573.414 )
+shape = SubResource( 8 )
 
 [node name="MenuClick" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
@@ -138,3 +176,5 @@ stream = ExtResource( 3 )
 [connection signal="pressed" from="CanvasLayer/TouchScreenButton" to="." method="_on_License_notice_pressed"]
 [connection signal="pressed" from="CanvasLayer/TouchScreenButton2" to="." method="_on_Exit_pressed"]
 [connection signal="pressed" from="CanvasLayer/TouchScreenButton3" to="." method="_on_Begin_pressed"]
+[connection signal="toggled" from="CanvasLayer/Shadows" to="." method="_on_Shadows_toggled"]
+[connection signal="pressed" from="CanvasLayer/TouchScreenButton4" to="." method="_on_TouchScreenButton4_pressed"]

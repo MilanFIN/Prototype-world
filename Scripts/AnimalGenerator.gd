@@ -24,9 +24,10 @@ var lastUpdateTime
 #msec, how often the animal statuses are checked
 const UPDATEINTERVAL = 2000
 #how far animals can go until they are removed
-const DRAWDISTANCE = 150
-const ANIMALLIMIT = 10
-const SPAWNRADIUS = 100
+const DRAWDISTANCE = 250
+const ANIMALLIMIT = 25
+#how far animals might spawn
+const SPAWNRADIUS = 200
 
 
 
@@ -46,8 +47,6 @@ func pickAnimal(day, water):
 		return mobs[index].instance()
 func check(delta, pos, day):
 
-	#uncomment to disable
-	#return
 
 	if (day):
 		for animal in animals:

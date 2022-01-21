@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Scripts/Enemy.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Hud/EnemyInfo.tscn" type="PackedScene" id=2]
@@ -125,9 +125,6 @@ albedo_color = Color( 0, 0, 0, 1 )
 [sub_resource type="BoxShape" id=12]
 extents = Vector3( 1, 5, 1 )
 
-[sub_resource type="BoxShape" id=13]
-extents = Vector3( 10, 10, 10 )
-
 [node name="Blurb" type="KinematicBody" groups=[
 "Enemy",
 ]]
@@ -136,6 +133,7 @@ drop = "blurb"
 hostile = true
 nocturnal = true
 speed = 4
+detectionDistance = 15
 hp = 8
 title = "Blurb"
 
@@ -190,12 +188,5 @@ collision_mask = 2
 [node name="CollisionShape" type="CollisionShape" parent="AttackShape"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 shape = SubResource( 12 )
-
-[node name="DetectionArea" type="Area" parent="."]
-collision_layer = 0
-collision_mask = 2
-
-[node name="CollisionShape" type="CollisionShape" parent="DetectionArea"]
-shape = SubResource( 13 )
 
 [node name="HitParticles" parent="." instance=ExtResource( 4 )]

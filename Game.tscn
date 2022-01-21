@@ -28,12 +28,12 @@ outline_size = 2
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=3]
 size = 32
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 9 )
 
-[sub_resource type="Environment" id=3]
+[sub_resource type="Environment" id=4]
 background_mode = 1
 background_color = Color( 0.466667, 0.835294, 1, 1 )
 ambient_light_color = Color( 0.466667, 0.835294, 1, 1 )
@@ -44,7 +44,7 @@ glow_strength = 0.95
 glow_blend_mode = 0
 glow_hdr_threshold = 3.0
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=5]
 length = 10.0
 loop = true
 tracks/0/type = "value"
@@ -81,7 +81,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 0.466667, 0.835294, 1, 1 ), Color( 0.105882, 0.109804, 0.247059, 1 ) ]
+"values": [ Color( 0.466667, 0.835294, 1, 1 ), Color( 0.0901961, 0.0941176, 0.211765, 1 ) ]
 }
 tracks/3/type = "value"
 tracks/3/path = NodePath("WorldEnvironment:environment:ambient_light_color")
@@ -178,13 +178,13 @@ __meta__ = {
 }
 
 [node name="LoadingText" type="Label" parent="Hud/LoadingScreen"]
-margin_left = 551.99
-margin_top = 330.512
-margin_right = 923.99
-margin_bottom = 366.512
-custom_fonts/font = SubResource( 5 )
+margin_left = 429.0
+margin_top = 323.0
+margin_right = 865.0
+margin_bottom = 359.0
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "LOADING..."
+text = "Generating a new world..."
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -248,12 +248,12 @@ texture = ExtResource( 6 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 29, 0 )
-layers = 5
+layers = 21
 light_cull_mask = 4293918721
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( 3 )
+environment = SubResource( 4 )
 
 [node name="DayAnimator" type="AnimationPlayer" parent="."]
-playback_speed = 0.1
-anims/DayCycle = SubResource( 4 )
+playback_speed = 0.08
+anims/DayCycle = SubResource( 5 )
