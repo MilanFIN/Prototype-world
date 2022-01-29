@@ -1,6 +1,6 @@
 # Prototype world
 
-3d demo type game with focus on terrain generation.
+3d demo type game made with Godot. Mostly focused on 3d terrain generation.
 
 The terrain generation is done with opensimplex noise & a random seed. Threading is used  on pc to speed up the generation. I had some mesh related issues with threading on android, so it's disabled there & as a result the generation takes much longer.
 
