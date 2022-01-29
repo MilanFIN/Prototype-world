@@ -93,8 +93,8 @@ margin_top = 99.108
 margin_right = 865.684
 margin_bottom = 818.108
 theme = SubResource( 4 )
-custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 5 )
 text = "Keyboard Controls:
 
 W/A/S/D: Move
@@ -116,8 +116,8 @@ margin_top = 38.128
 margin_right = 1255.29
 margin_bottom = 86.128
 theme = SubResource( 4 )
-custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 5 )
 text = "github.com/milanfin"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -129,8 +129,8 @@ margin_top = 583.0
 margin_right = 1165.0
 margin_bottom = 677.0
 theme = SubResource( 4 )
-custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
+custom_fonts/normal_font = SubResource( 5 )
 text = "Enable shadows
 (resource intensive on android)"
 __meta__ = {
