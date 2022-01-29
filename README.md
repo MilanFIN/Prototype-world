@@ -14,7 +14,7 @@ Download:
 
 [Android](https://play.google.com/store/apps/details?id=org.godotengine.prototypeworld)
 
-[Linux](asdf.dy.fi/public/protoworld.x86_64)
+[Linux](http://asdf.dy.fi/public/protoworld.x86_64)
 
-[Windows](asdf.dy.fi/public/protoworld.exe)
+[Windows](http://asdf.dy.fi/public/protoworld.exe)
 
